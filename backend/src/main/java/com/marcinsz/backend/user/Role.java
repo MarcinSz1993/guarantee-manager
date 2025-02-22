@@ -1,4 +1,4 @@
-package com.marcinsz.backend.model;
+package com.marcinsz.backend.user;
 
 public enum Role {
     USER,
