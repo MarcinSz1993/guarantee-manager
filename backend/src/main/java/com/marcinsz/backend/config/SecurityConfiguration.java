@@ -26,6 +26,10 @@ public class SecurityConfiguration {
                     registry.requestMatchers("/api/users/login").permitAll();
                     registry.requestMatchers("/api/users").permitAll();
                     registry.requestMatchers("/api/users/activate-user").permitAll();
+                    registry.requestMatchers("/swagger-ui/**").permitAll();
+                    registry.requestMatchers("/swagger-ui.html/**").permitAll();
+                    registry.requestMatchers("/v3/api-docs/**").permitAll();
+                    registry.requestMatchers("/v3/api-docs").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable)
