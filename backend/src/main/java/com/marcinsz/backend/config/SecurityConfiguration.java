@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,11 +28,10 @@ public class SecurityConfiguration {
                     registry.requestMatchers("/api/users").permitAll();
                     registry.requestMatchers("/api/users/activate-user").permitAll();
                     registry.requestMatchers("/swagger-ui/**").permitAll();
-                    registry.requestMatchers("/swagger-ui.html/**").permitAll();
                     registry.requestMatchers("/v3/api-docs/**").permitAll();
-                    registry.requestMatchers("/v3/api-docs").permitAll();
                     registry.anyRequest().authenticated();
                 })
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
