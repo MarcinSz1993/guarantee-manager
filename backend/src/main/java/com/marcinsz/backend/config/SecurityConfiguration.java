@@ -25,6 +25,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/api/users/login").permitAll();
                     registry.requestMatchers("/api/users").permitAll();
+                    registry.requestMatchers("/api/users/activate-user").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable)
@@ -32,8 +33,6 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-
-
         return http.build();
     }
 }

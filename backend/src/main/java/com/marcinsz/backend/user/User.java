@@ -16,6 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
@@ -73,6 +74,6 @@ public class User implements UserDetails{
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return userEnabled;
     }
 }

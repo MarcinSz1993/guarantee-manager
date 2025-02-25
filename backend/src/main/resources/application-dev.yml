@@ -18,3 +18,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  application:
+    user-activation-token-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    user-activation-token-length: 6
+logging:
+  level:
+    org.springframework.security: DEBUG
+    root: info
