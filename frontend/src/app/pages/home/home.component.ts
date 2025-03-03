@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import {NgForOf} from '@angular/common';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-home',
   imports: [
-    NgForOf
+
   ],
   templateUrl: './home.component.html',
   standalone: true,

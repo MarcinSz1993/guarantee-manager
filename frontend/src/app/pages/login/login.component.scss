@@ -1,0 +1,55 @@
+.container-fluid {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-container {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-control {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.btn-primary {
+  background: #4facfe;
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+  transition: background 0.3s ease, transform 0.2s ease;
+
+  &:hover {
+    background: #357ABD;
+    transform: translateY(-2px);
+  }
+}
+
+.btn-outline-light {
+  border: 2px solid #4facfe;
+  color: #4facfe;
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #4facfe;
+    color: white;
+  }
+}
+
+.btn-link {
+  color: #4facfe;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
