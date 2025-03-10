@@ -1,0 +1,53 @@
+<nav *ngIf="!authService.isLoggedIn()" class="navbar navbar-expand-md bg-dark navbar-light text-light px-0">
+  <a class="navbar-brand d-flex align-items-center gap-1">
+    <img ngSrc="assets/guarantee-manager-logo.png"
+         alt="Guarantee Manager Logo"
+         width="50"
+         height="50">
+    <span class="fs-5 fw-bold text-info">Guarantee Manager</span>
+  </a>
+
+  <button class="navbar-toggler text-light ms-auto" type="button" (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon bg-info"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-center w-auto mx-auto" [collapse]="isCollapsed">
+    <ul class="navbar-nav gap-5 text-start">
+      <li class="nav-item">
+        <a class="nav-link text-light" routerLink="/dashboard">
+          <i class="fas fa-home me-1"></i> Home
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" routerLink="/add-warranty">
+          <i class="fas fa-plus me-1"></i> Add warranty
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" routerLink="/notifications">
+          <i class="fas fa-bell me-1"></i> Notifications
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" routerLink="/stats">
+          <i class="fas fa-chart-bar me-1"></i> Stats
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" routerLink="/profile">
+          <i class="fas fa-user me-1"></i> Your profile
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-light" routerLink="/archive">
+          <i class="fas fa-archive me-1"></i> Archive
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger fw-bold" routerLink="/logout">
+          <i class="fas fa-sign-out-alt me-1"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
