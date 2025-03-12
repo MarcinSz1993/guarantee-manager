@@ -22,7 +22,29 @@ spring:
   application:
     user-activation-token-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
     user-activation-token-length: 6
+    mailing:
+      frontend:
+        activation-url: http://localhost:4200/activate-account
+
+  mail:
+    host: localhost
+    port: 1025
+    username: marcinsz1993
+    password: marcinsz1993
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enable: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+
 logging:
   level:
     org.springframework.security: DEBUG
     root: info
+
+

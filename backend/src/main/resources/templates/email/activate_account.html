@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guarantee Manager - Account Activation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #2a2a3c;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .logo {
+            max-width: 120px;
+            margin-bottom: 15px;
+        }
+        h1 {
+            color: #17a2b8;
+            font-size: 24px;
+        }
+        .greeting {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .activation-code {
+            font-size: 32px;
+            font-weight: bold;
+            color: #17a2b8;
+            background-color: #ffffff;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 5px;
+            margin: 15px 0;
+            letter-spacing: 2px;
+        }
+        .activation-link a {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #17a2b8;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .activation-link a:hover {
+            background-color: #138496;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="http://localhost:8080/api/logo" width="75" height="75" alt="Guarantee Manager Logo" class="logo">
+    <h1>Activate Your Account</h1>
+    <p class="greeting" th:text="'Hello ' + ${username} + ','"></p>
+    <p>Thank you for signing up! Use the activation code below to activate your account:</p>
+    <div class="activation-code"><span th:text="${activation_code}"></span></div>
+    <p>Or click the button below:</p>
+    <div class="activation-link">
+        <a th:href="${confirmationUrl}" target="_blank">Activate your account</a>
+    </div>
+</div>
+</body>
+</html>

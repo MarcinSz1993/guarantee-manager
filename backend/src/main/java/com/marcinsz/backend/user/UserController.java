@@ -3,6 +3,7 @@ package com.marcinsz.backend.user;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
 import com.marcinsz.backend.response.UserActivationResponse;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class UserController {
     @PostMapping(produces = "application/json")
     public ResponseEntity<RegistrationResponse> register(
             @RequestBody @Valid CreateUserRequest registerRequest
-    ){
+    ) throws MessagingException {
         return ResponseEntity.ok(userService.register(registerRequest));
     }
 
