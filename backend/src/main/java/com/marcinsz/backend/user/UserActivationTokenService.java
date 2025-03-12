@@ -1,8 +1,11 @@
 package com.marcinsz.backend.user;
 
+import com.marcinsz.backend.email.EmailService;
+import com.marcinsz.backend.email.EmailTemplateName;
 import com.marcinsz.backend.exception.InvalidTokenException;
 import com.marcinsz.backend.exception.UserActivationTokenExpiredException;
 import com.marcinsz.backend.exception.UserActivationTokenNotFoundException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,14 +17,17 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class UserActivationTokenService {
 
+    private final EmailService emailService;
     private final UserActivationTokenRepository userActivationTokenRepository;
-
 
     @Value("${spring.application.user-activation-token-characters}")
     private String charactersToGenerateUserActivationToken;
 
     @Value("${spring.application.user-activation-token-length}")
     private int userActivationTokenLength;
+
+    @Value("${spring.application.mailing.frontend.activation-url}")
+    private String activationUrl;
 
     public UserActivationToken createUserActivationToken(User user){
         String activateToken = generateActivateToken();
@@ -46,7 +52,7 @@ public class UserActivationTokenService {
         return activateToken.toString().toUpperCase();
     }
 
-    public User validateUserActivationTokenAndGetUser(String token){
+    public User validateUserActivationTokenAndGetUser(String token) throws MessagingException {
         if (token.length() > userActivationTokenLength) {
             throw new InvalidTokenException("The token is too long");
         } else if (token.length() < userActivationTokenLength) {
@@ -54,6 +60,8 @@ public class UserActivationTokenService {
         }
         UserActivationToken foundUserActivationToken = userActivationTokenRepository.findByToken(token).orElseThrow(() -> new UserActivationTokenNotFoundException(token));
         if (foundUserActivationToken.getExpires().isBefore(LocalDateTime.now())){
+            userActivationTokenRepository.delete(foundUserActivationToken);
+            sendActivationEmail(foundUserActivationToken.getUser());
             throw new UserActivationTokenExpiredException();
         } else if (!foundUserActivationToken.isValid()) {
             throw new InvalidTokenException("The token is invalid. Already used.");
@@ -62,5 +70,17 @@ public class UserActivationTokenService {
         foundUserActivationToken.setValid(false);
         userActivationTokenRepository.save(foundUserActivationToken);
         return foundUserActivationToken.getUser();
+    }
+
+    public void sendActivationEmail(User user) throws MessagingException {
+        UserActivationToken userActivationToken = createUserActivationToken(user);
+        String activationToken = userActivationToken.getToken();
+        emailService.sendEmail(
+                user.getEmail(),
+                user.getUsername(),
+                EmailTemplateName.ACTIVATE_ACCOUNT,
+                activationUrl,
+                activationToken,
+                "Account activation");
     }
 }

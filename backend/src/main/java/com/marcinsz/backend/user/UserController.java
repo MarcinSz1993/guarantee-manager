@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/activate-user",produces = "application/json")
-    public ResponseEntity<UserActivationResponse> activateUser(@RequestParam String userActivationToken){
+    public ResponseEntity<UserActivationResponse> activateUser(@RequestParam String userActivationToken) throws MessagingException {
         userService.activateUser(userActivationToken);
         return ResponseEntity.ok().body(
                 UserActivationResponse.builder()

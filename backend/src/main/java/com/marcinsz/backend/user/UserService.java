@@ -1,9 +1,8 @@
 package com.marcinsz.backend.user;
 
 import com.marcinsz.backend.config.JwtService;
-import com.marcinsz.backend.email.EmailService;
-import com.marcinsz.backend.email.EmailTemplateName;
 import com.marcinsz.backend.exception.IncorrectLoginOrPasswordException;
+import com.marcinsz.backend.exception.UserAlreadyExistsException;
 import com.marcinsz.backend.exception.UserNotActivatedException;
 import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.response.AuthenticationResponse;
@@ -11,7 +10,6 @@ import com.marcinsz.backend.response.RegistrationResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,11 +24,9 @@ public class UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserActivationTokenService userActivationTokenService;
-    private final EmailService emailService;
-    @Value("${spring.application.mailing.frontend.activation-url}")
-    private String activationUrl;
 
     public RegistrationResponse register(CreateUserRequest createUserRequest) throws MessagingException {
+        validateNewUser(createUserRequest);
         User user = User.builder()
                 .firstName(createUserRequest.getFirstName())
                 .lastName(createUserRequest.getLastName())
@@ -41,9 +37,7 @@ public class UserService {
                 .userEnabled(false)
                 .build();
         userRepository.save(user);
-        sendValidationEmail(user);
-        //UserActivationToken userActivationToken = userActivationTokenService.createUserActivationToken(user);
-        //log.info(userActivationToken.getToken());
+        userActivationTokenService.sendActivationEmail(user);
         return RegistrationResponse.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Registration successful. Please check your email and activate your account.")
@@ -75,7 +69,7 @@ public class UserService {
                 .build();
     }
 
-    public void activateUser(String token){
+    public void activateUser(String token) throws MessagingException {
         User user = userActivationTokenService.validateUserActivationTokenAndGetUser(token);
         user.setUserEnabled(true);
         userRepository.save(user);
@@ -88,15 +82,10 @@ public class UserService {
         }
     }
 
-    private void sendValidationEmail(User user) throws MessagingException {
-        UserActivationToken userActivationToken = userActivationTokenService.createUserActivationToken(user);
-        String activationToken = userActivationToken.getToken();
-        emailService.sendEmail(
-                user.getEmail(),
-                user.getUsername(),
-                EmailTemplateName.ACTIVATE_ACCOUNT,
-                activationUrl,
-                activationToken,
-                "Account activation");
+    private void validateNewUser(CreateUserRequest createUserRequest){
+        if (userRepository.findByEmail(createUserRequest.getEmail()).isPresent() ||
+            userRepository.findByUsername(createUserRequest.getUsername()).isPresent()){
+            throw new UserAlreadyExistsException(createUserRequest.getUsername(),createUserRequest.getEmail());
+        }
     }
 }

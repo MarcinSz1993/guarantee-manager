@@ -37,6 +37,13 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(UserActivationTokenExpiredException.class)
+    public ResponseEntity<ExceptionResponse> userActivationTokenExpiredExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                buildBodyExceptionResponse(HttpStatus.FORBIDDEN, ex)
+        );
+    }
+
     @ExceptionHandler(UserNotActivatedException.class)
     public ResponseEntity<ExceptionResponse> userNotActivatedExceptionHandler(Exception ex){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
@@ -55,6 +62,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> usernameNotFoundExceptionHandler(Exception ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 buildBodyExceptionResponse(HttpStatus.NOT_FOUND,ex));
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> userAlreadyExistsExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                buildBodyExceptionResponse(HttpStatus.CONFLICT, ex));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
