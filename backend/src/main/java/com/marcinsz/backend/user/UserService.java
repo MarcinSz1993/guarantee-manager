@@ -4,14 +4,16 @@ import com.marcinsz.backend.config.JwtService;
 import com.marcinsz.backend.exception.IncorrectLoginOrPasswordException;
 import com.marcinsz.backend.exception.UserAlreadyExistsException;
 import com.marcinsz.backend.exception.UserNotActivatedException;
-import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +48,7 @@ public class UserService {
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getUserEmail())
-                .orElseThrow(() -> new UserNotFoundException(loginRequest.getUserEmail()));
+                .orElseThrow(() -> new IncorrectLoginOrPasswordException("Invalid email or password"));
         ensureUserIsActivated(user);
         try {
             authenticationManager.authenticate(
@@ -56,11 +58,9 @@ public class UserService {
                     )
             );
         } catch (BadCredentialsException e) {
-            throw new IncorrectLoginOrPasswordException("Invalid username or password");
+            throw new IncorrectLoginOrPasswordException("Invalid email or password");
         } catch (DisabledException e) {
             throw new UserNotActivatedException();
-        } catch (LockedException e) {
-            throw new LockedException("User is locked", e);
         }
 
         String token = jwtService.generateToken(user);
