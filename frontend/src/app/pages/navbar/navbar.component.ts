@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
-import {AuthService} from '../../services/services/auth.service';
 import {CollapseDirective} from 'ngx-bootstrap/collapse';
 import {RouterLink} from '@angular/router';
+import {AuthService} from '../../own_services/auth.service';
 
 @Component({
   selector: 'app-navbar',

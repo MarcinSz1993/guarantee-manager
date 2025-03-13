@@ -115,6 +115,27 @@
         }
       }
     },
+    "/api/logo": {
+      "get": {
+        "tags": [
+          "logo-controller"
+        ],
+        "operationId": "getLogo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/demo": {
       "get": {
         "tags": [
