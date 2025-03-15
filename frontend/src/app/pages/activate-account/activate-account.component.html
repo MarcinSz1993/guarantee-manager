@@ -1,28 +1,30 @@
-<div class="container" *ngIf="submitted else codeForm">
-  <div class="activate-message" *ngIf="isOkay else activationError">
-    <h2>Activation successful!</h2>
-    <p>Your account has been successfully activated</p>
-    <button class="btn btn-primary" (click)="redirectToLogin()">Go to Login</button>
-  </div>
-  <ng-template #activationError>
-    <div class="activate-error">
-      <h2>Activation failed!</h2>
-      <p>{{message}}</p>
-      <button class="btn btn-primary" (click)="submitted=false">Try again.</button>
+<div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 bg-primary bg-gradient text-light" *ngIf="submitted else codeForm">
+  <div class="card shadow-lg p-4 bg-dark text-center">
+    <div class="activate-message" *ngIf="isOkay else activationError">
+      <h2 class="text-success">Activation successful!</h2>
+      <p>Your account has been successfully activated</p>
+      <button class="btn btn-info fw-bold" (click)="redirectToLogin()">Go to Login</button>
     </div>
-
-  </ng-template>
+    <ng-template #activationError>
+      <div class="activate-error">
+        <h2 class="text-danger">Activation failed!</h2>
+        <p>{{message}}</p>
+        <button class="btn btn-warning fw-bold" (click)="submitted=false">Try again</button>
+      </div>
+    </ng-template>
+  </div>
 </div>
 
 <ng-template #codeForm>
-  <div class="container">
-    <div class="text-center" style="width: 400px;">
-      <h2>Type your activation code</h2>
+  <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 bg-primary bg-gradient">
+    <div class="card p-4 shadow-lg text-center bg-dark text-light" style="max-width: 400px;">
+      <h2 class="mb-3">Type your activation code</h2>
       <code-input [isCodeHidden]="false"
                   [codeLength]="6"
-                  [isCharsCode] = true
-                  (codeCompleted)="onCodeCompleted($event)"
-      ></code-input>
+                  [isCharsCode]="true"
+                  class="form-control text-center text-light bg-secondary"
+                  (codeCompleted)="onCodeCompleted($event)">
+      </code-input>
     </div>
   </div>
 </ng-template>
