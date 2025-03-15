@@ -11,16 +11,16 @@ export class AuthService {
     private router: Router
   ) { }
 
-  login(token:string):void{
+  setToken(token:string){
     localStorage.setItem(this.tokenKey,token);
   }
 
-  isLoggedIn(): boolean {
+  isUserLoggedIn(): boolean {
     return localStorage.getItem(this.tokenKey) !== null;
   }
 
   getToken():string | null {
-    return localStorage.getItem(this.tokenKey);
+    return localStorage.getItem(this.tokenKey) as string;
   }
 
   logout(): void {

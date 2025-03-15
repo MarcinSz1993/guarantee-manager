@@ -1,3 +1,4 @@
-@import "bootstrap/dist/css/bootstrap.min.css";
+@use 'bootstrap/scss/bootstrap' as *;
 @import "@fortawesome/fontawesome-free/css/all.min.css";
+@import 'ngx-toastr/toastr-bs5-alert';
 

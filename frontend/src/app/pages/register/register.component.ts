@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {CreateUserRequest} from '../../services/models/create-user-request';
 import {UserControllerService} from '../../services/services/user-controller.service';
 import {NgForOf, NgIf} from '@angular/common';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -27,13 +28,10 @@ export class RegisterComponent {
     password: '',
     email: ''
   };
-
-
-
-
   constructor(
     private router:Router,
     private userService: UserControllerService,
+    private toastr: ToastrService,
   ) {
   }
 
@@ -41,17 +39,27 @@ export class RegisterComponent {
     this.router.navigate(['login']).then();
   }
 
-  register(){
-      this.errorMsg = [];
-      this.userService.register({
-        body: this.registerRequest
-      }).subscribe({
-        next: (res) => {
-          alert("Your account has been created. Please check your mailbox and activate the account.")
+  register() {
+    this.errorMsg = [];
+    this.userService.register({
+      body: this.registerRequest
+    }).subscribe({
+      next: (res) => {
+        console.log('Error:', res);
+        this.toastr.success('Your account has been created. Please check your mailbox and activate the account.',
+          '',{
+          positionClass: 'toast-center-center'
+          });
+        this.router.navigate(['login']).then();
         },
-        error: (err)=> {
-          console.log(err);
+      error: (err) => {
+        console.log(err);
+        if (err.error && err.error.errors) {
+          this.errorMsg = Object.values(err.error.errors);
+        } else {
+          this.errorMsg = [err.error.message];
         }
-      });
+      }
+    });
   }
 }

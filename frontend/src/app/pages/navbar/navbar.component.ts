@@ -17,7 +17,6 @@ import {AuthService} from '../../own_services/auth.service';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit{
-  isUserLoggedIn:boolean = false;
   isCollapsed: boolean = true;
 
   constructor(
@@ -31,5 +30,9 @@ export class NavbarComponent implements OnInit{
 
   onCollapse() {
 
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

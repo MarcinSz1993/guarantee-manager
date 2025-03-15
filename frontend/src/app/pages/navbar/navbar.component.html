@@ -1,4 +1,4 @@
-<nav *ngIf="!authService.isLoggedIn()" class="navbar navbar-expand-md bg-dark navbar-light text-light px-0">
+<nav *ngIf="authService.isUserLoggedIn()" class="navbar navbar-expand-md bg-dark navbar-light text-light px-0">
   <a class="navbar-brand d-flex align-items-center gap-1">
     <img ngSrc="assets/guarantee-manager-logo.png"
          alt="Guarantee Manager Logo"
@@ -44,9 +44,9 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-danger fw-bold" routerLink="/logout">
-          <i class="fas fa-sign-out-alt me-1"></i> Logout
-        </a>
+        <button class="btn text-danger fw-bolder gap-5" type="button" (click)="logout()">
+          <i class="fas fa-sign-out-alt me-1"></i> LogOut
+        </button>
       </li>
     </ul>
   </div>

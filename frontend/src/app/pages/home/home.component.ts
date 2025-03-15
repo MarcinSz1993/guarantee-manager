@@ -10,7 +10,7 @@ import {Router} from '@angular/router';
   standalone: true,
   styleUrl: './home.component.scss'
 })
-export class HomeComponent {
+export class HomeComponent{
   constructor(
     private router:Router
   ) {
