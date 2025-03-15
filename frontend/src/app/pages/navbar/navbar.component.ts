@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {CollapseDirective} from 'ngx-bootstrap/collapse';
 import {RouterLink} from '@angular/router';
-import {AuthService} from '../../own_services/auth.service';
+import {TokenService} from '../../own_services/token.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit{
   isCollapsed: boolean = true;
 
   constructor(
-    public authService:AuthService
+    public authService:TokenService
   ) {
 
   }

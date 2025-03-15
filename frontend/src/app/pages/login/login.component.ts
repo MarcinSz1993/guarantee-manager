@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserControllerService} from '../../services/services/user-controller.service';
-import {AuthService} from '../../own_services/auth.service';
+import {TokenService} from '../../own_services/token.service';
 import {LoginRequest} from '../../services/models/login-request';
 import {AuthenticationResponse} from '../../services/models/authentication-response';
 import {NgForOf, NgIf} from '@angular/common';
@@ -32,7 +32,7 @@ export class LoginComponent {
   constructor(
     private router:Router,
     private userService: UserControllerService,
-    private authService: AuthService
+    private authService: TokenService
   ) {
   }
 
