@@ -2,6 +2,7 @@ package com.marcinsz.backend.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.marcinsz.backend.guarantee.Guarantee;
+import com.marcinsz.backend.history.GuaranteeHistory;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -45,6 +46,9 @@ public class User implements UserDetails{
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Guarantee> guarantees;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<GuaranteeHistory> guaranteeHistories;
 
     @Override
     public String getPassword() {
