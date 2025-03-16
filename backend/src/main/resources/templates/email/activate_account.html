@@ -67,7 +67,7 @@
     <p class="greeting" th:text="'Hello ' + ${username} + ','"></p>
     <p>Thank you for signing up! Use the activation code below to activate your account:</p>
     <div class="activation-code"><span th:text="${activation_code}"></span></div>
-    <p>Or click the button below:</p>
+    <p>Just click the button below:</p>
     <div class="activation-link">
         <a th:href="${confirmationUrl}" target="_blank">Activate your account</a>
     </div>
