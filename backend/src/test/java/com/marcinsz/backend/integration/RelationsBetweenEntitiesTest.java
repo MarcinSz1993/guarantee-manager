@@ -10,6 +10,7 @@ import com.marcinsz.backend.user.Role;
 import com.marcinsz.backend.user.User;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -45,6 +46,14 @@ public class RelationsBetweenEntitiesTest {
 
     @Autowired
     private GuaranteeHistoryRepository guaranteeHistoryRepository;
+
+    @BeforeEach
+    void setUp(){
+        assertTrue(postgreSQLContainer.isRunning());
+        userRepository.deleteAll();
+        guaranteeRepository.deleteAll();
+        guaranteeHistoryRepository.deleteAll();
+    }
 
 
 
