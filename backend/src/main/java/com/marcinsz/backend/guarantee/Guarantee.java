@@ -1,5 +1,7 @@
 package com.marcinsz.backend.guarantee;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.marcinsz.backend.history.GuaranteeHistory;
 import com.marcinsz.backend.user.User;
 import jakarta.persistence.*;
@@ -25,7 +27,6 @@ public class Guarantee {
     private String brand;
     private String model;
     private String documentUrl;
-    @Lob
     private String notes;
     @Enumerated(EnumType.STRING)
     private Device kindOfDevice;
@@ -35,7 +36,9 @@ public class Guarantee {
     private GuaranteeStatus guaranteeStatus;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
     @OneToMany(mappedBy = "guarantee",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<GuaranteeHistory> guaranteeHistory;
 }

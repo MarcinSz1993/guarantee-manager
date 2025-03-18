@@ -1,5 +1,6 @@
 package com.marcinsz.backend.history;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.marcinsz.backend.guarantee.Guarantee;
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
 import com.marcinsz.backend.user.User;
@@ -21,9 +22,11 @@ public class GuaranteeHistory {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "guarantee_id")
+    @JsonBackReference
     private Guarantee guarantee;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
     private GuaranteeStatus status;
     private LocalDateTime changeTime;

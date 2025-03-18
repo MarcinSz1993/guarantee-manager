@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
   datasource:
     url: jdbc:postgresql://localhost:5434/guarantee-manager
     username: ${DB_USERNAME}
@@ -11,13 +16,16 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     generate-ddl: true
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         format_sql: true
+      jdbc:
+        lob:
+          non_contextual_creation: true
 
   application:
     user-activation-token-characters: 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -42,9 +50,14 @@ spring:
         timeout: 3000
         writetimeout: 5000
 
+  cloudinary:
+    CLOUDINARY_URL: cloudinary://${CLOUDINARY_API_KEY}:${CLOUDINARY_API_SECRET}@dbgncy44q
+
 logging:
   level:
     org.springframework.security: DEBUG
     root: info
+    org.hibernate.sql: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 

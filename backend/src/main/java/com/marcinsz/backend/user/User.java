@@ -1,6 +1,7 @@
 package com.marcinsz.backend.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.marcinsz.backend.guarantee.Guarantee;
 import com.marcinsz.backend.history.GuaranteeHistory;
 import jakarta.persistence.*;
@@ -45,9 +46,11 @@ public class User implements UserDetails{
     private boolean userEnabled;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<Guarantee> guarantees;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonManagedReference
     private List<GuaranteeHistory> guaranteeHistories;
 
     @Override
@@ -57,7 +60,7 @@ public class User implements UserDetails{
 
     @Override
     public String getUsername(){
-        return username;
+        return email;
     }
 
     @Override
