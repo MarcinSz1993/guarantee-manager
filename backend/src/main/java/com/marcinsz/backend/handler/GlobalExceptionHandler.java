@@ -70,6 +70,18 @@ public class GlobalExceptionHandler {
                 buildBodyExceptionResponse(HttpStatus.CONFLICT, ex));
     }
 
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<ExceptionResponse> securityExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                buildBodyExceptionResponse(HttpStatus.FORBIDDEN, ex));
+    }
+
+    @ExceptionHandler(GuaranteeNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> guaranteeNotFoundExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                buildBodyExceptionResponse(HttpStatus.NOT_FOUND, ex));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorsResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex){
         Map<String,String> errors = new HashMap<>();

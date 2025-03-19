@@ -1,6 +1,9 @@
 package com.marcinsz.backend.config;
 
 import com.cloudinary.Cloudinary;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,14 @@ public class ApplicationConfig {
 
     @Value("${spring.cloudinary.CLOUDINARY_URL}")
     private String cloudinaryUrl;
+
+    @Bean
+    public ObjectMapper objectMapper(){
+       ObjectMapper objectMapper = new ObjectMapper();
+       objectMapper.registerModule(new JavaTimeModule());
+       objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+       return objectMapper;
+    }
 
     @Bean
     public Cloudinary cloudinary(){

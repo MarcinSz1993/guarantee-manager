@@ -1,5 +1,6 @@
 package com.marcinsz.backend.guarantee;
 
+import com.marcinsz.backend.exception.GuaranteeNotFoundException;
 import com.marcinsz.backend.image.ImageResponse;
 import com.marcinsz.backend.image.ImageService;
 import com.marcinsz.backend.mapper.GuaranteeMapper;
@@ -21,6 +22,15 @@ import java.util.ArrayList;
 public class GuaranteeService {
     private final GuaranteeRepository guaranteeRepository;
     private final ImageService imageService;
+
+    public GuaranteeResponse getGuaranteeDetails(Long guaranteeId,
+                                                 Authentication authentication){
+        User user = (User) authentication.getPrincipal();
+        Guarantee guarantee = guaranteeRepository.findById(guaranteeId)
+                .orElseThrow(() -> new GuaranteeNotFoundException("Guarantee not found"));
+        checkIfUserHasPermissionToAccessTheGuarantee(user, guarantee);
+        return GuaranteeMapper.mapGuaranteeToGuaranteeResponse(guarantee);
+    }
 
     public Page<GuaranteeResponse> getAllGuarantees(Authentication authentication,
                                                     int page,
@@ -57,4 +67,9 @@ public class GuaranteeService {
                 .build();
     }
 
+    private void checkIfUserHasPermissionToAccessTheGuarantee(User user, Guarantee guarantee) {
+        if (!user.getId().equals(guarantee.getUser().getId())) {
+            throw new SecurityException("You do not have permission to access this resource");
+        }
+    }
 }

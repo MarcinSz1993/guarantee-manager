@@ -1,7 +1,5 @@
 package com.marcinsz.backend.guarantee;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -12,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Slf4j
 @RestController
@@ -19,6 +18,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class GuaranteeController {
     private final GuaranteeService guaranteeService;
+
+    @GetMapping("/{guaranteeId}")
+    public ResponseEntity<GuaranteeResponse> getGuaranteeDetails(@PathVariable Long guaranteeId,Authentication authentication) {
+        return ResponseEntity.ok().body(guaranteeService.getGuaranteeDetails(guaranteeId,authentication));
+    }
 
     @GetMapping
     public ResponseEntity<Page<GuaranteeResponse>> getAllUserGuarantees(Authentication authentication,
@@ -31,14 +35,30 @@ public class GuaranteeController {
     public ResponseEntity<GuaranteeResponse> addGuarantee(
             Authentication authentication,
             @RequestPart("file") MultipartFile file,
-            @RequestParam String request
-            ) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        AddGuaranteeRequest addGuaranteeRequest = objectMapper.readValue(request, AddGuaranteeRequest.class);
-
-        GuaranteeResponse guaranteeResponse = guaranteeService.addGuarantee(authentication, addGuaranteeRequest, file);
+            @RequestParam String brand,
+            @RequestParam String model,
+            @RequestParam String notes,
+            @RequestParam Device kindOfDevice,
+            @RequestParam LocalDate startDate,
+            @RequestParam LocalDate endDate
+    ) throws IOException {
+        AddGuaranteeRequest addGuaranteeRequest = createAddGuaranteeRequest(brand, model, notes, kindOfDevice, startDate, endDate);
+        GuaranteeResponse guaranteeResponse = guaranteeService.addGuarantee(authentication,addGuaranteeRequest, file);
         return ResponseEntity.ok(guaranteeResponse);
     }
+
+    private AddGuaranteeRequest createAddGuaranteeRequest(String brand, String model, String notes,
+                                                          Device kindOfDevice, LocalDate startDate, LocalDate endDate) {
+        return AddGuaranteeRequest.builder()
+                .brand(brand)
+                .model(model)
+                .notes(notes)
+                .kindOfDevice(kindOfDevice)
+                .startDate(startDate)
+                .endDate(endDate)
+                .build();
+    }
 }
+
+
+
