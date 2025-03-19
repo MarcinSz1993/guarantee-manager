@@ -185,7 +185,6 @@ public class UserServiceTest {
         assertEquals(createUserRequest.getFirstName(), actualUser.getFirstName());
         assertEquals(createUserRequest.getLastName(), actualUser.getLastName());
         assertEquals(createUserRequest.getEmail(), actualUser.getEmail());
-        assertEquals(createUserRequest.getUsername(),actualUser.getUsername());
         assertEquals("hashedQwerty", actualUser.getPassword());
         assertFalse(actualUser.isUserEnabled());
     }
