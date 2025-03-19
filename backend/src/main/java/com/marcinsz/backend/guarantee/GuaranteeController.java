@@ -19,6 +19,29 @@ import java.time.LocalDate;
 public class GuaranteeController {
     private final GuaranteeService guaranteeService;
 
+    @DeleteMapping
+    public ResponseEntity<String> deleteGuarantee(Authentication authentication,
+                                                      Long guaranteeId){
+        guaranteeService.deleteGuarantee(authentication,guaranteeId);
+        return ResponseEntity.accepted().body("You have successfully deleted the guarantee.");
+    }
+
+    @PutMapping("/edit-expiration")
+    public ResponseEntity<String> editGuaranteeExpiration(Authentication authentication,
+                                                      Long guaranteeId,
+                                                      LocalDate expirationDate){
+        guaranteeService.editGuaranteeExpiration(authentication,guaranteeId,expirationDate);
+        return ResponseEntity.accepted().body("You have successfully edited the guarantee expiration date.");
+    }
+
+    @PutMapping("/edit-status")
+    public ResponseEntity<String> editGuaranteeStatus(Authentication authentication,
+                                                      Long guaranteeId,
+                                                      GuaranteeStatus guaranteeStatus){
+        guaranteeService.editGuaranteeStatus(authentication,guaranteeId,guaranteeStatus);
+        return ResponseEntity.accepted().body("You have successfully edited the guarantee status to " + guaranteeStatus.name());
+    }
+
     @GetMapping("/{guaranteeId}")
     public ResponseEntity<GuaranteeResponse> getGuaranteeDetails(@PathVariable Long guaranteeId,Authentication authentication) {
         return ResponseEntity.ok().body(guaranteeService.getGuaranteeDetails(guaranteeId,authentication));
