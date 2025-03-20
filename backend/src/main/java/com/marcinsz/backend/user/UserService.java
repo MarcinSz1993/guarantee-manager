@@ -4,6 +4,7 @@ import com.marcinsz.backend.config.JwtService;
 import com.marcinsz.backend.exception.IncorrectLoginOrPasswordException;
 import com.marcinsz.backend.exception.UserAlreadyExistsException;
 import com.marcinsz.backend.exception.UserNotActivatedException;
+import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
 import jakarta.mail.MessagingException;
@@ -87,5 +88,16 @@ public class UserService {
             userRepository.findByUsername(createUserRequest.getUsername()).isPresent()){
             throw new UserAlreadyExistsException(createUserRequest.getUsername(),createUserRequest.getEmail());
         }
+    }
+
+    public UserDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+        return UserDto.builder()
+                .userId(user.getId())
+                .userName(user.getUserName())
+                .userEmail(user.getEmail())
+                .role(user.getRole())
+                .isEnabled(user.isEnabled())
+                .build();
     }
 }

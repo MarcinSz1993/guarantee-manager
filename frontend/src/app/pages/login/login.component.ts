@@ -6,6 +6,7 @@ import {TokenService} from '../../own_services/token.service';
 import {LoginRequest} from '../../services/models/login-request';
 import {AuthenticationResponse} from '../../services/models/authentication-response';
 import {NgForOf, NgIf} from '@angular/common';
+import {UserDto} from '../../services/models/user-dto';
 
 
 
@@ -22,17 +23,18 @@ import {NgForOf, NgIf} from '@angular/common';
 })
 export class LoginComponent {
 
+  userDto: UserDto = {};
   loginRequest: LoginRequest = {
     userEmail: '',
     password:''
-  }
+  };
   authenticationResponse: AuthenticationResponse = {};
   errorMsg:string = '';
 
   constructor(
     private router:Router,
     private userService: UserControllerService,
-    private authService: TokenService,
+    private authService: TokenService
   ) {
   }
 
@@ -42,20 +44,27 @@ export class LoginComponent {
 
   login() {
     this.errorMsg = '';
-    this.userService.login({
-      body: this.loginRequest
-    }).subscribe({
-      next:(loginResponse) =>{
-        this.authenticationResponse = loginResponse
-        this.authService.setToken(loginResponse.token as string);
-        this.router.navigate(['dashboard']).then();
-        console.log(this.authenticationResponse);
-        console.log(loginResponse);
-      },
-        error: (err) => {
-        this.errorMsg = err.error.message;
-        }
-    });
 
+    this.userService.login({ body: this.loginRequest }).subscribe({
+      next: (loginResponse) => {
+        this.authenticationResponse = loginResponse;
+        this.authService.setToken(loginResponse.token as string);
+
+        this.userService.getUserByEmail({ email: this.loginRequest.userEmail })
+          .subscribe({
+            next: (response) => {
+              this.userDto = response;
+              localStorage.setItem("username",this.userDto.userName as string);
+              this.router.navigate(['dashboard']).then();
+            },
+            error: (err) => {
+              this.errorMsg = err.error.message;
+            }
+          });
+      },
+      error: (err) => {
+        this.errorMsg = err.error.message;
+      }
+    });
   }
 }

@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 })
 export class TokenService {
   private tokenKey = 'authToken';
+  private username = 'username';
 
   constructor(
     private router: Router
@@ -25,6 +26,7 @@ export class TokenService {
 
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem(this.username);
     this.router.navigate(['']).then();
   }
 }

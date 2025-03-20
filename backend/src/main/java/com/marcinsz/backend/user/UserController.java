@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) {
+        return ResponseEntity.ok().body(userService.getUserByEmail(email));
+    }
+
     @PostMapping(value = "/activate-user")
     public ResponseEntity<UserActivationResponse> activateUser(@RequestParam String userActivationToken) throws MessagingException {
         userService.activateUser(userActivationToken);

@@ -14,17 +14,45 @@ import { StrictHttpResponse } from '../strict-http-response';
 import { activateUser } from '../fn/user-controller/activate-user';
 import { ActivateUser$Params } from '../fn/user-controller/activate-user';
 import { AuthenticationResponse } from '../models/authentication-response';
+import { getUserByEmail } from '../fn/user-controller/get-user-by-email';
+import { GetUserByEmail$Params } from '../fn/user-controller/get-user-by-email';
 import { login } from '../fn/user-controller/login';
 import { Login$Params } from '../fn/user-controller/login';
 import { register } from '../fn/user-controller/register';
 import { Register$Params } from '../fn/user-controller/register';
 import { RegistrationResponse } from '../models/registration-response';
 import { UserActivationResponse } from '../models/user-activation-response';
+import { UserDto } from '../models/user-dto';
 
 @Injectable({ providedIn: 'root' })
 export class UserControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getUserByEmail()` */
+  static readonly GetUserByEmailPath = '/api/users';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUserByEmail()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserByEmail$Response(params: GetUserByEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<UserDto>> {
+    return getUserByEmail(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getUserByEmail$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserByEmail(params: GetUserByEmail$Params, context?: HttpContext): Observable<UserDto> {
+    return this.getUserByEmail$Response(params, context).pipe(
+      map((r: StrictHttpResponse<UserDto>): UserDto => r.body)
+    );
   }
 
   /** Path part for operation `register()` */

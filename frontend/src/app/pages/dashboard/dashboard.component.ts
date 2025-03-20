@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForOf} from '@angular/common';
 import {GuaranteeControllerService} from '../../services/services/guarantee-controller.service';
 import {PageGuaranteeResponse} from '../../services/models/page-guarantee-response';
+import {getAllUserGuarantees} from '../../services/fn/guarantee-controller/get-all-user-guarantees';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,8 +13,8 @@ import {PageGuaranteeResponse} from '../../services/models/page-guarantee-respon
   standalone: true,
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
-  userName: string = 'Marcin!';
+export class DashboardComponent implements OnInit{
+  userName: string = localStorage.getItem("username") as string;
   errorMsg:string = '';
   allUserGuarantees: PageGuaranteeResponse = {};
 
@@ -22,14 +23,20 @@ export class DashboardComponent {
   ) {
   }
 
+  ngOnInit(): void {
+        this.getAllUserGuarantees();
+    }
+
+
   getAllUserGuarantees() {
     this.guaranteeService.getAllUserGuarantees()
       .subscribe({
         next: (userGuarantees) => {
           this.allUserGuarantees = userGuarantees;
+          console.log(this.allUserGuarantees);
         },
         error: (err) => {
-          this.errorMsg = err.message;
+          this.errorMsg = err.error.message;
         }
       });
   }
