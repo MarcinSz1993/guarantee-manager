@@ -4,6 +4,11 @@
 
 export { AuthenticationResponse } from './models/authentication-response';
 export { CreateUserRequest } from './models/create-user-request';
+export { GuaranteeResponse } from './models/guarantee-response';
+export { ImageResponse } from './models/image-response';
 export { LoginRequest } from './models/login-request';
+export { PageableObject } from './models/pageable-object';
+export { PageGuaranteeResponse } from './models/page-guarantee-response';
 export { RegistrationResponse } from './models/registration-response';
+export { SortObject } from './models/sort-object';
 export { UserActivationResponse } from './models/user-activation-response';

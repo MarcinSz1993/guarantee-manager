@@ -43,6 +43,14 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    @Test
+    public void loginShouldThrowInvalidTokenExceptionWhenTokenIsExpired(){
+        LoginRequest loginRequest = createLoginRequest();
+        User user = createUser();
+        when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
+
+    }
+
 
     @Test
     public void loginShouldThrowIncorrectLoginOrPasswordExceptionWithSpecifiedCommunicateWhenUserIsNotFound(){

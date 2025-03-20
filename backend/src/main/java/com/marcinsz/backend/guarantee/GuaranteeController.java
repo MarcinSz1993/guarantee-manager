@@ -54,7 +54,7 @@ public class GuaranteeController {
         return ResponseEntity.ok(guaranteeService.getAllGuarantees(authentication,page,size));
     }
 
-    @PostMapping( consumes ={ MediaType.MULTIPART_FORM_DATA_VALUE}, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping( consumes ={ MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<GuaranteeResponse> addGuarantee(
             Authentication authentication,
             @RequestPart("file") MultipartFile file,

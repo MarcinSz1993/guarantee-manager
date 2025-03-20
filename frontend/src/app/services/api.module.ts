@@ -6,7 +6,9 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { GuaranteeControllerService } from './services/guarantee-controller.service';
 import { UserControllerService } from './services/user-controller.service';
+import { ImageControllerService } from './services/image-controller.service';
 import { LogoControllerService } from './services/logo-controller.service';
 import { DemoControllerService } from './services/demo-controller.service';
 
@@ -18,7 +20,9 @@ import { DemoControllerService } from './services/demo-controller.service';
   exports: [],
   declarations: [],
   providers: [
+    GuaranteeControllerService,
     UserControllerService,
+    ImageControllerService,
     LogoControllerService,
     DemoControllerService,
     ApiConfiguration

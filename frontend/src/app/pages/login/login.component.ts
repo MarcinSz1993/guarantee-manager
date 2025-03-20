@@ -32,7 +32,7 @@ export class LoginComponent {
   constructor(
     private router:Router,
     private userService: UserControllerService,
-    private authService: TokenService
+    private authService: TokenService,
   ) {
   }
 

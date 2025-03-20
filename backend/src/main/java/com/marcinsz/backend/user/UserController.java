@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping(value = "/activate-user",produces = "application/json")
+    @PostMapping(value = "/activate-user")
     public ResponseEntity<UserActivationResponse> activateUser(@RequestParam String userActivationToken) throws MessagingException {
         userService.activateUser(userActivationToken);
         return ResponseEntity.ok().body(
@@ -28,14 +28,14 @@ public class UserController {
                         .build());
     }
 
-    @PostMapping(produces = "application/json")
+    @PostMapping
     public ResponseEntity<RegistrationResponse> register(
             @RequestBody @Valid CreateUserRequest registerRequest
     ) throws MessagingException {
         return ResponseEntity.ok(userService.register(registerRequest));
     }
 
-    @PostMapping(value = "/login",produces = "application/json")
+    @PostMapping(value = "/login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody LoginRequest loginRequest
     ){
