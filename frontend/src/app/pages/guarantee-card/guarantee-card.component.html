@@ -1,0 +1,21 @@
+<div class="card m-2 shadow-sm" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{ guarantee.brand }} - {{ guarantee.model }}</h5>
+    <p class="card-text"><strong>Typ urządzenia:</strong> {{ guarantee.kindOfDevice }}</p>
+    <p class="card-text"><strong>Status:</strong>
+      <span [ngClass]="{
+        'text-success': guarantee.guaranteeStatus === 'ACTIVE',
+        'text-warning': guarantee.guaranteeStatus === 'PENDING',
+        'text-danger': guarantee.guaranteeStatus === 'EXPIRED'
+      }">
+        {{ guarantee.guaranteeStatus }}
+      </span>
+    </p>
+    <p class="card-text"><strong>Od:</strong> {{ guarantee.startDate }}</p>
+    <p class="card-text"><strong>Do:</strong> {{ guarantee.endDate }}</p>
+
+    <div *ngIf="guarantee.documentUrl">
+      <a [href]="guarantee.documentUrl" target="_blank" class="btn btn-primary">Zobacz dokument</a>
+    </div>
+  </div>
+</div>

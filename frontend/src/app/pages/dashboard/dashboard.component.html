@@ -1,16 +1,28 @@
 <div class="container-fluid text-center" style="height: calc(100vh - 50px); overflow-y: auto;">
-<h1 class="mt-3">
-  <i class="fa-fonticons-fi fw-bolder text-bg-info"> Welcome {{userName}}</i>
-</h1>
-  <h2>Below you will find your current warranties.</h2>
+  <h1 class="mt-3">
+    <i class="fa-fonticons-fi fw-bolder text-bg-info"> Welcome {{ userName }}</i>
+  </h1>
+  <h2 class="mt-5">Below you will find your current warranties</h2>
 
-  <div class="row">
-  <div class="card text-center" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">{{allUserGuarantees.content}}</h5>
-      <p class="card-text">Warranty details</p>
-      <a href="#" class="btn btn-primary">Go to producer website.</a>
+  <div class="container mt-5">
+    <div class="row justify-content-center gap-4 gap-lg-0 gap-md-1">
+      <div class="col-lg-3 col-md-6 col-sm-12 col-12 d-flex justify-content-center" *ngFor="let guarantee of allUserGuarantees">
+        <app-guarantee-card *ngIf="guarantee.id" [guarantee]="guarantee"></app-guarantee-card>
+      </div>
     </div>
   </div>
-</div>
+
+  <nav aria-label="Page navigation" class="mt-5">
+    <ul class="pagination justify-content-center">
+      <li class="page-item mx-1" [class.disabled]="currentPage === 1">
+        <button class="page-link prev-next w-auto text-center" (click)="prevPage()">⏪ Previous</button>
+      </li>
+      <li class="page-item mx-1 disabled">
+        <span class="page-link page-info">Page {{ currentPage }} / {{ totalPages }}</span>
+      </li>
+      <li class="page-item mx-1" [class.disabled]="currentPage === totalPages">
+        <button class="page-link prev-next w-auto text-center" (click)="nextPage()">Next ⏩</button>
+      </li>
+    </ul>
+  </nav>
 </div>

@@ -3,7 +3,10 @@ package com.marcinsz.backend.handler;
 import com.marcinsz.backend.exception.*;
 import com.marcinsz.backend.response.ExceptionResponse;
 import com.marcinsz.backend.response.ValidationErrorsResponse;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestControllerAdvice
@@ -81,6 +85,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 buildBodyExceptionResponse(HttpStatus.NOT_FOUND, ex));
     }
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {
+        List<String> errorMessages = ex.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList();
+        String errorMessage = errorMessages.isEmpty() ? "Validation error occurred" : errorMessages.getFirst();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(buildBodyExceptionResponse(
+                        errorMessage
+        ));
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorsResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex){
@@ -97,6 +114,13 @@ public class GlobalExceptionHandler {
         return ExceptionResponse.builder()
                 .statusCode(httpStatus.value())
                 .message(ex.getMessage())
+                .build();
+    }
+
+    private ExceptionResponse buildBodyExceptionResponse(String message) {
+        return ExceptionResponse.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .message(message)
                 .build();
     }
 }

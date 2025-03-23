@@ -18,7 +18,7 @@ export interface AddGuarantee$Params {
   startDate: string;
   endDate: string;
       body?: {
-'file': Blob;
+'file': File;
 }
 }
 

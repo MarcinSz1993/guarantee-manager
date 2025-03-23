@@ -1,0 +1,45 @@
+<div class="modal fade" *ngIf="isModalVisible" id="addGuaranteeModal" tabindex="-1" aria-labelledby="addGuaranteeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title w-100 text-center" id="addGuaranteeModalLabel">Add New Guarantee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form #guaranteeForm="ngForm" (ngSubmit)="addGuarantee()" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="brand" class="form-label">Brand</label>
+            <input type="text" id="brand" class="form-control" [(ngModel)]="brand" name="brand" required>
+          </div>
+          <div class="mb-3">
+            <label for="model" class="form-label">Model</label>
+            <input type="text" id="model" class="form-control" [(ngModel)]="model" name="model" required>
+          </div>
+          <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <input type="text" id="notes" class="form-control" [(ngModel)]="notes" name="notes" required>
+          </div>
+          <div class="mb-3">
+            <label for="device" class="form-label">Kind of device</label>
+            <select id="device" class="form-control" [(ngModel)]="kindOfDevice" name="device" required>
+              <option *ngFor="let type of deviceTypes" [value]="type">{{type}}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" id="startDate" class="form-control" [(ngModel)]="startDate" name="startDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" id="endDate" class="form-control" [(ngModel)]="endDate" name="endDate" required>
+          </div>
+          <div class="mb-3">
+            <label for="receipt" class="form-label">Upload Receipt</label>
+            <input type="file" id="receipt" class="form-control" (change)="onFileSelected($event)" name="file" required>
+          </div>
+          <button type="submit" class="btn btn-success">Save Guarantee</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
