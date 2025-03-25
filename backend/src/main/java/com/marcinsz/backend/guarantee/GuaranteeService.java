@@ -87,6 +87,7 @@ public class GuaranteeService {
                 .kindOfDevice(addGuaranteeRequest.getKindOfDevice())
                 .startDate(addGuaranteeRequest.getStartDate())
                 .endDate(addGuaranteeRequest.getEndDate())
+                .sentExpirationMessage(false)
                 .guaranteeStatus(GuaranteeStatus.ACTIVE)
                 .user(user)
                 .guaranteeHistory(new ArrayList<>())

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guarantee Manager - Warranty expiration reminder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e2f;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #2a2a3c;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .logo {
+            max-width: 120px;
+            margin-bottom: 15px;
+        }
+        h1 {
+            color: #17a2b8;
+            font-size: 24px;
+        }
+        .greeting {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .message {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #17a2b8;
+        }
+        .reminder {
+            font-size: 16px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="http://localhost:8080/api/logo" width="75" height="75" alt="Guarantee Manager Logo" class="logo">
+    <h1>Warranty Expiration Reminder</h1>
+    <p class="greeting" th:text="'Hello ' + ${username} + ','"></p>
+    <p class="message" th:text="'Your guarantee on ' + ${brand} + ' is going to expire in ' + ${daysToExpire} + ' days!'"></p>
+    <p class="reminder">Just a friendly reminder! :)</p>
+</div>
+</body>
+</html>

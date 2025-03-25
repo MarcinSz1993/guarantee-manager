@@ -32,6 +32,7 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers("/api/users/login").permitAll();
+                    registry.requestMatchers("/api/email**").permitAll();
                     registry.requestMatchers("/api/logo").permitAll();
                     registry.requestMatchers("/api/users").permitAll();
                     registry.requestMatchers("/api/users/activate-user").permitAll();

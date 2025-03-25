@@ -1,12 +1,12 @@
 package com.marcinsz.backend.user;
 
-import com.marcinsz.backend.email.EmailService;
 import com.marcinsz.backend.email.EmailTemplateName;
+import com.marcinsz.backend.email.NotificationService;
 import com.marcinsz.backend.exception.InvalidTokenException;
 import com.marcinsz.backend.exception.UserActivationTokenExpiredException;
 import com.marcinsz.backend.exception.UserActivationTokenNotFoundException;
 import jakarta.mail.MessagingException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +14,23 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
 @Service
-@RequiredArgsConstructor
 public class UserActivationTokenService {
 
-    private final EmailService emailService;
+    private final NotificationService emailNotificationService;
     private final UserActivationTokenRepository userActivationTokenRepository;
+
+
+    public UserActivationTokenService(@Qualifier("emailNotificationService") NotificationService emailNotificationService,
+                                      UserActivationTokenRepository userActivationTokenRepository) {
+        this.emailNotificationService = emailNotificationService;
+        this.userActivationTokenRepository = userActivationTokenRepository;
+    }
 
     @Value("${spring.application.user-activation-token-characters}")
     private String charactersToGenerateUserActivationToken;
 
     @Value("${spring.application.user-activation-token-length}")
     private int userActivationTokenLength;
-
-    @Value("${spring.application.mailing.frontend.activation-url}")
-    private String activationUrl;
 
     public UserActivationToken createUserActivationToken(User user){
         String activateToken = generateActivateToken();
@@ -75,12 +78,13 @@ public class UserActivationTokenService {
     public void sendActivationEmail(User user) throws MessagingException {
         UserActivationToken userActivationToken = createUserActivationToken(user);
         String activationToken = userActivationToken.getToken();
-        emailService.sendEmail(
+
+        emailNotificationService.sendNotification(
                 user.getEmail(),
                 user.getUsername(),
                 EmailTemplateName.ACTIVATE_ACCOUNT,
-                activationUrl,
-                activationToken,
-                "Account activation");
+                "Activate your account",
+                activationToken
+        );
     }
 }

@@ -32,6 +32,7 @@ public class Guarantee {
     private Device kindOfDevice;
     private LocalDate startDate;
     private LocalDate endDate;
+    private boolean sentExpirationMessage;
     @Enumerated(EnumType.STRING)
     private GuaranteeStatus guaranteeStatus;
     @ManyToOne

@@ -30,7 +30,6 @@ public class GuaranteeHistory {
     private User user;
     private GuaranteeStatus status;
     private LocalDateTime changeTime;
-    @Lob
     private String notes;
     private boolean positiveFeedback;
 }
