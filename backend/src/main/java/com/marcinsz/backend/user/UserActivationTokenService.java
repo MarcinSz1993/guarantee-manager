@@ -1,12 +1,12 @@
 package com.marcinsz.backend.user;
 
-import com.marcinsz.backend.email.EmailTemplateName;
-import com.marcinsz.backend.email.NotificationService;
+import com.marcinsz.backend.notification.email.EmailTemplateName;
+import com.marcinsz.backend.notification.NotificationService;
 import com.marcinsz.backend.exception.InvalidTokenException;
 import com.marcinsz.backend.exception.UserActivationTokenExpiredException;
 import com.marcinsz.backend.exception.UserActivationTokenNotFoundException;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +14,11 @@ import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class UserActivationTokenService {
 
     private final NotificationService emailNotificationService;
     private final UserActivationTokenRepository userActivationTokenRepository;
-
-
-    public UserActivationTokenService(@Qualifier("emailNotificationService") NotificationService emailNotificationService,
-                                      UserActivationTokenRepository userActivationTokenRepository) {
-        this.emailNotificationService = emailNotificationService;
-        this.userActivationTokenRepository = userActivationTokenRepository;
-    }
 
     @Value("${spring.application.user-activation-token-characters}")
     private String charactersToGenerateUserActivationToken;

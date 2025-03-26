@@ -5,6 +5,7 @@ import com.marcinsz.backend.exception.IncorrectLoginOrPasswordException;
 import com.marcinsz.backend.exception.UserAlreadyExistsException;
 import com.marcinsz.backend.exception.UserNotActivatedException;
 import com.marcinsz.backend.exception.UserNotFoundException;
+import com.marcinsz.backend.notification.NotificationPreference;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
 import jakarta.mail.MessagingException;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ public class UserService {
                 .email(createUserRequest.getEmail())
                 .password(passwordEncoder.encode(createUserRequest.getPassword()))
                 .role(Role.USER)
+                .notificationPreference(null)
                 .userEnabled(false)
                 .build();
         userRepository.save(user);
@@ -98,6 +101,14 @@ public class UserService {
                 .userEmail(user.getEmail())
                 .role(user.getRole())
                 .isEnabled(user.isEnabled())
+                .notificationPreference(user.getNotificationPreference())
                 .build();
+    }
+
+    public void chooseNotificationPreference(Authentication authentication,
+                                            NotificationPreference notificationPreference) {
+        User user = (User) authentication.getPrincipal();
+        user.setNotificationPreference(notificationPreference);
+        userRepository.save(user);
     }
 }

@@ -13,4 +13,5 @@ public interface GuaranteeRepository extends JpaRepository<Guarantee,Long> {
 
     Page<Guarantee> findByUser_IdAndGuaranteeStatusNot(Long userId, GuaranteeStatus guaranteeStatus, Pageable pageable);
     List<Guarantee> findAllByEndDateBetweenAndSentExpirationMessageFalse(LocalDate startDate, LocalDate endDate);
+    Page<Guarantee> findAllByUser_IdAndEndDateBetweenAndSentExpirationMessageFalse(Long userId,LocalDate startDate, LocalDate endDate, Pageable pageable);
 }

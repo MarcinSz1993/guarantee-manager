@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.marcinsz.backend.guarantee.Guarantee;
 import com.marcinsz.backend.history.GuaranteeHistory;
+import com.marcinsz.backend.notification.NotificationPreference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -40,11 +41,12 @@ public class User implements UserDetails{
     private String email;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated(EnumType.STRING)
+    private NotificationPreference notificationPreference;
     @Column(nullable = false,updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
     private boolean userEnabled;
-
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
     private List<Guarantee> guarantees;

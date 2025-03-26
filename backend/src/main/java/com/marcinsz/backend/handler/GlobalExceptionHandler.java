@@ -85,6 +85,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 buildBodyExceptionResponse(HttpStatus.NOT_FOUND, ex));
     }
+
+    @ExceptionHandler(UserNotificationPreferenceException.class)
+    public ResponseEntity<ExceptionResponse> userNotificationPreferenceExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         List<String> errorMessages = ex.getConstraintViolations()

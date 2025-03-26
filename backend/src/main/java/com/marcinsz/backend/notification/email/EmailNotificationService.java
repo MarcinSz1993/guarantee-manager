@@ -1,5 +1,6 @@
-package com.marcinsz.backend.email;
+package com.marcinsz.backend.notification.email;
 
+import com.marcinsz.backend.notification.NotificationService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;

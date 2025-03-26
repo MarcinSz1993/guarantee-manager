@@ -1,4 +1,4 @@
-package com.marcinsz.backend.email;
+package com.marcinsz.backend.notification.email;
 
 import lombok.Getter;
 

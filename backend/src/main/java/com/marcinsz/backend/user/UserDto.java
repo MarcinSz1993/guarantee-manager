@@ -1,5 +1,6 @@
 package com.marcinsz.backend.user;
 
+import com.marcinsz.backend.notification.NotificationPreference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +16,5 @@ public class UserDto {
     private String userEmail;
     private Role role;
     private boolean isEnabled;
+    private NotificationPreference notificationPreference;
 }
