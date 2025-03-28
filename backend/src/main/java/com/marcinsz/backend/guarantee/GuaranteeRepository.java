@@ -15,3 +15,11 @@ public interface GuaranteeRepository extends JpaRepository<Guarantee,Long> {
     List<Guarantee> findAllByEndDateBetweenAndSentExpirationMessageFalse(LocalDate startDate, LocalDate endDate);
     Page<Guarantee> findAllByUser_IdAndEndDateBetweenAndSentExpirationMessageFalse(Long userId,LocalDate startDate, LocalDate endDate, Pageable pageable);
 }
+
+
+
+//todo utworzyć zapytania potrzebne do statystyk:
+//todo 1. Pobrać najczęściej kupowany przez usera typ produktu
+//todo 2. Pobrać średni czas trwania gwarancji w poszczególnych kategoriach
+//todo 3. Pobrać ilość pozytywnych i negatywnych rozpatrzeń gwarancji
+//todo 4. Pobrać ilość aktywnych i wygasłych gwarancji

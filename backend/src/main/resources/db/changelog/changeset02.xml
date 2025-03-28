@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+<changeSet author="marci (generated)" id="1743192933355-2">
+    <createTable tableName="guarantee_history">
+        <column name="id" type="BIGINT">
+            <constraints nullable="false" primaryKey="true" primaryKeyName="guarantee_history_pkey"/>
+        </column>
+        <column name="change_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        <column name="notes" type="VARCHAR(255)"/>
+        <column name="positive_feedback" type="BOOLEAN">
+            <constraints nullable="false"/>
+        </column>
+        <column name="status" type="SMALLINT"/>
+        <column name="guarantee_id" type="BIGINT"/>
+        <column name="user_id" type="BIGINT"/>
+    </createTable>
+</changeSet>
+
+</databaseChangeLog>

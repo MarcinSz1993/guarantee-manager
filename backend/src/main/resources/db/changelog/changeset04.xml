@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+<changeSet author="marci (generated)" id="1743192933355-4">
+    <addUniqueConstraint columnNames="email" constraintName="uk6dotkott2kjsp8vw4d0m25fb7" tableName="users"/>
+
+<addUniqueConstraint columnNames="username" constraintName="ukr43af9ap4edm43mmtq01oddj6" tableName="users"/>
+
+<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="activation_token_seq" startValue="1"/>
+
+<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="guarantee_history_seq" startValue="1"/>
+
+<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="guarantee_seq" startValue="1"/>
+
+<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="users_seq" startValue="1"/>
+
+<createTable tableName="activation_token">
+    <column name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="activation_token_pkey"/>
+    </column>
+    <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+    <column name="expires" type="TIMESTAMP WITHOUT TIME ZONE"/>
+    <column name="is_valid" type="BOOLEAN">
+        <constraints nullable="false"/>
+    </column>
+    <column name="token" type="VARCHAR(255)"/>
+    <column name="validated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
+    <column name="user_id" type="BIGINT">
+        <constraints nullable="false"/>
+    </column>
+</createTable>
+
+<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee" constraintName="fk4rjeda2lvr580ka4f45bneiqe" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee_history" constraintName="fk92hlie5c7teytoaoio5np58cw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+
+<addForeignKeyConstraint baseColumnNames="guarantee_id" baseTableName="guarantee_history" constraintName="fkhtgbqe3gmxs82rs18s4oswgw9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="guarantee" validate="true"/>
+
+<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="activation_token" constraintName="fkpc3rhmxhs48sh9skcv8o9g7at" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+</changeSet>
+
+</databaseChangeLog>
