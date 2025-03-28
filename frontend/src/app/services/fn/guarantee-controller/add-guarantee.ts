@@ -17,9 +17,9 @@ export interface AddGuarantee$Params {
   kindOfDevice: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
   startDate: string;
   endDate: string;
-      body?: {
-'file': File;
-}
+  body?: {
+    'file': File;
+  }
 }
 
 export function addGuarantee(http: HttpClient, rootUrl: string, params: AddGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<GuaranteeResponse>> {

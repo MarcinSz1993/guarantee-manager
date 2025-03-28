@@ -4,6 +4,7 @@
 
 export interface UserDto {
   enabled?: boolean;
+  notificationPreference?: 'EMAIL' | 'DASHBOARD' | 'ALL';
   role?: 'USER' | 'ADMIN';
   userEmail?: string;
   userId?: number;

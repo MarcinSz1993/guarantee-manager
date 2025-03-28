@@ -38,10 +38,10 @@ public class DashboardNotificationService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("endDate").descending());
         Page<Guarantee> guaranteesExpiresIn7Days = guaranteeRepository.findAllByUser_IdAndEndDateBetweenAndSentExpirationMessageFalse(user.getId(), LocalDate.now(), LocalDate.now().plusDays(7), pageable);
         log.info("Found {} guarantees with specified criteria.", guaranteesExpiresIn7Days.getTotalElements());
-        guaranteesExpiresIn7Days.forEach(guarantee -> {
-            guarantee.setSentExpirationMessage(true);
-            guaranteeRepository.save(guarantee);
-        });
+//        guaranteesExpiresIn7Days.forEach(guarantee -> {
+//            guarantee.setSentExpirationMessage(true);
+//            guaranteeRepository.save(guarantee);
+//        });
         return guaranteesExpiresIn7Days.map(GuaranteeMapper::mapGuaranteeToGuaranteeResponse);
     }
 }

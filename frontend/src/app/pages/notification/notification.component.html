@@ -1,0 +1,13 @@
+<div class="container-fluid vh-100-20 text-center mt-0">
+  <h2 class="mb-4">Your guarantees expiring in 7 days</h2>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-3 col-md-6 col-sm-12 mb-3" *ngFor="let guarantee of guaranteeResponse">
+      <div class="card square-card bg-danger-subtle text-dark shadow-sm p-3 align-items-center">
+        <h5 class="card-title">{{ guarantee.brand }} {{ guarantee.model }}</h5>
+        <p class="card-text">This guarantee is going to expire at {{ guarantee.endDate }}</p>
+        <a class="btn btn-primary" [href]="guarantee.documentUrl" target="_blank">Recipe</a>
+      </div>
+    </div>
+  </div>
+</div>

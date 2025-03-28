@@ -8,7 +8,10 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { GuaranteeControllerService } from './services/guarantee-controller.service';
 import { UserControllerService } from './services/user-controller.service';
+import { NotificationControllerService } from './services/notification-controller.service';
 import { ImageControllerService } from './services/image-controller.service';
+import { EmailControllerService } from './services/email-controller.service';
+import { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';
 import { LogoControllerService } from './services/logo-controller.service';
 import { DemoControllerService } from './services/demo-controller.service';
 
@@ -22,7 +25,10 @@ import { DemoControllerService } from './services/demo-controller.service';
   providers: [
     GuaranteeControllerService,
     UserControllerService,
+    NotificationControllerService,
     ImageControllerService,
+    EmailControllerService,
+    DashboardNotificationControllerService,
     LogoControllerService,
     DemoControllerService,
     ApiConfiguration

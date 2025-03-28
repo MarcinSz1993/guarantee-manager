@@ -4,6 +4,7 @@ import {LoginComponent} from './pages/login/login.component';
 import {RegisterComponent} from './pages/register/register.component';
 import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
+import {NotificationComponent} from './pages/notification/notification.component';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: "activate-account",
     component: ActivateAccountComponent
+  },
+  {
+    path: "notification",
+    component: NotificationComponent
   }
 ];
