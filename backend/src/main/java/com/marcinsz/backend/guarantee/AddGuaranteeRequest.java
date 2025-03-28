@@ -21,7 +21,7 @@ public class AddGuaranteeRequest {
     private String notes;
     @NotBlank
     @NotEmpty
-    private Device kindOfDevice;
+    private Product kindOfProduct;
     @FutureOrPresent
     private LocalDate startDate;
     @Future

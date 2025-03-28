@@ -1,6 +1,6 @@
 package com.marcinsz.backend.integration;
 
-import com.marcinsz.backend.guarantee.Device;
+import com.marcinsz.backend.guarantee.Product;
 import com.marcinsz.backend.guarantee.Guarantee;
 import com.marcinsz.backend.guarantee.GuaranteeRepository;
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
@@ -189,7 +189,7 @@ public class RelationsBetweenEntitiesTest {
                 .model("GALAXY A65")
                 .documentUrl("https://www.examplepicutre.com/samsung")
                 .notes("Damaged screen.")
-                .kindOfDevice(Device.ELECTRONICS)
+                .kindOfProduct(Product.ELECTRONICS)
                 .startDate(LocalDate.of(2025,2,10))
                 .endDate(LocalDate.of(2026,2,9))
                 .guaranteeStatus(GuaranteeStatus.ACTIVE)
@@ -204,7 +204,7 @@ public class RelationsBetweenEntitiesTest {
                 .model("Airmax")
                 .documentUrl("https://www.examplepicutre.com/nike")
                 .notes("Big scratch on the left shoe.")
-                .kindOfDevice(Device.CLOTHES)
+                .kindOfProduct(Product.CLOTHES)
                 .startDate(LocalDate.of(2025,1,1))
                 .endDate(LocalDate.of(2026,1,1))
                 .guaranteeStatus(GuaranteeStatus.ACTIVE)

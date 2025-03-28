@@ -84,7 +84,7 @@ public class GuaranteeService {
                 .model(addGuaranteeRequest.getModel())
                 .documentUrl(imageResponse.getImageUrl())
                 .notes(addGuaranteeRequest.getNotes())
-                .kindOfDevice(addGuaranteeRequest.getKindOfDevice())
+                .kindOfProduct(addGuaranteeRequest.getKindOfProduct())
                 .startDate(addGuaranteeRequest.getStartDate())
                 .endDate(addGuaranteeRequest.getEndDate())
                 .sentExpirationMessage(false)

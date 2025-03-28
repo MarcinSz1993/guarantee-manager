@@ -29,7 +29,7 @@ public class Guarantee {
     private String documentUrl;
     private String notes;
     @Enumerated(EnumType.STRING)
-    private Device kindOfDevice;
+    private Product kindOfProduct;
     private LocalDate startDate;
     private LocalDate endDate;
     private boolean sentExpirationMessage;

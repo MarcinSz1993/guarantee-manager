@@ -66,22 +66,22 @@ public class GuaranteeController {
             @RequestParam @NotBlank(message = "Brand of the product is required!") String brand,
             @RequestParam @NotBlank(message = "Model of the product is required!") String model,
             @RequestParam String notes,
-            @RequestParam @NotNull(message = "This field is required!") Device kindOfDevice,
+            @RequestParam @NotNull(message = "This field is required!") Product kindOfProduct,
             @RequestParam @NotNull(message = "Start date of guarantee is required!") LocalDate startDate,
             @RequestParam @NotNull(message = "The end date of guarantee is required!")@Future(message = "The end date cannot be past or present!") LocalDate endDate
     ) throws IOException {
-        AddGuaranteeRequest addGuaranteeRequest = createAddGuaranteeRequest(brand, model, notes, kindOfDevice, startDate, endDate);
+        AddGuaranteeRequest addGuaranteeRequest = createAddGuaranteeRequest(brand, model, notes, kindOfProduct, startDate, endDate);
         GuaranteeResponse guaranteeResponse = guaranteeService.addGuarantee(authentication,addGuaranteeRequest, file);
         return ResponseEntity.ok(guaranteeResponse);
     }
 
     private AddGuaranteeRequest createAddGuaranteeRequest(String brand, String model, String notes,
-                                                          Device kindOfDevice, LocalDate startDate, LocalDate endDate) {
+                                                          Product kindOfProduct, LocalDate startDate, LocalDate endDate) {
         return AddGuaranteeRequest.builder()
                 .brand(brand)
                 .model(model)
                 .notes(notes)
-                .kindOfDevice(kindOfDevice)
+                .kindOfProduct(kindOfProduct)
                 .startDate(startDate)
                 .endDate(endDate)
                 .build();

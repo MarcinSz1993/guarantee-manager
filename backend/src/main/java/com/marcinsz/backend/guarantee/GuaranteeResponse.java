@@ -15,7 +15,7 @@ public class GuaranteeResponse {
     private String model;
     private String documentUrl;
     private String notes;
-    private Device kindOfDevice;
+    private Product kindOfProduct;
     private LocalDate startDate;
     private LocalDate endDate;
     private GuaranteeStatus guaranteeStatus;

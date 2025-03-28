@@ -12,7 +12,7 @@ public class GuaranteeMapper {
                 .model(guarantee.getModel())
                 .documentUrl(guarantee.getDocumentUrl())
                 .notes(guarantee.getNotes())
-                .kindOfDevice(guarantee.getKindOfDevice())
+                .kindOfProduct(guarantee.getKindOfProduct())
                 .startDate(guarantee.getStartDate())
                 .endDate(guarantee.getEndDate())
                 .guaranteeStatus(guarantee.getGuaranteeStatus())

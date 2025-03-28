@@ -374,7 +374,7 @@
             }
           },
           {
-            "name": "kindOfDevice",
+            "name": "kindOfProduct",
             "in": "query",
             "required": true,
             "schema": {

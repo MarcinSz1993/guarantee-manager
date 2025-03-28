@@ -1,6 +1,6 @@
 package com.marcinsz.backend.guarantee;
 
-public enum Device {
+public enum Product {
     ELECTRONICS,
     CARS,
     CLOTHES,
