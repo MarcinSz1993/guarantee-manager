@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class UserActivationToken {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String token;
     private LocalDateTime expires;

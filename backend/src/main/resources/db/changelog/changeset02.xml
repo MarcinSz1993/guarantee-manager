@@ -4,20 +4,56 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-<changeSet author="marci (generated)" id="1743192933355-2">
-    <createTable tableName="guarantee_history">
-        <column name="id" type="BIGINT">
-            <constraints nullable="false" primaryKey="true" primaryKeyName="guarantee_history_pkey"/>
-        </column>
-        <column name="change_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
-        <column name="notes" type="VARCHAR(255)"/>
-        <column name="positive_feedback" type="BOOLEAN">
-            <constraints nullable="false"/>
-        </column>
-        <column name="status" type="SMALLINT"/>
-        <column name="guarantee_id" type="BIGINT"/>
-        <column name="user_id" type="BIGINT"/>
-    </createTable>
-</changeSet>
+    <changeSet id="2" author="MarcinSz1993">
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="created_date" valueDate="2025-03-29"/>
+            <column name="role" value="ADMIN"/>
+            <column name="email" value="marcinsz1993@hotmail.com"/>
+            <column name="username" value="Markinlol"/>
+            <column name="notification_preference" value="ALL"/>
+            <column name="first_name" value="Marcin"/>
+            <column name="last_name" value="Szabała"/>
+            <column name="password" value="$2a$12$C24gnwNPhG1Klx6h7OPxX.cqikJ1vbuGdJWXC6R5AgTaL5mgw37ca"/>
+            <column name="user_enabled" value="true"/>
+        </insert>
 
+        <insert tableName="users">
+            <column name="id" value="2"/>
+            <column name="created_date" valueDate="2025-03-29"/>
+            <column name="role" value="USER"/>
+            <column name="email" value="john@doe.pl"/>
+            <column name="username" value="johnny"/>
+            <column name="notification_preference" value="DASHBOARD"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Doe"/>
+            <column name="password" value="$2a$12$Zv2r/i79dBQI8veL8NeyaeYlxY6fVbQ9Jw03TLgT2sQTqH.1yUl8q"/>
+            <column name="user_enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="3"/>
+            <column name="created_date" valueDate="2025-03-29"/>
+            <column name="role" value="USER"/>
+            <column name="email" value="david@willson.pl"/>
+            <column name="username" value="Dave"/>
+            <column name="notification_preference" value="DASHBOARD"/>
+            <column name="first_name" value="David"/>
+            <column name="last_name" value="Willson"/>
+            <column name="password" value="$2a$12$R.MwQlSd9sIAWqr8EKN9k.qiuz7bFhglKf8i8pJpPTW3H.qxwh1vK"/>
+            <column name="user_enabled" value="true"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="4"/>
+            <column name="created_date" valueDate="2025-03-29"/>
+            <column name="role" value="USER"/>
+            <column name="email" value="mark@solly.pl"/>
+            <column name="username" value="Mark19"/>
+            <column name="notification_preference" value="EMAIL"/>
+            <column name="first_name" value="Mark"/>
+            <column name="last_name" value="Solly"/>
+            <column name="password" value="$2a$12$KHUnV7RSPRPZ3a48ByBpGuRVEJbBnHcKiqAyItticjhXqizBKu7m2"/>
+            <column name="user_enabled" value="true"/>
+        </insert>
+
+    </changeSet>
 </databaseChangeLog>

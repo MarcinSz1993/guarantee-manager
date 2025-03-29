@@ -22,7 +22,7 @@ import java.util.List;
 public class Guarantee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String brand;
     private String model;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DatabaseMigrationSettings" lastSelectedDirectory="db/changelog/#date(&quot;yyyy&quot;)/#date(&quot;MM&quot;)">
+    <database-infos>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>postgres</dbms-id>
+      </database-info>
+    </database-infos>
+    <liquibase-changeset-templates>
+      <liquibase-changeset-templates objectQuotingStrategy="insert" failOnError="false" runOnChange="false" />
+    </liquibase-changeset-templates>
+  </component>
+</project>

@@ -1,27 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="MarcinSz1993">
+        <createSequence incrementBy="50" sequenceName="activation_token_seq" startValue="1"/>
 
-<changeSet author="marci (generated)" id="1743192933355-1">
-    <createTable tableName="guarantee">
-        <column name="id" type="BIGINT">
-            <constraints nullable="false" primaryKey="true" primaryKeyName="guarantee_pkey"/>
-        </column>
-        <column name="brand" type="VARCHAR(255)"/>
-        <column name="document_url" type="VARCHAR(255)"/>
-        <column name="end_date" type="date"/>
-        <column name="guarantee_status" type="VARCHAR(255)"/>
-        <column name="kind_of_product" type="VARCHAR(255)"/>
-        <column name="model" type="VARCHAR(255)"/>
-        <column name="notes" type="VARCHAR(255)"/>
-        <column name="sent_expiration_message" type="BOOLEAN">
-            <constraints nullable="false"/>
-        </column>
-        <column name="start_date" type="date"/>
-        <column name="user_id" type="BIGINT"/>
-    </createTable>
-</changeSet>
+        <createSequence incrementBy="50" sequenceName="guarantee_history_seq" startValue="1"/>
+
+        <createSequence incrementBy="50" sequenceName="guarantee_seq" startValue="1"/>
+
+        <createSequence incrementBy="50" sequenceName="users_seq" startValue="1"/>
+
+        <createTable tableName="activation_token">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_activation_token"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="expires" type="DATETIME"/>
+            <column name="validated_at" type="DATETIME"/>
+            <column name="is_valid" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME"/>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="guarantee">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_guarantee"/>
+            </column>
+            <column name="brand" type="VARCHAR(255)"/>
+            <column name="model" type="VARCHAR(255)"/>
+            <column name="document_url" type="VARCHAR(255)"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="kind_of_product" type="VARCHAR(255)"/>
+            <column name="start_date" type="DATE"/>
+            <column name="end_date" type="DATE"/>
+            <column name="sent_expiration_message" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="guarantee_status" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+        <createTable tableName="guarantee_history">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_guarantee_history"/>
+            </column>
+            <column name="guarantee_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="change_time" type="DATETIME"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="positive_feedback" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="users">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(255)"/>
+            <column name="notification_preference" type="VARCHAR(255)"/>
+            <column name="created_date" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_enabled" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint columnNames="email" constraintName="uc_users_email" tableName="users"/>
+        <addUniqueConstraint columnNames="username" constraintName="uc_users_username" tableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="activation_token"
+                                 constraintName="FK_ACTIVATION_TOKEN_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="guarantee_id" baseTableName="guarantee_history"
+                                 constraintName="FK_GUARANTEE_HISTORY_ON_GUARANTEE" referencedColumnNames="id"
+                                 referencedTableName="guarantee"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee_history"
+                                 constraintName="FK_GUARANTEE_HISTORY_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee"
+                                 constraintName="FK_GUARANTEE_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="users"/>
+    </changeSet>
 
 </databaseChangeLog>

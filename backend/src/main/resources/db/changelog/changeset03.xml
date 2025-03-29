@@ -4,25 +4,232 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-<changeSet author="marci (generated)" id="1743192933355-3">
-        <createTable tableName="users">
-            <column name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
-            </column>
-            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="first_name" type="VARCHAR(255)"/>
-            <column name="last_name" type="VARCHAR(255)"/>
-            <column name="notification_preference" type="VARCHAR(255)"/>
-            <column name="password" type="VARCHAR(255)"/>
-            <column name="role" type="VARCHAR(255)"/>
-            <column name="user_enabled" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+    <changeSet id="3" author="MarcinSz1993">
+        <insert tableName="guarantee">
+            <column name="id">1</column>
+            <column name="brand">Playstation</column>
+            <column name="model">5</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">White color</column>
+            <column name="kind_of_product">ELECTRONICS</column>
+            <column name="start_date">2025-03-29</column>
+            <column name="end_date">2027-03-29</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">2</column>
+        </insert>
 
+        <insert tableName="guarantee">
+            <column name="id">2</column>
+            <column name="brand">Samsung</column>
+            <column name="model">Galaxy S22</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Black color, 128GB storage</column>
+            <column name="kind_of_product">ELECTRONICS</column>
+            <column name="start_date">2025-03-30</column>
+            <column name="end_date">2027-03-30</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">2</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">3</column>
+            <column name="brand">NIKE</column>
+            <column name="model">AIRMAX 100</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Silver color</column>
+            <column name="kind_of_product">CLOTHES</column>
+            <column name="start_date">2025-05-10</column>
+            <column name="end_date">2027-05-10</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">2</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">4</column>
+            <column name="brand">HM</column>
+            <column name="model">Slim Fit Jeans</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Blue color, size 32</column>
+            <column name="kind_of_product">CLOTHES</column>
+            <column name="start_date">2025-12-01</column>
+            <column name="end_date">2027-12-01</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">2</column>
+        </insert>
+
+
+        <insert tableName="guarantee">
+            <column name="id">5</column>
+            <column name="brand">Adidas</column>
+            <column name="model">UltraBoost 21</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">White color, size 43</column>
+            <column name="kind_of_product">CLOTHES</column>
+            <column name="start_date">2025-11-01</column>
+            <column name="end_date">2027-11-01</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">2</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">6</column>
+            <column name="brand">Google One</column>
+            <column name="model">2TB Cloud Storage</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Shared with 5 family members</column>
+            <column name="kind_of_product">SERVICE</column>
+            <column name="start_date">2025-09-10</column>
+            <column name="end_date">2026-09-10</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">3</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">7</column>
+            <column name="brand">AppleCare+</column>
+            <column name="model">iPhone 15 Pro Plan</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Covers accidental damage and battery service</column>
+            <column name="kind_of_product">SERVICE</column>
+            <column name="start_date">2025-08-20</column>
+            <column name="end_date">2027-08-20</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">3</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">8</column>
+            <column name="brand">AWS</column>
+            <column name="model">Cloud Hosting Plan</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">50GB storage, 99.9% uptime guarantee</column>
+            <column name="kind_of_product">SERVICE</column>
+            <column name="start_date">2025-07-01</column>
+            <column name="end_date">2026-07-01</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">3</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">9</column>
+            <column name="brand">Nike</column>
+            <column name="model">Air Max 270</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Black color, size 42</column>
+            <column name="kind_of_product">CLOTHES</column>
+            <column name="start_date">2025-10-01</column>
+            <column name="end_date">2027-10-01</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">3</column>
+        </insert>
+        <insert tableName="guarantee">
+            <column name="id">10</column>
+            <column name="brand">Ford</column>
+            <column name="model">Mustang GT</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Red color, 5.0L V8 engine</column>
+            <column name="kind_of_product">CARS</column>
+            <column name="start_date">2025-09-10</column>
+            <column name="end_date">2030-09-10</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">3</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">11</column>
+            <column name="brand">IKEA</column>
+            <column name="model">Sofa - KIVIK</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Grey color, 10-year warranty</column>
+            <column name="kind_of_product">OTHER</column>
+            <column name="start_date">2025-11-10</column>
+            <column name="end_date">2035-11-10</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">4</column>
+        </insert>
+
+
+        <insert tableName="guarantee">
+            <column name="id">12</column>
+            <column name="brand">Yamaha</column>
+            <column name="model">P-125 Digital Piano</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">88 weighted keys, black finish</column>
+            <column name="kind_of_product">OTHER</column>
+            <column name="start_date">2025-12-05</column>
+            <column name="end_date">2028-12-05</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">4</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">13</column>
+            <column name="brand">CarShield</column>
+            <column name="model">Extended Auto Warranty</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Covers engine and transmission repairs</column>
+            <column name="kind_of_product">SERVICES</column>
+            <column name="start_date">2025-08-15</column>
+            <column name="end_date">2028-08-15</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">4</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">14</column>
+            <column name="brand">Adobe</column>
+            <column name="model">Creative Cloud Subscription</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Includes Photoshop, Illustrator, and more</column>
+            <column name="kind_of_product">SERVICES</column>
+            <column name="start_date">2025-05-01</column>
+            <column name="end_date">2026-05-01</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">4</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">15</column>
+            <column name="brand">North Face</column>
+            <column name="model">Winter Jacket</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">Blue color, waterproof</column>
+            <column name="kind_of_product">CLOTHES</column>
+            <column name="start_date">2025-10-01</column>
+            <column name="end_date">2027-10-01</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">4</column>
+        </insert>
+
+        <insert tableName="guarantee">
+            <column name="id">16</column>
+            <column name="brand">Tesla</column>
+            <column name="model">Model 3</column>
+            <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
+            <column name="notes">White color, Long Range AWD</column>
+            <column name="kind_of_product">CARS</column>
+            <column name="start_date">2025-02-10</column>
+            <column name="end_date">2030-02-10</column>
+            <column name="guarantee_status">ACTIVE</column>
+            <column name="sent_expiration_message">false</column>
+            <column name="user_id">4</column>
+        </insert>
+
+
+    </changeSet>
 </databaseChangeLog>

@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DiffGenerationConfig">
+    <option name="liquibaseAuthor" value="MarcinSz1993" />
+    <option name="snapshotDb" value="false" />
+    <option name="snapshotDbValue" value="d886a069-0038-41d6-bf45-59d911cc00cc" />
+    <option name="snapshotModelValue" value="Default" />
     <option name="sourceDbValue" value="d886a069-0038-41d6-bf45-59d911cc00cc" />
     <option name="sourceDiffType" value="DB" />
-    <option name="targetDbValue" value="d886a069-0038-41d6-bf45-59d911cc00cc" />
-    <option name="updateChangeLogPath" value="backend/src/main/resources/db/changelog/changelog-master.xml" />
-    <option name="updateDbConnectionName" value="d886a069-0038-41d6-bf45-59d911cc00cc" />
+    <option name="sourceModelValue" value="Default" />
+    <option name="targetDbValue" value="d886a069-0038-41d6-bf45-59d911cc00cc__guarantee-manager_public" />
+    <option name="updateChangeLogPath" value="backend/src/main/resources/db/changelog/master-changelog.xml" />
+    <option name="updateDbConnectionName" value="d886a069-0038-41d6-bf45-59d911cc00cc__guarantee-manager_public" />
   </component>
 </project>

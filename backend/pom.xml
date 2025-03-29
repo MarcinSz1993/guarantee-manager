@@ -182,8 +182,8 @@
                     <outputChangeLogFile>src/main/resources/db/changelog/generated-changelog.xml</outputChangeLogFile><!-- Zaktualizuj nazwę pliku -->
                     <driver>org.postgresql.Driver</driver>
                     <url>jdbc:postgresql://localhost:5434/guarantee-manager</url>
-                    <username>postgres</username>
-                    <password>qwerty</password>
+                    <username>{{DB_USERNAME}}</username>
+                    <password>{{DB_PASSWORD}}</password>
                     <defaultSchemaName>public</defaultSchemaName>
                     <verbose>true</verbose>
                 </configuration>

@@ -7,4 +7,8 @@
     <changeSet id="0" author="MarcinSz1993">
 
     </changeSet>
+    <include file="/db/changelog/changeset01.xml"/>
+    <include file="/db/changelog/changeset02.xml"/>
+    <include file="/db/changelog/changeset03.xml"/>
+    <include file="/db/changelog/changeset04.xml"/>
 </databaseChangeLog>

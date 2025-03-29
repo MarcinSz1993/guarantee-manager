@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JpaBuddyIdeaProjectConfig" reUseTableSchema="true">
     <option name="reLastEntityCreationPackage" value="backend/src/main/java/com/marcinsz/backend" />
-    <option name="reverseEngineeringLastDbConnectionId" value="d886a069-0038-41d6-bf45-59d911cc00cc" />
+    <option name="reverseEngineeringLastDbConnectionId" value="d886a069-0038-41d6-bf45-59d911cc00cc__guarantee-manager_public" />
   </component>
   <component name="JpaPluginProjectSettings">
     <option name="entityNameTemplate" />
@@ -10,7 +10,7 @@
   </component>
   <component name="PersistenceUnitSettings">
     <persistence-units>
-      <persistence-unit name="Default">
+      <persistence-unit name="Default" persistenceXmlPath="backend/src/main/resources/db/changelog/changelog-master.xml" defaultIncludeChangeLogFile="backend/src/main/resources/db/changelog/master-changelog.xml">
         <packages>
           <package value="com.marcinsz.backend" />
         </packages>

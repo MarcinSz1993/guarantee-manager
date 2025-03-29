@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GuaranteeHistory {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "guarantee_id")
@@ -28,6 +28,7 @@ public class GuaranteeHistory {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+    @Enumerated(EnumType.STRING)
     private GuaranteeStatus status;
     private LocalDateTime changeTime;
     private String notes;

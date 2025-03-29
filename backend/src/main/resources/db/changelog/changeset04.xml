@@ -4,42 +4,215 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-<changeSet author="marci (generated)" id="1743192933355-4">
-    <addUniqueConstraint columnNames="email" constraintName="uk6dotkott2kjsp8vw4d0m25fb7" tableName="users"/>
+    <changeSet id="4" author="MarcinSz1993">
+        <insert tableName="guarantee_history">
+            <column name="id">1</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">1</column>
+            <column name="notes">Broken panel</column>
+            <column name="change_time">2025-03-29</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
 
-<addUniqueConstraint columnNames="username" constraintName="ukr43af9ap4edm43mmtq01oddj6" tableName="users"/>
+        <insert tableName="guarantee_history">
+            <column name="id">2</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">2</column>
+            <column name="notes">One key not functioning properly</column>
+            <column name="change_time">2025-03-20</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
 
-<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="activation_token_seq" startValue="1"/>
+        <insert tableName="guarantee_history">
+            <column name="id">3</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">3</column>
+            <column name="notes">Left shoe lost color quickly</column>
+            <column name="change_time">2025-05-15</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
 
-<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="guarantee_history_seq" startValue="1"/>
+        <insert tableName="guarantee_history">
+            <column name="id">4</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">4</column>
+            <column name="notes">Fabric faded after first wash</column>
+            <column name="change_time">2026-01-15</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
 
-<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="guarantee_seq" startValue="1"/>
+        <insert tableName="guarantee_history">
+            <column name="id">5</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">4</column>
+            <column name="notes">Seam stitching came loose</column>
+            <column name="change_time">2026-02-05</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
 
-<createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="users_seq" startValue="1"/>
+        <insert tableName="guarantee_history">
+            <column name="id">6</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">4</column>
+            <column name="notes">Zipper broke unexpectedly</column>
+            <column name="change_time">2026-05-10</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
 
-<createTable tableName="activation_token">
-    <column name="id" type="BIGINT">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="activation_token_pkey"/>
-    </column>
-    <column name="created_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
-    <column name="expires" type="TIMESTAMP WITHOUT TIME ZONE"/>
-    <column name="is_valid" type="BOOLEAN">
-        <constraints nullable="false"/>
-    </column>
-    <column name="token" type="VARCHAR(255)"/>
-    <column name="validated_at" type="TIMESTAMP WITHOUT TIME ZONE"/>
-    <column name="user_id" type="BIGINT">
-        <constraints nullable="false"/>
-    </column>
-</createTable>
+        <insert tableName="guarantee_history">
+            <column name="id">7</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">5</column>
+            <column name="notes">Sole detaching after 3 months</column>
+            <column name="change_time">2026-02-20</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
 
-<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee" constraintName="fk4rjeda2lvr580ka4f45bneiqe" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
 
-<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee_history" constraintName="fk92hlie5c7teytoaoio5np58cw" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <insert tableName="guarantee_history">
+            <column name="id">8</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">5</column>
+            <column name="notes">Inner padding wore out quickly</column>
+            <column name="change_time">2026-04-12</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
 
-<addForeignKeyConstraint baseColumnNames="guarantee_id" baseTableName="guarantee_history" constraintName="fkhtgbqe3gmxs82rs18s4oswgw9" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="guarantee" validate="true"/>
+        <insert tableName="guarantee_history">
+            <column name="id">9</column>
+            <column name="user_id">2</column>
+            <column name="guarantee_id">5</column>
+            <column name="notes">Laces snapped unexpectedly</column>
+            <column name="change_time">2026-06-01</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
 
-<addForeignKeyConstraint baseColumnNames="user_id" baseTableName="activation_token" constraintName="fkpc3rhmxhs48sh9skcv8o9g7at" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
-</changeSet>
+        <insert tableName="guarantee_history">
+            <column name="id">10</column>
+            <column name="user_id">3</column>
+            <column name="guarantee_id">6</column>
+            <column name="notes">Storage quota not updating correctly</column>
+            <column name="change_time">2025-10-15</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
+        <insert tableName="guarantee_history">
+            <column name="id">11</column>
+            <column name="user_id">3</column>
+            <column name="guarantee_id">6</column>
+            <column name="notes">Family sharing feature not working</column>
+            <column name="change_time">2026-01-05</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
 
+        <insert tableName="guarantee_history">
+            <column name="id">12</column>
+            <column name="user_id">3</column>
+            <column name="guarantee_id">6</column>
+            <column name="notes">Billing charged twice in one month</column>
+            <column name="change_time">2026-03-12</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">13</column>
+            <column name="user_id">3</column>
+            <column name="guarantee_id">10</column>
+            <column name="notes">Engine making unusual noise</column>
+            <column name="change_time">2026-05-20</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">14</column>
+            <column name="user_id">3</column>
+            <column name="guarantee_id">10</column>
+            <column name="notes">Paint started peeling on the hood</column>
+            <column name="change_time">2026-07-15</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">15</column>
+            <column name="user_id">3</column>
+            <column name="guarantee_id">10</column>
+            <column name="notes">Infotainment system freezing</column>
+            <column name="change_time">2026-09-25</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">16</column>
+            <column name="user_id">4</column>
+            <column name="guarantee_id">15</column>
+            <column name="notes">Zamek błyskawiczny przestał działać</column>
+            <column name="change_time">2026-01-15</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">17</column>
+            <column name="user_id">4</column>
+            <column name="guarantee_id">15</column>
+            <column name="notes">Materiał zaczął przemakać</column>
+            <column name="change_time">2026-03-22</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">18</column>
+            <column name="user_id">4</column>
+            <column name="guarantee_id">15</column>
+            <column name="notes">Podszycie zaczęło się pruć</column>
+            <column name="change_time">2026-05-30</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">19</column>
+            <column name="user_id">4</column>
+            <column name="guarantee_id">16</column>
+            <column name="notes">Problemy z autopilotem</column>
+            <column name="change_time">2026-07-10</column>
+            <column name="positive_feedback">true</column>
+            <column name="status">APPROVED</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">20</column>
+            <column name="user_id">4</column>
+            <column name="guarantee_id">16</column>
+            <column name="notes">Bateria szybciej się rozładowuje</column>
+            <column name="change_time">2026-09-05</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">PENDING</column>
+        </insert>
+
+        <insert tableName="guarantee_history">
+            <column name="id">21</column>
+            <column name="user_id">4</column>
+            <column name="guarantee_id">16</column>
+            <column name="notes">Lakier odpryskuje na drzwiach</column>
+            <column name="change_time">2027-01-12</column>
+            <column name="positive_feedback">false</column>
+            <column name="status">REJECTED</column>
+        </insert>
+    </changeSet>
 </databaseChangeLog>
