@@ -22,7 +22,7 @@ export class AddGuaranteeComponent {
    brand: string = '';
    model:string = '';
    notes:string = '';
-   kindOfDevice: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER' = 'ELECTRONICS';
+   kindOfProduct: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER' = 'ELECTRONICS';
    startDate:string = '';
    endDate:string = '';
    selectedFile:File | null = null;
@@ -48,7 +48,7 @@ export class AddGuaranteeComponent {
       brand: this.brand,
       model: this.model,
       notes: this.notes,
-      kindOfDevice: this.kindOfDevice,
+      kindOfProduct: this.kindOfProduct,
       startDate: this.startDate,
       endDate: this.endDate,
       body: { file: this.selectedFile }

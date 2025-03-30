@@ -1,7 +1,7 @@
 <div class="card m-2 shadow-sm" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">{{ guarantee.brand }} - {{ guarantee.model }}</h5>
-    <p class="card-text"><strong>Type of device:</strong> {{ guarantee.kindOfDevice }}</p>
+    <p class="card-text"><strong>Type of device:</strong> {{ guarantee.kindOfProduct }}</p>
     <p class="card-text"><strong>Status:</strong>
       <span [ngClass]="{
         'text-success': guarantee.guaranteeStatus === 'ACTIVE',

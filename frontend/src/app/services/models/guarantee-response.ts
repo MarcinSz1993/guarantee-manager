@@ -8,7 +8,7 @@ export interface GuaranteeResponse {
   endDate?: string;
   guaranteeStatus?: 'ACTIVE' | 'EXPIRED' | 'PENDING' | 'REJECTED' | 'APPROVED';
   id?: number;
-  kindOfDevice?: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
+  kindOfProduct?: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
   model?: string;
   notes?: string;
   startDate?: string;

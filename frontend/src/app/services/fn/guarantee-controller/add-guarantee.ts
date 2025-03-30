@@ -14,12 +14,12 @@ export interface AddGuarantee$Params {
   brand: string;
   model: string;
   notes: string;
-  kindOfDevice: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
+  kindOfProduct: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
   startDate: string;
   endDate: string;
-  body?: {
-    'file': File;
-  }
+      body?: {
+'file': File;
+}
 }
 
 export function addGuarantee(http: HttpClient, rootUrl: string, params: AddGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<GuaranteeResponse>> {
@@ -28,7 +28,7 @@ export function addGuarantee(http: HttpClient, rootUrl: string, params: AddGuara
     rb.query('brand', params.brand, {});
     rb.query('model', params.model, {});
     rb.query('notes', params.notes, {});
-    rb.query('kindOfDevice', params.kindOfDevice, {});
+    rb.query('kindOfProduct', params.kindOfProduct, {});
     rb.query('startDate', params.startDate, {});
     rb.query('endDate', params.endDate, {});
     rb.body(params.body, 'multipart/form-data');

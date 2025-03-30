@@ -21,7 +21,7 @@
           </div>
           <div class="mb-3">
             <label for="device" class="form-label">Kind of device</label>
-            <select id="device" class="form-control" [(ngModel)]="kindOfDevice" name="device" required>
+            <select id="device" class="form-control" [(ngModel)]="kindOfProduct" name="device" required>
               <option *ngFor="let type of deviceTypes" [value]="type">{{type}}</option>
             </select>
           </div>
