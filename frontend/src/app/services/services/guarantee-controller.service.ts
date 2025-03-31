@@ -13,6 +13,7 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { addGuarantee } from '../fn/guarantee-controller/add-guarantee';
 import { AddGuarantee$Params } from '../fn/guarantee-controller/add-guarantee';
+import { ApiResponse } from '../models/api-response';
 import { deleteGuarantee } from '../fn/guarantee-controller/delete-guarantee';
 import { DeleteGuarantee$Params } from '../fn/guarantee-controller/delete-guarantee';
 import { editGuaranteeExpiration } from '../fn/guarantee-controller/edit-guarantee-expiration';
@@ -21,8 +22,12 @@ import { editGuaranteeStatus } from '../fn/guarantee-controller/edit-guarantee-s
 import { EditGuaranteeStatus$Params } from '../fn/guarantee-controller/edit-guarantee-status';
 import { getAllUserGuarantees } from '../fn/guarantee-controller/get-all-user-guarantees';
 import { GetAllUserGuarantees$Params } from '../fn/guarantee-controller/get-all-user-guarantees';
+import { getAverageDurationOfGuarantee } from '../fn/guarantee-controller/get-average-duration-of-guarantee';
+import { GetAverageDurationOfGuarantee$Params } from '../fn/guarantee-controller/get-average-duration-of-guarantee';
 import { getGuaranteeDetails } from '../fn/guarantee-controller/get-guarantee-details';
 import { GetGuaranteeDetails$Params } from '../fn/guarantee-controller/get-guarantee-details';
+import { getTheMostPopularKindOfProduct } from '../fn/guarantee-controller/get-the-most-popular-kind-of-product';
+import { GetTheMostPopularKindOfProduct$Params } from '../fn/guarantee-controller/get-the-most-popular-kind-of-product';
 import { GuaranteeResponse } from '../models/guarantee-response';
 import { PageGuaranteeResponse } from '../models/page-guarantee-response';
 
@@ -179,6 +184,56 @@ export class GuaranteeControllerService extends BaseService {
   getGuaranteeDetails(params: GetGuaranteeDetails$Params, context?: HttpContext): Observable<GuaranteeResponse> {
     return this.getGuaranteeDetails$Response(params, context).pipe(
       map((r: StrictHttpResponse<GuaranteeResponse>): GuaranteeResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getTheMostPopularKindOfProduct()` */
+  static readonly GetTheMostPopularKindOfProductPath = '/api/guarantee/most-popular';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getTheMostPopularKindOfProduct()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getTheMostPopularKindOfProduct$Response(params?: GetTheMostPopularKindOfProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return getTheMostPopularKindOfProduct(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getTheMostPopularKindOfProduct$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getTheMostPopularKindOfProduct(params?: GetTheMostPopularKindOfProduct$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.getTheMostPopularKindOfProduct$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAverageDurationOfGuarantee()` */
+  static readonly GetAverageDurationOfGuaranteePath = '/api/guarantee/duration';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAverageDurationOfGuarantee()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAverageDurationOfGuarantee$Response(params: GetAverageDurationOfGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return getAverageDurationOfGuarantee(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAverageDurationOfGuarantee$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAverageDurationOfGuarantee(params: GetAverageDurationOfGuarantee$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.getAverageDurationOfGuarantee$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
     );
   }
 

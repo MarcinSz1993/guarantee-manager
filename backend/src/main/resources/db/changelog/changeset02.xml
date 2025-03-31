@@ -6,7 +6,6 @@
 
     <changeSet id="2" author="MarcinSz1993">
         <insert tableName="users">
-            <column name="id" value="1"/>
             <column name="created_date" valueDate="2025-03-29"/>
             <column name="role" value="ADMIN"/>
             <column name="email" value="marcinsz1993@hotmail.com"/>
@@ -19,7 +18,6 @@
         </insert>
 
         <insert tableName="users">
-            <column name="id" value="2"/>
             <column name="created_date" valueDate="2025-03-29"/>
             <column name="role" value="USER"/>
             <column name="email" value="john@doe.pl"/>
@@ -31,7 +29,6 @@
             <column name="user_enabled" value="true"/>
         </insert>
         <insert tableName="users">
-            <column name="id" value="3"/>
             <column name="created_date" valueDate="2025-03-29"/>
             <column name="role" value="USER"/>
             <column name="email" value="david@willson.pl"/>
@@ -43,7 +40,6 @@
             <column name="user_enabled" value="true"/>
         </insert>
         <insert tableName="users">
-            <column name="id" value="4"/>
             <column name="created_date" valueDate="2025-03-29"/>
             <column name="role" value="USER"/>
             <column name="email" value="mark@solly.pl"/>

@@ -6,7 +6,6 @@
 
     <changeSet id="4" author="MarcinSz1993">
         <insert tableName="guarantee_history">
-            <column name="id">1</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">1</column>
             <column name="notes">Broken panel</column>
@@ -16,7 +15,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">2</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">2</column>
             <column name="notes">One key not functioning properly</column>
@@ -26,7 +24,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">3</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">3</column>
             <column name="notes">Left shoe lost color quickly</column>
@@ -36,7 +33,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">4</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">4</column>
             <column name="notes">Fabric faded after first wash</column>
@@ -46,7 +42,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">5</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">4</column>
             <column name="notes">Seam stitching came loose</column>
@@ -56,7 +51,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">6</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">4</column>
             <column name="notes">Zipper broke unexpectedly</column>
@@ -66,7 +60,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">7</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">5</column>
             <column name="notes">Sole detaching after 3 months</column>
@@ -77,7 +70,6 @@
 
 
         <insert tableName="guarantee_history">
-            <column name="id">8</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">5</column>
             <column name="notes">Inner padding wore out quickly</column>
@@ -87,7 +79,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">9</column>
             <column name="user_id">2</column>
             <column name="guarantee_id">5</column>
             <column name="notes">Laces snapped unexpectedly</column>
@@ -97,7 +88,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">10</column>
             <column name="user_id">3</column>
             <column name="guarantee_id">6</column>
             <column name="notes">Storage quota not updating correctly</column>
@@ -106,7 +96,6 @@
             <column name="status">PENDING</column>
         </insert>
         <insert tableName="guarantee_history">
-            <column name="id">11</column>
             <column name="user_id">3</column>
             <column name="guarantee_id">6</column>
             <column name="notes">Family sharing feature not working</column>
@@ -116,7 +105,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">12</column>
             <column name="user_id">3</column>
             <column name="guarantee_id">6</column>
             <column name="notes">Billing charged twice in one month</column>
@@ -126,7 +114,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">13</column>
             <column name="user_id">3</column>
             <column name="guarantee_id">10</column>
             <column name="notes">Engine making unusual noise</column>
@@ -136,7 +123,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">14</column>
             <column name="user_id">3</column>
             <column name="guarantee_id">10</column>
             <column name="notes">Paint started peeling on the hood</column>
@@ -146,7 +132,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">15</column>
             <column name="user_id">3</column>
             <column name="guarantee_id">10</column>
             <column name="notes">Infotainment system freezing</column>
@@ -156,7 +141,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">16</column>
             <column name="user_id">4</column>
             <column name="guarantee_id">15</column>
             <column name="notes">Zamek błyskawiczny przestał działać</column>
@@ -166,7 +150,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">17</column>
             <column name="user_id">4</column>
             <column name="guarantee_id">15</column>
             <column name="notes">Materiał zaczął przemakać</column>
@@ -176,7 +159,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">18</column>
             <column name="user_id">4</column>
             <column name="guarantee_id">15</column>
             <column name="notes">Podszycie zaczęło się pruć</column>
@@ -186,7 +168,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">19</column>
             <column name="user_id">4</column>
             <column name="guarantee_id">16</column>
             <column name="notes">Problemy z autopilotem</column>
@@ -196,7 +177,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">20</column>
             <column name="user_id">4</column>
             <column name="guarantee_id">16</column>
             <column name="notes">Bateria szybciej się rozładowuje</column>
@@ -206,7 +186,6 @@
         </insert>
 
         <insert tableName="guarantee_history">
-            <column name="id">21</column>
             <column name="user_id">4</column>
             <column name="guarantee_id">16</column>
             <column name="notes">Lakier odpryskuje na drzwiach</column>

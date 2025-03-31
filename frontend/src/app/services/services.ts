@@ -9,4 +9,5 @@ export { ImageControllerService } from './services/image-controller.service';
 export { EmailControllerService } from './services/email-controller.service';
 export { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';
 export { LogoControllerService } from './services/logo-controller.service';
+export { GuaranteeHistoryControllerService } from './services/guarantee-history-controller.service';
 export { DemoControllerService } from './services/demo-controller.service';

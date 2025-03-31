@@ -18,7 +18,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GuaranteeHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "guarantee_history_seq")
+    @SequenceGenerator(name = "guarantee_history_seq",allocationSize = 1)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "guarantee_id")

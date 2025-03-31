@@ -22,7 +22,8 @@ import java.util.List;
 public class Guarantee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "guarantee_seq")
+    @SequenceGenerator(name = "guarantee_seq", allocationSize = 1)
     private Long id;
     private String brand;
     private String model;

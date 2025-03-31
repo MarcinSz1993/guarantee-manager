@@ -20,7 +20,8 @@ import java.time.LocalDateTime;
 public class UserActivationToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO,generator = "activation_token_seq" )
+    @SequenceGenerator(name = "activation_token_seq",allocationSize = 1)
     private Long id;
     private String token;
     private LocalDateTime expires;

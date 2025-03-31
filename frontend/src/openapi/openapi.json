@@ -582,6 +582,130 @@
         }
       }
     },
+    "/api/guarantee/most-popular": {
+      "get": {
+        "tags": [
+          "guarantee-controller"
+        ],
+        "operationId": "getTheMostPopularKindOfProduct",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/guarantee/duration": {
+      "get": {
+        "tags": [
+          "guarantee-controller"
+        ],
+        "operationId": "getAverageDurationOfGuarantee",
+        "parameters": [
+          {
+            "name": "kindOfProduct",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ELECTRONICS",
+                "CARS",
+                "CLOTHES",
+                "SERVICES",
+                "OTHER"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/guarantee-history/status": {
+      "get": {
+        "tags": [
+          "guarantee-history-controller"
+        ],
+        "operationId": "getAllByGuaranteeStatus",
+        "parameters": [
+          {
+            "name": "guaranteeStatus",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "EXPIRED",
+                "PENDING",
+                "REJECTED",
+                "APPROVED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/guarantee-history/feedback": {
+      "get": {
+        "tags": [
+          "guarantee-history-controller"
+        ],
+        "operationId": "getAllPositiveFeedbacks",
+        "parameters": [
+          {
+            "name": "positiveFeedback",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/demo": {
       "get": {
         "tags": [
@@ -807,11 +931,11 @@
           "paged": {
             "type": "boolean"
           },
-          "pageSize": {
+          "pageNumber": {
             "type": "integer",
             "format": "int32"
           },
-          "pageNumber": {
+          "pageSize": {
             "type": "integer",
             "format": "int32"
           },

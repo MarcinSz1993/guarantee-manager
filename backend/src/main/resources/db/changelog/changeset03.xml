@@ -6,7 +6,6 @@
 
     <changeSet id="3" author="MarcinSz1993">
         <insert tableName="guarantee">
-            <column name="id">1</column>
             <column name="brand">Playstation</column>
             <column name="model">5</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -20,7 +19,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">2</column>
             <column name="brand">Samsung</column>
             <column name="model">Galaxy S22</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -34,7 +32,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">3</column>
             <column name="brand">NIKE</column>
             <column name="model">AIRMAX 100</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -48,7 +45,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">4</column>
             <column name="brand">HM</column>
             <column name="model">Slim Fit Jeans</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -63,7 +59,6 @@
 
 
         <insert tableName="guarantee">
-            <column name="id">5</column>
             <column name="brand">Adidas</column>
             <column name="model">UltraBoost 21</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -77,7 +72,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">6</column>
             <column name="brand">Google One</column>
             <column name="model">2TB Cloud Storage</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -91,7 +85,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">7</column>
             <column name="brand">AppleCare+</column>
             <column name="model">iPhone 15 Pro Plan</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -105,7 +98,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">8</column>
             <column name="brand">AWS</column>
             <column name="model">Cloud Hosting Plan</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -119,7 +111,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">9</column>
             <column name="brand">Nike</column>
             <column name="model">Air Max 270</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -132,7 +123,6 @@
             <column name="user_id">3</column>
         </insert>
         <insert tableName="guarantee">
-            <column name="id">10</column>
             <column name="brand">Ford</column>
             <column name="model">Mustang GT</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -146,7 +136,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">11</column>
             <column name="brand">IKEA</column>
             <column name="model">Sofa - KIVIK</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -161,7 +150,6 @@
 
 
         <insert tableName="guarantee">
-            <column name="id">12</column>
             <column name="brand">Yamaha</column>
             <column name="model">P-125 Digital Piano</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -175,7 +163,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">13</column>
             <column name="brand">CarShield</column>
             <column name="model">Extended Auto Warranty</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -189,7 +176,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">14</column>
             <column name="brand">Adobe</column>
             <column name="model">Creative Cloud Subscription</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -203,7 +189,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">15</column>
             <column name="brand">North Face</column>
             <column name="model">Winter Jacket</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
@@ -217,7 +202,6 @@
         </insert>
 
         <insert tableName="guarantee">
-            <column name="id">16</column>
             <column name="brand">Tesla</column>
             <column name="model">Model 3</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
