@@ -18,12 +18,30 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class GuaranteeService {
     private final GuaranteeRepository guaranteeRepository;
     private final ImageService imageService;
+
+    public Integer getAverageDurationOfGuarantee(Authentication connectedUser,
+                                                 Product kindOfProduct) {
+        User user = (User) connectedUser.getPrincipal();
+        List<Guarantee> guarantees = guaranteeRepository.findAllByUserIdAndKindOfProduct(user.getId(),kindOfProduct);
+        if (guarantees.isEmpty()) {
+            return 0;
+        }
+        return guaranteeRepository.getAverageDurationOfGuarantee(kindOfProduct.name(), user.getId()).intValue();
+    }
+
+    public String getTheMostPopularKindOfProduct(Authentication connectedUser) {
+        User user = (User) connectedUser.getPrincipal();
+        return guaranteeRepository.findOftenestKindOfProductBoughtByUserId(
+                user.getId()
+        ).orElseThrow();
+    }
 
     @Transactional
     public void deleteGuarantee(Authentication authentication,Long guaranteeId){

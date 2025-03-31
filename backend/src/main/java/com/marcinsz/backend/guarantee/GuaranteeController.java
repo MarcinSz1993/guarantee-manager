@@ -1,11 +1,13 @@
 package com.marcinsz.backend.guarantee;
 
+import com.marcinsz.backend.response.ApiResponse;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,24 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class GuaranteeController {
     private final GuaranteeService guaranteeService;
+
+    @GetMapping("/duration")
+    public ResponseEntity<ApiResponse> getAverageDurationOfGuarantee(Authentication connectedUser,
+                                                                     @RequestParam Product kindOfProduct) {
+        Integer averageDurationOfGuarantee = guaranteeService.getAverageDurationOfGuarantee(connectedUser, kindOfProduct);
+        return ResponseEntity.ok().body(ApiResponse.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message("An average guarantee duration in " + kindOfProduct + " is " + averageDurationOfGuarantee + " days.")
+                .build());
+    }
+
+    @GetMapping("/most-popular")
+    public ResponseEntity<ApiResponse> getTheMostPopularKindOfProduct(Authentication connectedUser) {
+        return ResponseEntity.ok().body(ApiResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message(guaranteeService.getTheMostPopularKindOfProduct(connectedUser))
+                .build());
+    }
 
     @DeleteMapping
     public ResponseEntity<String> deleteGuarantee(Authentication authentication,

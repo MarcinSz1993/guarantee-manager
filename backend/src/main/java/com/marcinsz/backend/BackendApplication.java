@@ -13,8 +13,4 @@ public class BackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
     }
-
-//todo 1.Dodać 10 rekordów do tabeli users
-//todo 1.Dodać 10 rekordów do tabeli guarantee
-//todo 1.Dodać 10 rekordów do tabeli guarantee_history
 }

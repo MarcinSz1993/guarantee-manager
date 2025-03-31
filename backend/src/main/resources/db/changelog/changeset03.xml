@@ -82,7 +82,7 @@
             <column name="model">2TB Cloud Storage</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
             <column name="notes">Shared with 5 family members</column>
-            <column name="kind_of_product">SERVICE</column>
+            <column name="kind_of_product">SERVICES</column>
             <column name="start_date">2025-09-10</column>
             <column name="end_date">2026-09-10</column>
             <column name="guarantee_status">ACTIVE</column>
@@ -96,7 +96,7 @@
             <column name="model">iPhone 15 Pro Plan</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
             <column name="notes">Covers accidental damage and battery service</column>
-            <column name="kind_of_product">SERVICE</column>
+            <column name="kind_of_product">SERVICES</column>
             <column name="start_date">2025-08-20</column>
             <column name="end_date">2027-08-20</column>
             <column name="guarantee_status">ACTIVE</column>
@@ -110,7 +110,7 @@
             <column name="model">Cloud Hosting Plan</column>
             <column name="document_url">https://res.cloudinary.com/dbgncy44q/image/upload/f_auto,q_auto/xzhknucyuamrltupqvew</column>
             <column name="notes">50GB storage, 99.9% uptime guarantee</column>
-            <column name="kind_of_product">SERVICE</column>
+            <column name="kind_of_product">SERVICES</column>
             <column name="start_date">2025-07-01</column>
             <column name="end_date">2026-07-01</column>
             <column name="guarantee_status">ACTIVE</column>

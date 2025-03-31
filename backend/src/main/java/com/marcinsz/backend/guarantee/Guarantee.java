@@ -42,4 +42,19 @@ public class Guarantee {
     @OneToMany(mappedBy = "guarantee",cascade = CascadeType.ALL,orphanRemoval = true)
     @JsonManagedReference
     private List<GuaranteeHistory> guaranteeHistory;
+
+    @Override
+    public String toString() {
+        return "Guarantee{" +
+                "id=" + id +
+                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", documentUrl='" + documentUrl + '\'' +
+                ", notes='" + notes + '\'' +
+                ", kindOfProduct=" + kindOfProduct +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", sentExpirationMessage=" + sentExpirationMessage +
+                '}';
+    }
 }
