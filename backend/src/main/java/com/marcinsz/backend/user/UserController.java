@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    @GetMapping("/by-username")
+    public ResponseEntity<UserDto> getUserByUsername(@RequestParam String username) {
+        return ResponseEntity.ok().body(userService.getUserByUsername(username));
+    }
+
     @GetMapping
     public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) {
         return ResponseEntity.ok().body(userService.getUserByEmail(email));

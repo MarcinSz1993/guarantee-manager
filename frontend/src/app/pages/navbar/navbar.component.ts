@@ -5,6 +5,7 @@ import {RouterLink} from '@angular/router';
 import {TokenService} from '../../own_services/token.service';
 import {FormsModule} from '@angular/forms';
 import {AddGuaranteeComponent} from '../../modals/add-guarantee/add-guarantee.component';
+import {ChangePreferenceComponent} from '../../modals/change-preference/change-preference.component';
 
 @Component({
   selector: 'app-navbar',
@@ -15,6 +16,7 @@ import {AddGuaranteeComponent} from '../../modals/add-guarantee/add-guarantee.co
     RouterLink,
     FormsModule,
     AddGuaranteeComponent,
+    ChangePreferenceComponent
   ],
   templateUrl: './navbar.component.html',
   standalone: true,
@@ -23,6 +25,8 @@ import {AddGuaranteeComponent} from '../../modals/add-guarantee/add-guarantee.co
 export class NavbarComponent implements OnInit{
   @Input() isModalVisible!:boolean;
   isCollapsed: boolean = true;
+  isPreferenceModalOpen = false;
+  currentPreference = 'EMAIL';
 
   constructor(
     public authService:TokenService
@@ -35,6 +39,27 @@ export class NavbarComponent implements OnInit{
 
   logout() {
     this.authService.logout();
+  }
+
+  onDeleteGuarantee() {
+
+  }
+
+  onChangePreferences() {
+    this.isPreferenceModalOpen = true;
+
+  }
+
+  updatePreference(newPreference:string){
+    this.currentPreference = newPreference;
+  }
+
+  onChangePassword() {
+
+  }
+
+  onDeleteAccount() {
+
   }
 
 }

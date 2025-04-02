@@ -33,10 +33,54 @@
           <i class="fas fa-chart-bar me-1"></i> Stats
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-light" routerLink="/profile">
-          <i class="fas fa-user me-1"></i> Your profile
+
+      <li class="nav-item dropdown">
+        <a
+          class="nav-link dropdown-toggle text-light"
+        href="#"
+        id="navbarDropdownProfileLink"
+        role="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+        >
+        <i class="fas fa-user me-1"></i> Your profile
         </a>
+
+
+
+        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownProfileLink">
+
+
+
+
+          <li>
+            <a class="dropdown-item" routerLink="/profile">Zobacz profil</a>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+
+          <li>
+            <button class="dropdown-item" type="button" (click)="onDeleteGuarantee()">
+              USUŃ GWARANCJĘ
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button" (click)="onChangePreferences()">
+              ZMIEŃ PREFERENCJĘ
+            </button>
+          </li>
+          <li>
+            <button class="dropdown-item" type="button" (click)="onChangePassword()">
+              ZMIEŃ HASŁO
+            </button>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <button class="dropdown-item text-danger" type="button" (click)="onDeleteAccount()">
+              USUŃ KONTO
+            </button>
+          </li>
+        </ul>
+
       </li>
       <li class="nav-item">
         <a class="nav-link text-light" routerLink="/archive">
@@ -50,5 +94,12 @@
       </li>
     </ul>
   </div>
+  <app-change-preference
+    *ngIf="isPreferenceModalOpen"
+    [currentPreference]="currentPreference"
+    (preferenceChanged)="updatePreference($event)"
+    (closeModal)="isPreferenceModalOpen = false">
+  </app-change-preference>
   <app-add-guarantee></app-add-guarantee>
 </nav>
+

@@ -39,7 +39,7 @@ public class UserService {
                 .email(createUserRequest.getEmail())
                 .password(passwordEncoder.encode(createUserRequest.getPassword()))
                 .role(Role.USER)
-                .notificationPreference(null)
+                .notificationPreference(NotificationPreference.ALL)
                 .userEnabled(false)
                 .build();
         userRepository.save(user);
@@ -95,6 +95,18 @@ public class UserService {
 
     public UserDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+        return UserDto.builder()
+                .userId(user.getId())
+                .userName(user.getUserName())
+                .userEmail(user.getEmail())
+                .role(user.getRole())
+                .isEnabled(user.isEnabled())
+                .notificationPreference(user.getNotificationPreference())
+                .build();
+    }
+
+    public UserDto getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
         return UserDto.builder()
                 .userId(user.getId())
                 .userName(user.getUserName())

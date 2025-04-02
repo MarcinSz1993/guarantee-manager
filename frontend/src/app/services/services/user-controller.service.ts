@@ -16,6 +16,8 @@ import { ActivateUser$Params } from '../fn/user-controller/activate-user';
 import { AuthenticationResponse } from '../models/authentication-response';
 import { getUserByEmail } from '../fn/user-controller/get-user-by-email';
 import { GetUserByEmail$Params } from '../fn/user-controller/get-user-by-email';
+import { getUserByUsername } from '../fn/user-controller/get-user-by-username';
+import { GetUserByUsername$Params } from '../fn/user-controller/get-user-by-username';
 import { login } from '../fn/user-controller/login';
 import { Login$Params } from '../fn/user-controller/login';
 import { register } from '../fn/user-controller/register';
@@ -127,6 +129,31 @@ export class UserControllerService extends BaseService {
   activateUser(params: ActivateUser$Params, context?: HttpContext): Observable<UserActivationResponse> {
     return this.activateUser$Response(params, context).pipe(
       map((r: StrictHttpResponse<UserActivationResponse>): UserActivationResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getUserByUsername()` */
+  static readonly GetUserByUsernamePath = '/api/users/by-username';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUserByUsername()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserByUsername$Response(params: GetUserByUsername$Params, context?: HttpContext): Observable<StrictHttpResponse<UserDto>> {
+    return getUserByUsername(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getUserByUsername$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUserByUsername(params: GetUserByUsername$Params, context?: HttpContext): Observable<UserDto> {
+    return this.getUserByUsername$Response(params, context).pipe(
+      map((r: StrictHttpResponse<UserDto>): UserDto => r.body)
     );
   }
 

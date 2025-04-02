@@ -24,6 +24,10 @@ export class TokenService {
     return localStorage.getItem(this.tokenKey) as string;
   }
 
+  getUsername():string | null {
+    return localStorage.getItem(this.username);
+  }
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.username);
