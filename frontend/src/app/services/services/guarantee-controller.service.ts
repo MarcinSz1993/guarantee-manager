@@ -146,7 +146,7 @@ export class GuaranteeControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  deleteGuarantee$Response(params: DeleteGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  deleteGuarantee$Response(params: DeleteGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
     return deleteGuarantee(this.http, this.rootUrl, params, context);
   }
 
@@ -156,9 +156,9 @@ export class GuaranteeControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  deleteGuarantee(params: DeleteGuarantee$Params, context?: HttpContext): Observable<string> {
+  deleteGuarantee(params: DeleteGuarantee$Params, context?: HttpContext): Observable<ApiResponse> {
     return this.deleteGuarantee$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
     );
   }
 

@@ -8,12 +8,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { ApiResponse } from '../../models/api-response';
 
 export interface DeleteGuarantee$Params {
   guaranteeId: number;
 }
 
-export function deleteGuarantee(http: HttpClient, rootUrl: string, params: DeleteGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function deleteGuarantee(http: HttpClient, rootUrl: string, params: DeleteGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
   const rb = new RequestBuilder(rootUrl, deleteGuarantee.PATH, 'delete');
   if (params) {
     rb.query('guaranteeId', params.guaranteeId, {});
@@ -24,7 +25,7 @@ export function deleteGuarantee(http: HttpClient, rootUrl: string, params: Delet
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return r as StrictHttpResponse<ApiResponse>;
     })
   );
 }

@@ -94,6 +94,10 @@
       </li>
     </ul>
   </div>
+  <app-delete-guarantee
+    *ngIf="isDeleteGuaranteeModalOpen"
+    (closeModal)="isDeleteGuaranteeModalOpen = false">
+  </app-delete-guarantee>
   <app-change-preference
     *ngIf="isPreferenceModalOpen"
     [currentPreference]="currentPreference"

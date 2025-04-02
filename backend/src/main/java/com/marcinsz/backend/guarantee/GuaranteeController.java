@@ -45,24 +45,27 @@ public class GuaranteeController {
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteGuarantee(Authentication authentication,
-                                                      Long guaranteeId){
+    public ResponseEntity<ApiResponse> deleteGuarantee(Authentication authentication,
+                                                      @RequestParam Long guaranteeId){
         guaranteeService.deleteGuarantee(authentication,guaranteeId);
-        return ResponseEntity.accepted().body("You have successfully deleted the guarantee.");
+        return ResponseEntity.accepted().body(ApiResponse.builder()
+                        .statusCode(HttpStatus.ACCEPTED.value())
+                        .message("You have successfully deleted the guarantee.")
+                .build());
     }
 
     @PutMapping("/edit-expiration")
     public ResponseEntity<String> editGuaranteeExpiration(Authentication authentication,
-                                                      Long guaranteeId,
-                                                      LocalDate expirationDate){
+                                                      @RequestParam Long guaranteeId,
+                                                      @RequestParam LocalDate expirationDate){
         guaranteeService.editGuaranteeExpiration(authentication,guaranteeId,expirationDate);
         return ResponseEntity.accepted().body("You have successfully edited the guarantee expiration date.");
     }
 
     @PutMapping("/edit-status")
     public ResponseEntity<String> editGuaranteeStatus(Authentication authentication,
-                                                      Long guaranteeId,
-                                                      GuaranteeStatus guaranteeStatus){
+                                                      @RequestParam Long guaranteeId,
+                                                      @RequestParam GuaranteeStatus guaranteeStatus){
         guaranteeService.editGuaranteeStatus(authentication,guaranteeId,guaranteeStatus);
         return ResponseEntity.accepted().body("You have successfully edited the guarantee status to " + guaranteeStatus.name());
     }
