@@ -1,10 +1,7 @@
 package com.marcinsz.backend.user;
 
 import com.marcinsz.backend.config.JwtService;
-import com.marcinsz.backend.exception.IncorrectLoginOrPasswordException;
-import com.marcinsz.backend.exception.UserAlreadyExistsException;
-import com.marcinsz.backend.exception.UserNotActivatedException;
-import com.marcinsz.backend.exception.UserNotFoundException;
+import com.marcinsz.backend.exception.*;
 import com.marcinsz.backend.notification.NotificationPreference;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
@@ -29,6 +26,25 @@ public class UserService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserActivationTokenService userActivationTokenService;
+
+    public void changePassword(Authentication connectedUser,
+                               String oldPassword,
+                               String newPassword,
+                               String confirmPassword){
+        User user = (User) connectedUser.getPrincipal();
+        validateOldAndNewPassword(oldPassword, newPassword, confirmPassword, user);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    private void validateOldAndNewPassword(String oldPassword, String newPassword, String confirmPassword, User user) {
+        if (!passwordEncoder.matches(oldPassword, user.getPassword()))
+        {
+            throw new InvalidPasswordException("The old password is incorrect");
+        } else if (!newPassword.equals(confirmPassword)) {
+            throw new InvalidPasswordException("The password and confirmation do not match");
+        }
+    }
 
     public RegistrationResponse register(CreateUserRequest createUserRequest) throws MessagingException {
         validateNewUser(createUserRequest);
