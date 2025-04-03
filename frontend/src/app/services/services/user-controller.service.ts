@@ -13,7 +13,10 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { activateUser } from '../fn/user-controller/activate-user';
 import { ActivateUser$Params } from '../fn/user-controller/activate-user';
+import { ApiResponse } from '../models/api-response';
 import { AuthenticationResponse } from '../models/authentication-response';
+import { changePassword } from '../fn/user-controller/change-password';
+import { ChangePassword$Params } from '../fn/user-controller/change-password';
 import { getUserByEmail } from '../fn/user-controller/get-user-by-email';
 import { GetUserByEmail$Params } from '../fn/user-controller/get-user-by-email';
 import { getUserByUsername } from '../fn/user-controller/get-user-by-username';
@@ -79,6 +82,31 @@ export class UserControllerService extends BaseService {
   register(params: Register$Params, context?: HttpContext): Observable<RegistrationResponse> {
     return this.register$Response(params, context).pipe(
       map((r: StrictHttpResponse<RegistrationResponse>): RegistrationResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `changePassword()` */
+  static readonly ChangePasswordPath = '/api/users/password';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `changePassword()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  changePassword$Response(params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return changePassword(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `changePassword$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  changePassword(params: ChangePassword$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.changePassword$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
     );
   }
 

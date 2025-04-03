@@ -7,6 +7,7 @@ import {LoginRequest} from '../../services/models/login-request';
 import {AuthenticationResponse} from '../../services/models/authentication-response';
 import {NgForOf, NgIf} from '@angular/common';
 import {UserDto} from '../../services/models/user-dto';
+import {UserStateService} from '../../own_services/user-state-service.service';
 
 
 
@@ -34,7 +35,8 @@ export class LoginComponent {
   constructor(
     private router:Router,
     private userService: UserControllerService,
-    private authService: TokenService
+    private authService: TokenService,
+    private userStateService: UserStateService
   ) {
   }
 
@@ -54,6 +56,7 @@ export class LoginComponent {
           .subscribe({
             next: (response) => {
               this.userDto = response;
+              this.userStateService.setFirstnameAndLastname(this.userDto);
               localStorage.setItem("username",this.userDto.userName as string);
               this.router.navigate(['dashboard']).then();
             },

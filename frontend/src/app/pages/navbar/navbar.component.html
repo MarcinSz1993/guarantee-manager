@@ -54,29 +54,29 @@
 
 
           <li>
-            <a class="dropdown-item" routerLink="/profile">Zobacz profil</a>
+            <a class="dropdown-item" routerLink="/profile">{{firstName}} {{lastName}}</a>
           </li>
           <li><hr class="dropdown-divider"></li>
 
           <li>
             <button class="dropdown-item" type="button" (click)="onDeleteGuarantee()">
-              USUŃ GWARANCJĘ
+              DELETE GUARANTEE
             </button>
           </li>
           <li>
             <button class="dropdown-item" type="button" (click)="onChangePreferences()">
-              ZMIEŃ PREFERENCJĘ
+              CHANGE PREFERENCE
             </button>
           </li>
           <li>
             <button class="dropdown-item" type="button" (click)="onChangePassword()">
-              ZMIEŃ HASŁO
+              CHANGE PASSWORD
             </button>
           </li>
           <li><hr class="dropdown-divider"></li>
           <li>
             <button class="dropdown-item text-danger" type="button" (click)="onDeleteAccount()">
-              USUŃ KONTO
+              DELETE ACCOUNT
             </button>
           </li>
         </ul>

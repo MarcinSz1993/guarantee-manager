@@ -113,6 +113,8 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         return UserDto.builder()
                 .userId(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .userName(user.getUserName())
                 .userEmail(user.getEmail())
                 .role(user.getRole())
@@ -125,6 +127,8 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
         return UserDto.builder()
                 .userId(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
                 .userName(user.getUserName())
                 .userEmail(user.getEmail())
                 .role(user.getRole())
