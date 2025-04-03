@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgIf, NgOptimizedImage} from '@angular/common';
 import {CollapseDirective} from 'ngx-bootstrap/collapse';
 import {RouterLink} from '@angular/router';
@@ -8,6 +8,7 @@ import {AddGuaranteeComponent} from '../../modals/add-guarantee/add-guarantee.co
 import {ChangePreferenceComponent} from '../../modals/change-preference/change-preference.component';
 import {DeleteGuaranteeComponent} from '../../modals/delete-guarantee/delete-guarantee.component';
 import {UserStateService} from '../../own_services/user-state-service.service';
+import {ChangePasswordComponent} from '../../modals/change-password/change-password.component';
 
 @Component({
   selector: 'app-navbar',
@@ -19,20 +20,21 @@ import {UserStateService} from '../../own_services/user-state-service.service';
     FormsModule,
     AddGuaranteeComponent,
     ChangePreferenceComponent,
-    DeleteGuaranteeComponent
+    DeleteGuaranteeComponent,
+    ChangePasswordComponent
   ],
   templateUrl: './navbar.component.html',
   standalone: true,
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit{
-  @Input()
-  isModalVisible!:boolean;
+  isAddGuaranteeModalVisible = false;
   isCollapsed: boolean = true;
   isPreferenceModalOpen = false;
-  currentPreference = 'EMAIL'
+  currentPreference = 'ALL'
 
   isDeleteGuaranteeModalOpen = false;
+  isChangePasswordModalOpen = false;
 
   firstName:string = '';
   lastName:string = '';
@@ -46,13 +48,11 @@ export class NavbarComponent implements OnInit{
   }
 
   ngOnInit(): void {
-// Subskrybuj dane użytkownika w serwisie UserStateService
     this.userStateService.currentUser$.subscribe(user => {
       if (user) {
         this.firstName = user.firstName as string;
         this.lastName = user.lastName as string;
       } else {
-        // Możesz także odczytać dane z sessionStorage, jeśli użytkownik nie jest zalogowany
         this.firstName = sessionStorage.getItem('firstname') as string;
         this.lastName = sessionStorage.getItem('lastname') as string;
       }
@@ -78,7 +78,7 @@ export class NavbarComponent implements OnInit{
   }
 
   onChangePassword() {
-
+    this.isChangePasswordModalOpen = true;
   }
 
   onDeleteAccount() {

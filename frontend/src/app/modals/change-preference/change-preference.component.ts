@@ -17,9 +17,12 @@ import {ToastrService} from 'ngx-toastr';
   styleUrl: './change-preference.component.scss'
 })
 export class ChangePreferenceComponent implements OnInit{
-  @Input() currentPreference:string = '';
-  @Output() preferenceChanged = new EventEmitter<string>();
-  @Output() closeModal = new EventEmitter<void>();
+  @Input()
+  currentPreference:string = '';
+  @Output()
+  preferenceChanged = new EventEmitter<string>();
+  @Output()
+  closeModal = new EventEmitter<void>();
 
   selectedPreference: 'EMAIL'|'DASHBOARD'|'ALL' = this.currentPreference as 'EMAIL' | 'DASHBOARD' | 'ALL';
 

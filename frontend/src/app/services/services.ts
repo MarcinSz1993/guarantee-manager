@@ -4,6 +4,7 @@
 
 export { GuaranteeControllerService } from './services/guarantee-controller.service';
 export { UserControllerService } from './services/user-controller.service';
+export { PasswordControllerService } from './services/password-controller.service';
 export { NotificationControllerService } from './services/notification-controller.service';
 export { ImageControllerService } from './services/image-controller.service';
 export { EmailControllerService } from './services/email-controller.service';

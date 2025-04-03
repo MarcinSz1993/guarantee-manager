@@ -27,24 +27,7 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserActivationTokenService userActivationTokenService;
 
-    public void changePassword(Authentication connectedUser,
-                               String oldPassword,
-                               String newPassword,
-                               String confirmPassword){
-        User user = (User) connectedUser.getPrincipal();
-        validateOldAndNewPassword(oldPassword, newPassword, confirmPassword, user);
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepository.save(user);
-    }
 
-    private void validateOldAndNewPassword(String oldPassword, String newPassword, String confirmPassword, User user) {
-        if (!passwordEncoder.matches(oldPassword, user.getPassword()))
-        {
-            throw new InvalidPasswordException("The old password is incorrect");
-        } else if (!newPassword.equals(confirmPassword)) {
-            throw new InvalidPasswordException("The password and confirmation do not match");
-        }
-    }
 
     public RegistrationResponse register(CreateUserRequest createUserRequest) throws MessagingException {
         validateNewUser(createUserRequest);

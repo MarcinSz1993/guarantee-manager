@@ -9,7 +9,6 @@
         <p>Choose the guarantee to delete:</p>
         <select id="guaranteeSelect" class="form-select" [(ngModel)]="selectedGuaranteeIdToDelete">
           <option *ngFor="let guarantee of allGuarantees.content" [value]="guarantee.id">{{ guarantee.brand }} {{guarantee.model}}</option>
-
         </select>
       </div>
       <div class="modal-footer bg-dark bg-gradient">

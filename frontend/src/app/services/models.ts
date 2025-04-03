@@ -4,6 +4,7 @@
 
 export { ApiResponse } from './models/api-response';
 export { AuthenticationResponse } from './models/authentication-response';
+export { ChangePasswordRequest } from './models/change-password-request';
 export { CreateUserRequest } from './models/create-user-request';
 export { GuaranteeResponse } from './models/guarantee-response';
 export { ImageResponse } from './models/image-response';

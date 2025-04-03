@@ -19,7 +19,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-light" href="#" data-bs-toggle="modal" data-bs-target="#addGuaranteeModal" (click)="isModalVisible=true">
+        <a class="nav-link text-light" href="#" data-bs-toggle="modal" data-bs-target="#addGuaranteeModal" (click)="isAddGuaranteeModalVisible=true">
           <i class="fas fa-plus me-1"></i> Add warranty
         </a>
       </li>
@@ -45,14 +45,7 @@
         >
         <i class="fas fa-user me-1"></i> Your profile
         </a>
-
-
-
         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownProfileLink">
-
-
-
-
           <li>
             <a class="dropdown-item" routerLink="/profile">{{firstName}} {{lastName}}</a>
           </li>
@@ -94,6 +87,11 @@
       </li>
     </ul>
   </div>
+  <app-change-password
+    *ngIf="isChangePasswordModalOpen"
+    (closeModal)="isChangePasswordModalOpen = false">
+
+  </app-change-password>
   <app-delete-guarantee
     *ngIf="isDeleteGuaranteeModalOpen"
     (closeModal)="isDeleteGuaranteeModalOpen = false">

@@ -1,6 +1,5 @@
 package com.marcinsz.backend.user;
 
-import com.marcinsz.backend.response.ApiResponse;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
 import com.marcinsz.backend.response.UserActivationResponse;
@@ -9,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-
-    @PostMapping("/password")
-    public ResponseEntity<ApiResponse> changePassword(Authentication connectedUser,
-                                                      @RequestParam String oldPassword,
-                                                      @RequestParam String newPassword,
-                                                      @RequestParam String confirmPassword) {
-        userService.changePassword(connectedUser, oldPassword, newPassword, confirmPassword);
-        return ResponseEntity.accepted().body(ApiResponse.builder()
-                        .statusCode(HttpStatus.ACCEPTED.value())
-                        .message("The password have been changed.")
-                .build());
-    }
 
     @GetMapping("/by-username")
     public ResponseEntity<UserDto> getUserByUsername(@RequestParam String username) {
