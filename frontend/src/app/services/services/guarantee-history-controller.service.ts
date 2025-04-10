@@ -11,16 +11,98 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { addGuaranteeChange } from '../fn/guarantee-history-controller/add-guarantee-change';
+import { AddGuaranteeChange$Params } from '../fn/guarantee-history-controller/add-guarantee-change';
 import { ApiResponse } from '../models/api-response';
+import { deleteGuaranteeHistory } from '../fn/guarantee-history-controller/delete-guarantee-history';
+import { DeleteGuaranteeHistory$Params } from '../fn/guarantee-history-controller/delete-guarantee-history';
 import { getAllByGuaranteeStatus } from '../fn/guarantee-history-controller/get-all-by-guarantee-status';
 import { GetAllByGuaranteeStatus$Params } from '../fn/guarantee-history-controller/get-all-by-guarantee-status';
 import { getAllPositiveFeedbacks } from '../fn/guarantee-history-controller/get-all-positive-feedbacks';
 import { GetAllPositiveFeedbacks$Params } from '../fn/guarantee-history-controller/get-all-positive-feedbacks';
+import { getAllUserGuaranteesHistories } from '../fn/guarantee-history-controller/get-all-user-guarantees-histories';
+import { GetAllUserGuaranteesHistories$Params } from '../fn/guarantee-history-controller/get-all-user-guarantees-histories';
+import { PageGuaranteeHistoryResponse } from '../models/page-guarantee-history-response';
 
 @Injectable({ providedIn: 'root' })
 export class GuaranteeHistoryControllerService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getAllUserGuaranteesHistories()` */
+  static readonly GetAllUserGuaranteesHistoriesPath = '/api/guarantee-history';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllUserGuaranteesHistories()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllUserGuaranteesHistories$Response(params?: GetAllUserGuaranteesHistories$Params, context?: HttpContext): Observable<StrictHttpResponse<PageGuaranteeHistoryResponse>> {
+    return getAllUserGuaranteesHistories(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllUserGuaranteesHistories$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllUserGuaranteesHistories(params?: GetAllUserGuaranteesHistories$Params, context?: HttpContext): Observable<PageGuaranteeHistoryResponse> {
+    return this.getAllUserGuaranteesHistories$Response(params, context).pipe(
+      map((r: StrictHttpResponse<PageGuaranteeHistoryResponse>): PageGuaranteeHistoryResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `addGuaranteeChange()` */
+  static readonly AddGuaranteeChangePath = '/api/guarantee-history';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addGuaranteeChange()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  addGuaranteeChange$Response(params: AddGuaranteeChange$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return addGuaranteeChange(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addGuaranteeChange$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  addGuaranteeChange(params: AddGuaranteeChange$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.addGuaranteeChange$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `deleteGuaranteeHistory()` */
+  static readonly DeleteGuaranteeHistoryPath = '/api/guarantee-history';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteGuaranteeHistory()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteGuaranteeHistory$Response(params: DeleteGuaranteeHistory$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return deleteGuaranteeHistory(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deleteGuaranteeHistory$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteGuaranteeHistory(params: DeleteGuaranteeHistory$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.deleteGuaranteeHistory$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
+    );
   }
 
   /** Path part for operation `getAllByGuaranteeStatus()` */

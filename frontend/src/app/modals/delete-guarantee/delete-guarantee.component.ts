@@ -51,6 +51,10 @@ export class DeleteGuaranteeComponent implements OnInit{
   }
 
   deleteGuarantee(){
+    const confirmDelete = window.confirm("Are you sure?");
+    if (!confirmDelete){
+      return;
+    }
     this.guaranteeService.deleteGuarantee({
       guaranteeId:this.selectedGuaranteeIdToDelete
     }).subscribe({

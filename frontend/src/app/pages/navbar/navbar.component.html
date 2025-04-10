@@ -87,11 +87,16 @@
       </li>
     </ul>
   </div>
+  <app-delete-account
+    *ngIf="isDeleteAccountModalOpen"
+    (closeModal)="isDeleteAccountModalOpen = false">
+  </app-delete-account>
+
   <app-change-password
     *ngIf="isChangePasswordModalOpen"
     (closeModal)="isChangePasswordModalOpen = false">
-
   </app-change-password>
+
   <app-delete-guarantee
     *ngIf="isDeleteGuaranteeModalOpen"
     (closeModal)="isDeleteGuaranteeModalOpen = false">
@@ -102,6 +107,9 @@
     (preferenceChanged)="updatePreference($event)"
     (closeModal)="isPreferenceModalOpen = false">
   </app-change-preference>
-  <app-add-guarantee></app-add-guarantee>
+
+  <app-add-guarantee>
+
+  </app-add-guarantee>
 </nav>
 

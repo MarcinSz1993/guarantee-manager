@@ -13,7 +13,10 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { activateUser } from '../fn/user-controller/activate-user';
 import { ActivateUser$Params } from '../fn/user-controller/activate-user';
+import { ApiResponse } from '../models/api-response';
 import { AuthenticationResponse } from '../models/authentication-response';
+import { deleteUser } from '../fn/user-controller/delete-user';
+import { DeleteUser$Params } from '../fn/user-controller/delete-user';
 import { getUserByEmail } from '../fn/user-controller/get-user-by-email';
 import { GetUserByEmail$Params } from '../fn/user-controller/get-user-by-email';
 import { getUserByUsername } from '../fn/user-controller/get-user-by-username';
@@ -79,6 +82,31 @@ export class UserControllerService extends BaseService {
   register(params: Register$Params, context?: HttpContext): Observable<RegistrationResponse> {
     return this.register$Response(params, context).pipe(
       map((r: StrictHttpResponse<RegistrationResponse>): RegistrationResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `deleteUser()` */
+  static readonly DeleteUserPath = '/api/users';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteUser$Response(params?: DeleteUser$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+    return deleteUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deleteUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteUser(params?: DeleteUser$Params, context?: HttpContext): Observable<ApiResponse> {
+    return this.deleteUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
     );
   }
 

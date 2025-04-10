@@ -167,6 +167,24 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "deleteUser",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/users/login": {
@@ -476,6 +494,105 @@
         "parameters": [
           {
             "name": "guaranteeId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/guarantee-history": {
+      "get": {
+        "tags": [
+          "guarantee-history-controller"
+        ],
+        "operationId": "getAllUserGuaranteesHistories",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageGuaranteeHistoryResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "guarantee-history-controller"
+        ],
+        "operationId": "addGuaranteeChange",
+        "parameters": [
+          {
+            "name": "createGuaranteeHistoryRequest",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CreateGuaranteeHistoryRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "guarantee-history-controller"
+        ],
+        "operationId": "deleteGuaranteeHistory",
+        "parameters": [
+          {
+            "name": "guaranteeHistoryId",
             "in": "query",
             "required": true,
             "schema": {
@@ -946,6 +1063,37 @@
           }
         }
       },
+      "CreateGuaranteeHistoryRequest": {
+        "type": "object",
+        "properties": {
+          "guaranteeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "guaranteeStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "EXPIRED",
+              "PENDING",
+              "REJECTED",
+              "APPROVED"
+            ]
+          },
+          "notes": {
+            "type": "string"
+          },
+          "positiveFeedback": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "guaranteeId",
+          "guaranteeStatus",
+          "notes",
+          "positiveFeedback"
+        ]
+      },
       "PageGuaranteeResponse": {
         "type": "object",
         "properties": {
@@ -974,9 +1122,8 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "first": {
             "type": "boolean"
@@ -984,8 +1131,9 @@
           "last": {
             "type": "boolean"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "empty": {
             "type": "boolean"
@@ -1002,18 +1150,18 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
           },
-          "paged": {
-            "type": "boolean"
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           },
           "unpaged": {
+            "type": "boolean"
+          },
+          "paged": {
             "type": "boolean"
           }
         }
@@ -1024,10 +1172,10 @@
           "empty": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           }
         }
@@ -1067,6 +1215,97 @@
             ]
           },
           "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "GuaranteeHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "guaranteeStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "EXPIRED",
+              "PENDING",
+              "REJECTED",
+              "APPROVED"
+            ]
+          },
+          "kindOfProduct": {
+            "type": "string",
+            "enum": [
+              "ELECTRONICS",
+              "CARS",
+              "CLOTHES",
+              "SERVICES",
+              "OTHER"
+            ]
+          },
+          "changeTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "positiveFeedback": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageGuaranteeHistoryResponse": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GuaranteeHistoryResponse"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "empty": {
             "type": "boolean"
           }
         }

@@ -11,10 +11,10 @@ import { UserControllerService } from './services/user-controller.service';
 import { PasswordControllerService } from './services/password-controller.service';
 import { NotificationControllerService } from './services/notification-controller.service';
 import { ImageControllerService } from './services/image-controller.service';
+import { GuaranteeHistoryControllerService } from './services/guarantee-history-controller.service';
 import { EmailControllerService } from './services/email-controller.service';
 import { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';
 import { LogoControllerService } from './services/logo-controller.service';
-import { GuaranteeHistoryControllerService } from './services/guarantee-history-controller.service';
 import { DemoControllerService } from './services/demo-controller.service';
 
 /**
@@ -30,10 +30,10 @@ import { DemoControllerService } from './services/demo-controller.service';
     PasswordControllerService,
     NotificationControllerService,
     ImageControllerService,
+    GuaranteeHistoryControllerService,
     EmailControllerService,
     DashboardNotificationControllerService,
     LogoControllerService,
-    GuaranteeHistoryControllerService,
     DemoControllerService,
     ApiConfiguration
   ],

@@ -6,6 +6,7 @@ import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {ActivateAccountComponent} from './pages/activate-account/activate-account.component';
 import {NotificationComponent} from './pages/notification/notification.component';
 import {StatsComponent} from './pages/stats/stats.component';
+import {ArchiveComponent} from './pages/archive/archive.component';
 
 export const routes: Routes = [
   {
@@ -35,5 +36,9 @@ export const routes: Routes = [
   {
     path: "stats",
     component: StatsComponent
+  },
+  {
+    path: "archive",
+    component: ArchiveComponent
   }
 ];

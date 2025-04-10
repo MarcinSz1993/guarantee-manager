@@ -1,5 +1,6 @@
 package com.marcinsz.backend.user;
 
+import com.marcinsz.backend.response.ApiResponse;
 import com.marcinsz.backend.response.AuthenticationResponse;
 import com.marcinsz.backend.response.RegistrationResponse;
 import com.marcinsz.backend.response.UserActivationResponse;
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +19,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+
+    @DeleteMapping
+    public ResponseEntity<ApiResponse> deleteUser(Authentication connectedUser){
+        userService.deleteAccount(connectedUser);
+        return ResponseEntity.ok().body(ApiResponse.builder()
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Your account has been deleted")
+                .build());
+    }
 
     @GetMapping("/by-username")
     public ResponseEntity<UserDto> getUserByUsername(@RequestParam String username) {

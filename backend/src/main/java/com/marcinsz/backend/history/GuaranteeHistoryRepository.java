@@ -1,6 +1,8 @@
 package com.marcinsz.backend.history;
 
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,4 +21,7 @@ public interface GuaranteeHistoryRepository extends JpaRepository<GuaranteeHisto
                                              @Param("userId") Long userId);
 
     Integer countAllByStatusAndUserId(GuaranteeStatus guaranteeStatus, Long userId);
+
+    Page<GuaranteeHistory> findAllByUserId(Long userId, Pageable pageable);
+
 }

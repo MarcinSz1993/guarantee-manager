@@ -28,6 +28,10 @@ public class UserService {
     private final UserActivationTokenService userActivationTokenService;
 
 
+    public void deleteAccount(Authentication connectedUser){
+        User user = (User) connectedUser.getPrincipal();
+        userRepository.delete(user);
+    }
 
     public RegistrationResponse register(CreateUserRequest createUserRequest) throws MessagingException {
         validateNewUser(createUserRequest);

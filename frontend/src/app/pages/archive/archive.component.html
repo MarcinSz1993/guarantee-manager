@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <h2 class="text-center text-info fw-bold d-flex align-items-center justify-content-center">
+    <i class="fas fa-archive me-2"></i> Archive - Guarantees History
+    <button class="btn btn-sm btn-outline-success rounded-circle ms-2" (click)="openModal()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </h2>
+
+  <div class="table-responsive shadow rounded-3">
+    <table class="table table-hover align-middle table-bordered bg-white mb-0">
+      <thead class="table-dark">
+      <tr class="text-center">
+        <th scope="col">Data</th>
+        <th scope="col">Product</th>
+        <th scope="col">Type</th>
+        <th scope="col">Status</th>
+        <th scope="col">Feedback</th>
+        <th scope="col">Note</th>
+        <th scope="col">
+          <i class="fa fa-trash-can"></i>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let history of allGuaranteesHistories.content" class="text-center">
+        <td>{{history.changeTime | date: 'dd MMMM yyyy, HH:mm'}}</td>
+        <td>
+          <span class="fw-semibold">{{ history.brand }} {{ history.model }}</span>
+        </td>
+        <td>
+          <span class="badge bg-secondary">{{ history.kindOfProduct }}</span>
+        </td>
+        <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': history.guaranteeStatus === 'APPROVED',
+                'bg-warning text-dark': history.guaranteeStatus === 'EXPIRED',
+                'bg-info': history.guaranteeStatus === 'PENDING',
+                'bg-danger': history.guaranteeStatus === 'REJECTED'
+              }"
+            >
+              {{ history.guaranteeStatus }}
+            </span>
+        </td>
+        <td>
+          <i
+            [ngClass]="{
+                'fas fa-frown text-danger': !history.positiveFeedback,
+                'far fa-smile text-success': history.positiveFeedback
+              }"
+          ></i>
+        </td>
+        <td>{{ history.notes || '–' }}</td>
+        <td>
+          <button class="btn p-0 border-0 bg-transparent" type="submit" (click)="deleteGuaranteeHistory(history.id!)">
+            <i class="fas fa-minus-circle text-danger" ></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav *ngIf="totalPages > 1" aria-label="Guarantees pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="previousPage()" [disabled]="currentPage === 1">Previous</button>
+      </li>
+      <li class="page-item mx-1 disabled">
+        <span class="page-link page-info">Page {{ currentPage }} / {{ totalPages }}</span>
+      </li>
+
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      </li>
+    </ul>
+  </nav>
+  <div class="text-center">
+
+  </div>
+</div>
+
+<app-add-history
+  *ngIf="isAddGuaranteeModalVisible"
+  (closeModalEvent)="closeModal()"
+  (addedGuaranteeHistory)="onSubmitData()">
+</app-add-history>

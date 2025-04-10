@@ -9,6 +9,7 @@ import {ChangePreferenceComponent} from '../../modals/change-preference/change-p
 import {DeleteGuaranteeComponent} from '../../modals/delete-guarantee/delete-guarantee.component';
 import {UserStateService} from '../../own_services/user-state-service.service';
 import {ChangePasswordComponent} from '../../modals/change-password/change-password.component';
+import {DeleteAccountComponent} from '../../modals/delete-account/delete-account.component';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,8 @@ import {ChangePasswordComponent} from '../../modals/change-password/change-passw
     AddGuaranteeComponent,
     ChangePreferenceComponent,
     DeleteGuaranteeComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    DeleteAccountComponent
   ],
   templateUrl: './navbar.component.html',
   standalone: true,
@@ -35,6 +37,7 @@ export class NavbarComponent implements OnInit{
 
   isDeleteGuaranteeModalOpen = false;
   isChangePasswordModalOpen = false;
+  isDeleteAccountModalOpen = false;
 
   firstName:string = '';
   lastName:string = '';
@@ -82,7 +85,15 @@ export class NavbarComponent implements OnInit{
   }
 
   onDeleteAccount() {
+    this.isDeleteAccountModalOpen = true;
+  }
 
+  // closeModal(modalName:string){
+  //   this[modalName] = false;
+  // }
+
+  confirmDeleteAccount(){
+    console.log("Account deleted");
   }
 
 }

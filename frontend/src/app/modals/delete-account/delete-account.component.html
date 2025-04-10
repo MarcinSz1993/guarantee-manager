@@ -1,0 +1,17 @@
+<div class="modal fade show d-block" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header text-bg-danger bg-gradient">
+        <h5 class="modal-title">Delete Account</h5>
+        <button type="button" class="btn-close" (click)="onClose()"></button>
+      </div>
+      <div class="modal-body text-bg-danger bg-gradient">
+        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer text-bg-danger bg-gradient">
+        <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
+        <button class="btn btn-danger" (click)="deleteAccount()">Delete Account</button>
+      </div>
+    </div>
+  </div>
+</div>
