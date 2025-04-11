@@ -1,5 +1,5 @@
-<div class="modal fade show d-block" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered modal-sm">
+<div class="modal fade show d-block" tabindex="-1" (click)="onClose()">
+  <div class="modal-dialog modal-dialog-centered modal-sm" (click)="$event.stopPropagation()">
     <div class="modal-content">
       <div class="modal-header bg-danger bg-gradient">
         <h5 class="modal-title">Delete guarantee</h5>

@@ -6,6 +6,7 @@ import {ApiResponse} from '../../services/models/api-response';
 import {TokenService} from '../../own_services/token.service';
 import {UserDto} from '../../services/models/user-dto';
 import {ToastrService} from 'ngx-toastr';
+import {UserStateService} from '../../own_services/user-state-service.service';
 
 @Component({
   selector: 'app-change-preference',
@@ -35,7 +36,8 @@ export class ChangePreferenceComponent implements OnInit{
     private notificationService: NotificationControllerService,
     private userService: UserControllerService,
     private tokenService: TokenService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private userStateService: UserStateService
   ) {
   }
 
@@ -46,12 +48,17 @@ export class ChangePreferenceComponent implements OnInit{
         this.getUserPreference();
     }
 
+    onClose(){
+    this.closeModal.emit();
+    }
+
   savePreference(notificationPreference: 'EMAIL'|'DASHBOARD'|'ALL'){
     this.notificationService.chooseNotificationPreference({
       notificationPreference
     }) .subscribe({
       next:(result)=>{
         this.choosePreferenceResponse = result;
+        this.userStateService.updatePreference(this.selectedPreference);
         this.toastrService.success(result.message,'',{
           positionClass: 'toast-center-center'
         });
@@ -74,6 +81,7 @@ export class ChangePreferenceComponent implements OnInit{
     }).subscribe({
       next:(result)=> {
         this.userDto = result;
+        this.currentPreference = result.notificationPreference as string;
         this.userEmail = this.userDto.notificationPreference as 'EMAIL'|'DASHBOARD'|'ALL';
       },
       error: (err) => {
@@ -81,4 +89,6 @@ export class ChangePreferenceComponent implements OnInit{
       }
     });
   }
+
+  protected readonly close = close;
 }

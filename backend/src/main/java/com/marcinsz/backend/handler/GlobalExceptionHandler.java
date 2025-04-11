@@ -98,6 +98,12 @@ public class GlobalExceptionHandler {
                 buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
     }
 
+    @ExceptionHandler(MissingFieldException.class)
+    public ResponseEntity<ExceptionResponse> missingFieldExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         List<String> errorMessages = ex.getConstraintViolations()

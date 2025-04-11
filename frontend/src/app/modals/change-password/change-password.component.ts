@@ -50,13 +50,20 @@ export class ChangePasswordComponent {
         this.onClose();
       },
       error:(err)=>{
+        const errors = err.error.errors;
+        if (errors){
+          const firstErrorMsg = Object.values(errors)[0] as string;
+          this.toastrService.error(firstErrorMsg, '', {
+            positionClass: 'toast-center-center'
+          });
+          return;
+        }
+
         this.errorMsg = err.error.message;
         this.toastrService.error(this.errorMsg,'',{
           positionClass: 'toast-center-center'
         })
       }
     });
-
   }
-
 }

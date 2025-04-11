@@ -1,6 +1,7 @@
 package com.marcinsz.backend.password;
 
 import com.marcinsz.backend.exception.InvalidPasswordException;
+import com.marcinsz.backend.exception.MissingFieldException;
 import com.marcinsz.backend.user.User;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,10 @@ public class PasswordService {
     }
 
     private void validateOldAndNewPassword(ChangePasswordRequest changePasswordRequest, User user) {
+        if (changePasswordRequest.getNewPassword() == null || changePasswordRequest.getOldPassword() == null
+        || changePasswordRequest.getConfirmPassword() == null){
+            throw new MissingFieldException("Please fill all fields");
+        }
         if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword()))
         {
             throw new InvalidPasswordException("The old password is incorrect");

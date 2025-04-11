@@ -103,11 +103,4 @@ export class ArchiveComponent implements OnInit{
     this.currentPage++;
     this.fetchGuaranteesHistories();
   }
-
-  goToPage(page: number) {
-    if (page !== this.currentPage) {
-      this.currentPage = page;
-      this.fetchGuaranteesHistories();
-    }
-  }
 }

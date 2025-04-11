@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit{
   isAddGuaranteeModalVisible = false;
   isCollapsed: boolean = true;
   isPreferenceModalOpen = false;
-  currentPreference = 'ALL'
+  currentPreference = '';
 
   isDeleteGuaranteeModalOpen = false;
   isChangePasswordModalOpen = false;

@@ -76,15 +76,15 @@
         <addUniqueConstraint columnNames="username" constraintName="uc_users_username" tableName="users"/>
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="activation_token"
                                  constraintName="FK_ACTIVATION_TOKEN_ON_USER" referencedColumnNames="id"
-                                 referencedTableName="users"/>
+                                 referencedTableName="users" onDelete="CASCADE"/>
         <addForeignKeyConstraint baseColumnNames="guarantee_id" baseTableName="guarantee_history"
                                  constraintName="FK_GUARANTEE_HISTORY_ON_GUARANTEE" referencedColumnNames="id"
-                                 referencedTableName="guarantee"/>
+                                 referencedTableName="guarantee" onDelete="CASCADE"/>
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee_history"
                                  constraintName="FK_GUARANTEE_HISTORY_ON_USER" referencedColumnNames="id"
-                                 referencedTableName="users"/>
+                                 referencedTableName="users" onDelete="CASCADE"/>
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="guarantee"
                                  constraintName="FK_GUARANTEE_ON_USER" referencedColumnNames="id"
-                                 referencedTableName="users"/>
+                                 referencedTableName="users" onDelete="CASCADE"/>
     </changeSet>
 </databaseChangeLog>

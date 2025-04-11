@@ -1,12 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {
   DashboardNotificationControllerService
 } from '../../services/services/dashboard-notification-controller.service';
 import {GuaranteeResponse} from '../../services/models/guarantee-response';
 import {GuaranteeCardComponent} from '../guarantee-card/guarantee-card.component';
 import {RouterLink} from '@angular/router';
+import {UserStateService} from '../../own_services/user-state-service.service';
 
 @Component({
   selector: 'app-notification',
@@ -15,7 +16,8 @@ import {RouterLink} from '@angular/router';
     NgForOf,
     GuaranteeCardComponent,
     NgIf,
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './notification.component.html',
   standalone: true,
@@ -24,16 +26,21 @@ import {RouterLink} from '@angular/router';
 export class NotificationComponent implements OnInit{
   totalPages:number = 0;
   guaranteeResponse: GuaranteeResponse[] = [];
+  userPreference: string = '';
+
 
 
   constructor(
-    private dashboardNotificationService: DashboardNotificationControllerService
+    private dashboardNotificationService: DashboardNotificationControllerService,
+    protected userStateService: UserStateService
   ) {
   }
 
   ngOnInit(): void {
-        this.fetchNotifications();
-    }
+    this.fetchNotifications();
+    this.userPreference = this.userStateService.getUserPreference() as string;
+    console.log('Preferencja: '+this.userPreference);
+  }
 
 
   fetchNotifications() {
