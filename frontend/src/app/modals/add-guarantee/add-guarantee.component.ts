@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {GuaranteeResponse} from '../../services/models/guarantee-response';
 import {GuaranteeControllerService} from '../../services/services/guarantee-controller.service';
 import {ToastrService} from 'ngx-toastr';
 import {NgForOf, NgIf} from '@angular/common';
+import {AddGuaranteeRequest} from '../../services/models/add-guarantee-request';
 
 @Component({
   selector: 'app-add-guarantee',
@@ -18,23 +19,26 @@ import {NgForOf, NgIf} from '@angular/common';
 })
 export class AddGuaranteeComponent {
 
-  errorMsg:string = '';
-   brand: string = '';
-   model:string = '';
-   notes:string = '';
-   kindOfProduct: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER' = 'ELECTRONICS';
-   startDate:string = '';
-   endDate:string = '';
-   selectedFile:File | null = null;
-
-  deviceTypes = ['ELECTRONICS', 'CARS', 'CLOTHES', 'SERVICES', 'OTHER'];
-
-   guarantee: GuaranteeResponse = {};
+  @Output()
+  closeModal = new EventEmitter<void>();
+  errorMsg = '';
+  productTypes = ['ELECTRONICS', 'CARS', 'CLOTHES', 'SERVICES', 'OTHER'];
+  guarantee: GuaranteeResponse = {};
   isModalVisible: boolean = true;
+  selectedFile:File | null = null;
+  addGuaranteeRequest: AddGuaranteeRequest = {
+    brand: '',
+    model: '',
+    notes: '',
+    kindOfProduct: 'ELECTRONICS',
+    startDate: '',
+    endDate: '',
+  };
+
 
   constructor(
     private guaranteeService:GuaranteeControllerService,
-    private toastr: ToastrService,
+    private toastrService: ToastrService,
   ) {
   }
 
@@ -44,24 +48,36 @@ export class AddGuaranteeComponent {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('data', new Blob([JSON.stringify(this.addGuaranteeRequest)], { type: 'application/json' }));
+
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+    }
+
     this.guaranteeService.addGuarantee({
-      brand: this.brand,
-      model: this.model,
-      notes: this.notes,
-      kindOfProduct: this.kindOfProduct,
-      startDate: this.startDate,
-      endDate: this.endDate,
-      body: { file: this.selectedFile }
+      body:{
+        file: this.selectedFile,
+        data: this.addGuaranteeRequest
+      }
     }).subscribe({
       next: () => {
-        this.toastr.success("Guarantee added successfully!",'',{
+        this.toastrService.success("Guarantee added successfully!", '', {
           positionClass: 'toast-center-center'
-        })
-        this.closeModal();
+        });
+        this.onClose();
       },
       error: (err) => {
+        const validationErrors = err.error?.errors;
+        if(validationErrors){
+          this.errorMsg = Object.values(validationErrors)[0] as string;
+          this.toastrService.error(this.errorMsg,'',{
+            positionClass: 'toast-center-center'
+          });
+          return;
+        }
         this.errorMsg = err.error.message;
-        this.toastr.error(this.errorMsg,'',{
+        this.toastrService.error(this.errorMsg, '', {
           positionClass: 'toast-center-center'
         });
       }
@@ -74,13 +90,17 @@ export class AddGuaranteeComponent {
       this.selectedFile = input.files[0];
     }
   }
-  closeModal(){
-    this.isModalVisible = false;
-    document.body.classList.remove('modal-open');
-    document.querySelector('.modal-backdrop')?.remove();
-  }
+  // closeModal(){
+  //   this.isModalVisible = false;
+  //   document.body.classList.remove('modal-open');
+  //   document.querySelector('.modal-backdrop')?.remove();
+  // }
 
   openModal(){
     this.isModalVisible = true;
+  }
+
+  onClose() {
+    this.closeModal.emit();
   }
 }

@@ -8,29 +8,19 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { AddGuaranteeRequest } from '../../models/add-guarantee-request';
 import { GuaranteeResponse } from '../../models/guarantee-response';
 
 export interface AddGuarantee$Params {
-  brand: string;
-  model: string;
-  notes: string;
-  kindOfProduct: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
-  startDate: string;
-  endDate: string;
       body?: {
-'file': File;
+'file': Blob;
+'data': AddGuaranteeRequest;
 }
 }
 
-export function addGuarantee(http: HttpClient, rootUrl: string, params: AddGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<GuaranteeResponse>> {
+export function addGuarantee(http: HttpClient, rootUrl: string, params?: AddGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<GuaranteeResponse>> {
   const rb = new RequestBuilder(rootUrl, addGuarantee.PATH, 'post');
   if (params) {
-    rb.query('brand', params.brand, {});
-    rb.query('model', params.model, {});
-    rb.query('notes', params.notes, {});
-    rb.query('kindOfProduct', params.kindOfProduct, {});
-    rb.query('startDate', params.startDate, {});
-    rb.query('endDate', params.endDate, {});
     rb.body(params.body, 'multipart/form-data');
   }
 

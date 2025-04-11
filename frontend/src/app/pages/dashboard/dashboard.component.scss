@@ -4,21 +4,54 @@
   color: white;
 }
 
-.pagination .page-item .page-link {
-  border-radius: 25px;
-  padding: 10px 20px;
-  font-weight: bold;
-  background-color: #007bff;
-  color: white;
+body, html {
+  height: 100%;
+  margin: 0;
 }
 
-.pagination .page-item .page-link:hover {
-  background-color: #0056b3;
-  color: white;
-
-  .pagination .page-item.disabled .page-link {
-    background-color: #e9ecef;
-    color: #6c757d;
-  }
+.dashboard-background {
+  background: linear-gradient(to bottom, #1a1a2e, #16213e);
+  min-height: 100vh;
 }
 
+.pagination .page-link {
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #f8f9fa;
+}
+
+.pagination .page-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: transparent;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #0dcaf0;
+  border-color: #0dcaf0;
+  color: #1a1a2e;
+}
+
+.page-info {
+  color: #adb5bd !important;
+}
+
+app-guarantee-card .card {
+  height: 100% !important;
+  background-color: #16213e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+app-guarantee-card .card-body {
+  display: flex;
+  flex-direction: column;
+}
+
+app-guarantee-card .card-text {
+  flex-grow: 1;
+}

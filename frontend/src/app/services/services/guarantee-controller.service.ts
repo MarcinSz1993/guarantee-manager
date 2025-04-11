@@ -121,7 +121,7 @@ export class GuaranteeControllerService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  addGuarantee$Response(params: AddGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<GuaranteeResponse>> {
+  addGuarantee$Response(params?: AddGuarantee$Params, context?: HttpContext): Observable<StrictHttpResponse<GuaranteeResponse>> {
     return addGuarantee(this.http, this.rootUrl, params, context);
   }
 
@@ -131,7 +131,7 @@ export class GuaranteeControllerService extends BaseService {
    *
    * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
    */
-  addGuarantee(params: AddGuarantee$Params, context?: HttpContext): Observable<GuaranteeResponse> {
+  addGuarantee(params?: AddGuarantee$Params, context?: HttpContext): Observable<GuaranteeResponse> {
     return this.addGuarantee$Response(params, context).pipe(
       map((r: StrictHttpResponse<GuaranteeResponse>): GuaranteeResponse => r.body)
     );

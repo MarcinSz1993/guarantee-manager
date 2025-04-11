@@ -15,7 +15,9 @@ export interface ChangePassword$Params {
       body: ChangePasswordRequest
 }
 
-export function changePassword(http: HttpClient, rootUrl: string, params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+export function changePassword(http: HttpClient, rootUrl: string, params: {
+  body: {}
+}, context?: HttpContext | undefined): Observable<StrictHttpResponse<ApiResponse>> {
   const rb = new RequestBuilder(rootUrl, changePassword.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');

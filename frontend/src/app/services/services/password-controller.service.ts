@@ -13,7 +13,6 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { ApiResponse } from '../models/api-response';
 import { changePassword } from '../fn/password-controller/change-password';
-import { ChangePassword$Params } from '../fn/password-controller/change-password';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordControllerService extends BaseService {
@@ -30,7 +29,9 @@ export class PasswordControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  changePassword$Response(params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+  changePassword$Response(params: {
+    body: {}
+  }, context?: HttpContext | undefined): Observable<StrictHttpResponse<ApiResponse>> {
     return changePassword(this.http, this.rootUrl, params, context);
   }
 
@@ -40,7 +41,7 @@ export class PasswordControllerService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  changePassword(params: ChangePassword$Params, context?: HttpContext): Observable<ApiResponse> {
+  changePassword(params: { body: {} }, context?: HttpContext): Observable<ApiResponse> {
     return this.changePassword$Response(params, context).pipe(
       map((r: StrictHttpResponse<ApiResponse>): ApiResponse => r.body)
     );

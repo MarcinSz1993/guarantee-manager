@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {NgClass, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgIf} from '@angular/common';
 import {GuaranteeResponse} from '../../services/models/guarantee-response';
 
 @Component({
@@ -8,7 +8,8 @@ import {GuaranteeResponse} from '../../services/models/guarantee-response';
   templateUrl: './guarantee-card.component.html',
   imports: [
     NgClass,
-    NgIf
+    NgIf,
+    DatePipe
   ],
   styleUrl: './guarantee-card.component.scss'
 })

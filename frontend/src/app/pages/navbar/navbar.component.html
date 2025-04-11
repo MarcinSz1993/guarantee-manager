@@ -108,8 +108,9 @@
     (closeModal)="isPreferenceModalOpen = false">
   </app-change-preference>
 
-  <app-add-guarantee>
-
+  <app-add-guarantee
+  *ngIf="isAddGuaranteeModalVisible"
+  (closeModal)="isAddGuaranteeModalVisible = false">
   </app-add-guarantee>
 </nav>
 

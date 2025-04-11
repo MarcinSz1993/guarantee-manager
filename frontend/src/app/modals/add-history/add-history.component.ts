@@ -47,6 +47,7 @@ export class AddHistoryComponent implements OnInit{
 
   fetchGuarantees(){
     this.guaranteeService.getAllUserGuarantees({
+      size:10
     }).subscribe({
       next:(result)=>{
         this.allGuarantees = result;

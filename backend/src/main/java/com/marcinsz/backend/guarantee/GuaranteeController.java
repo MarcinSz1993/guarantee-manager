@@ -1,9 +1,7 @@
 package com.marcinsz.backend.guarantee;
 
 import com.marcinsz.backend.response.ApiResponse;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -82,32 +80,14 @@ public class GuaranteeController {
         return ResponseEntity.ok(guaranteeService.getAllGuarantees(authentication,page,size));
     }
 
-    @PostMapping( consumes ={ MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<GuaranteeResponse> addGuarantee(
             Authentication authentication,
             @RequestPart("file") MultipartFile file,
-            @RequestParam @NotBlank(message = "Brand of the product is required!") String brand,
-            @RequestParam @NotBlank(message = "Model of the product is required!") String model,
-            @RequestParam String notes,
-            @RequestParam @NotNull(message = "This field is required!") Product kindOfProduct,
-            @RequestParam @NotNull(message = "Start date of guarantee is required!") LocalDate startDate,
-            @RequestParam @NotNull(message = "The end date of guarantee is required!")@Future(message = "The end date cannot be past or present!") LocalDate endDate
+            @RequestPart("data") @Valid AddGuaranteeRequest addGuaranteeRequest
     ) throws IOException {
-        AddGuaranteeRequest addGuaranteeRequest = createAddGuaranteeRequest(brand, model, notes, kindOfProduct, startDate, endDate);
-        GuaranteeResponse guaranteeResponse = guaranteeService.addGuarantee(authentication,addGuaranteeRequest, file);
+        GuaranteeResponse guaranteeResponse = guaranteeService.addGuarantee(authentication, addGuaranteeRequest, file);
         return ResponseEntity.ok(guaranteeResponse);
-    }
-
-    private AddGuaranteeRequest createAddGuaranteeRequest(String brand, String model, String notes,
-                                                          Product kindOfProduct, LocalDate startDate, LocalDate endDate) {
-        return AddGuaranteeRequest.builder()
-                .brand(brand)
-                .model(model)
-                .notes(notes)
-                .kindOfProduct(kindOfProduct)
-                .startDate(startDate)
-                .endDate(endDate)
-                .build();
     }
 }
 

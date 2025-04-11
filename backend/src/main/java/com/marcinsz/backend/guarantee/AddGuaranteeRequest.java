@@ -1,9 +1,6 @@
 package com.marcinsz.backend.guarantee;
 
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -14,16 +11,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddGuaranteeRequest {
-    @NotBlank
-    @NotEmpty
+    @NotEmpty(message = "Type brand of the product.")
     private String brand;
+    @NotEmpty(message = "Type model of the product.")
     private String model;
     private String notes;
-    @NotBlank
-    @NotEmpty
+    @NotNull(message = "Please select kind of product.")
     private Product kindOfProduct;
-    @FutureOrPresent
+    @FutureOrPresent(message = "Start day cannot be past.")
+    @NotNull(message = "Please type start date of the guarantee.")
     private LocalDate startDate;
-    @Future
+    @Future(message = "End date cannot be past or present. Only future days are allowed.")
+    @NotNull(message = "Please type end date of the guarantee.")
     private LocalDate endDate;
 }

@@ -396,65 +396,6 @@
           "guarantee-controller"
         ],
         "operationId": "addGuarantee",
-        "parameters": [
-          {
-            "name": "brand",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "model",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "notes",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "kindOfProduct",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ELECTRONICS",
-                "CARS",
-                "CLOTHES",
-                "SERVICES",
-                "OTHER"
-              ]
-            }
-          },
-          {
-            "name": "startDate",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          },
-          {
-            "name": "endDate",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "date"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -464,9 +405,13 @@
                   "file": {
                     "type": "string",
                     "format": "binary"
+                  },
+                  "data": {
+                    "$ref": "#/components/schemas/AddGuaranteeRequest"
                   }
                 },
                 "required": [
+                  "data",
                   "file"
                 ]
               }
@@ -992,7 +937,12 @@
           "confirmPassword": {
             "type": "string"
           }
-        }
+        },
+        "required": [
+          "confirmPassword",
+          "newPassword",
+          "oldPassword"
+        ]
       },
       "ApiResponse": {
         "type": "object",
@@ -1013,6 +963,42 @@
             "type": "string"
           }
         }
+      },
+      "AddGuaranteeRequest": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "kindOfProduct": {
+            "type": "string",
+            "enum": [
+              "ELECTRONICS",
+              "CARS",
+              "CLOTHES",
+              "SERVICES",
+              "OTHER"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "brand",
+          "kindOfProduct"
+        ]
       },
       "GuaranteeResponse": {
         "type": "object",
@@ -1122,8 +1108,9 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -1131,9 +1118,8 @@
           "last": {
             "type": "boolean"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "empty": {
             "type": "boolean"
@@ -1150,6 +1136,9 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
+          "paged": {
+            "type": "boolean"
+          },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
@@ -1160,9 +1149,6 @@
           },
           "unpaged": {
             "type": "boolean"
-          },
-          "paged": {
-            "type": "boolean"
           }
         }
       },
@@ -1172,10 +1158,10 @@
           "empty": {
             "type": "boolean"
           },
-          "unsorted": {
+          "sorted": {
             "type": "boolean"
           },
-          "sorted": {
+          "unsorted": {
             "type": "boolean"
           }
         }
@@ -1292,8 +1278,9 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "pageable": {
-            "$ref": "#/components/schemas/PageableObject"
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
           },
           "first": {
             "type": "boolean"
@@ -1301,9 +1288,8 @@
           "last": {
             "type": "boolean"
           },
-          "numberOfElements": {
-            "type": "integer",
-            "format": "int32"
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
           },
           "empty": {
             "type": "boolean"

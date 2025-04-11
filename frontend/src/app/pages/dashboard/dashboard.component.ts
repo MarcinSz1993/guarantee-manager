@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  prevPage(){
+  previousPage(){
     if (this.currentPage > 1){
       this.currentPage--;
       this.getAllUserGuarantees();
