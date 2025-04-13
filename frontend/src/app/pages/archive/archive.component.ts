@@ -5,6 +5,7 @@ import {PageGuaranteeHistoryResponse} from '../../services/models/page-guarantee
 import {AddHistoryComponent} from '../../modals/add-history/add-history.component';
 import {ApiResponse} from '../../services/models/api-response';
 import {ToastrService} from 'ngx-toastr';
+import {EmptyArchiveComponent} from '../empty-archive/empty-archive.component';
 
 @Component({
   selector: 'app-archive',
@@ -13,7 +14,8 @@ import {ToastrService} from 'ngx-toastr';
     NgClass,
     NgForOf,
     AddHistoryComponent,
-    NgIf
+    NgIf,
+    EmptyArchiveComponent
   ],
   templateUrl: './archive.component.html',
   standalone: true,
@@ -22,7 +24,7 @@ import {ToastrService} from 'ngx-toastr';
 export class ArchiveComponent implements OnInit{
   allGuaranteesHistories: PageGuaranteeHistoryResponse = {};
   errorMsg:string = '';
-  isAddGuaranteeModalVisible = false;
+  isAddGuaranteeHistoryModalVisible = false;
   deleteGuaranteeHistoryResponse: ApiResponse = {};
   currentPage:number = 1;
   totalPages:number = 0;
@@ -53,7 +55,7 @@ export class ArchiveComponent implements OnInit{
     }
 
   closeModal() {
-    this.isAddGuaranteeModalVisible = false;
+    this.isAddGuaranteeHistoryModalVisible = false;
   }
 
   onSubmitData() {
@@ -61,7 +63,7 @@ export class ArchiveComponent implements OnInit{
   }
 
   openModal() {
-    this.isAddGuaranteeModalVisible = true;
+    this.isAddGuaranteeHistoryModalVisible = true;
   }
 
   deleteGuaranteeHistory(guaranteeHistoryId: number) {

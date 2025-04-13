@@ -104,6 +104,12 @@ public class GlobalExceptionHandler {
                 buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
     }
 
+    @ExceptionHandler(InvalidInputException.class)
+    public ResponseEntity<ExceptionResponse> invalidInputExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         List<String> errorMessages = ex.getConstraintViolations()

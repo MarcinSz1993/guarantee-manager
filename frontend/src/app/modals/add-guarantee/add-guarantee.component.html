@@ -37,7 +37,7 @@
             <label for="receipt" class="form-label">Upload Receipt</label>
             <input type="file" id="receipt" class="form-control" (change)="onFileSelected($event)" name="file" required>
           </div>
-          <button type="submit" class="btn btn-success">Save Guarantee</button>
+          <button type="submit" class="btn btn-success" [disabled]="isSubmitting">{{ isSubmitting ? 'Saving...' : 'Save Guarantee' }}</button>
         </form>
       </div>
     </div>

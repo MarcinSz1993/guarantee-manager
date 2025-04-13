@@ -1,43 +1,48 @@
-<div class="container-fluid d-flex">
-  <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
-    <div class="card-header text-center text-bg-primary text-white">
-      <h3>Registration</h3>
+<div class="container-fluid login-page-background d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card p-4 shadow-lg border-0" style="max-width: 500px; width: 100%; background-color: rgba(255,255,255,0.03);">
+    <h2 class="text-center text-white mb-4">Create Account</h2>
+
+    <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length">
+      <p *ngFor="let msg of errorMsg">{{ msg }}</p>
     </div>
-    <div class="card-body">
-      <div class="alert alert-danger" role="alert" *ngIf="errorMsg.length">
-        <p *ngFor="let msg of errorMsg">{{msg}}</p>
+
+    <form>
+      <div class="mb-3">
+        <label for="firstname" class="form-label text-white">First name</label>
+        <input [(ngModel)]="registerRequest.firstName" type="text" id="firstname" name="firstname" class="form-control form-control-dark" placeholder="Enter your first name">
       </div>
-      <form>
-        <div class="mb-3">
-          <label for="firstname" class="form-label">First name</label>
-          <input [(ngModel)]="registerRequest.firstName" type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter your first name">
-        </div>
-        <div class="mb-3">
-          <label for="lastname" id="lastname" class="form-label">Last name</label>
-          <input [(ngModel)]="registerRequest.lastName" type="text" name="lastname" class="form-control" placeholder="Enter your last name">
-        </div>
-        <div class="mb-3">
-          <label for="username" class="form-label">Username</label>
-          <input [(ngModel)]="registerRequest.username" type="text" name="username" id="username" class="form-control" placeholder="Enter your username">
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input [(ngModel)]="registerRequest.password" type="password" name="password" id="password" class="form-control" placeholder="Enter your password">
-        </div>
-        <div class="mb-3">
-          <label for="confirmPassword" class="form-label">Confirm password</label>
-          <input [(ngModel)]="confirmPassword" name="confirmPassword" type="password" id="confirmPassword" class="form-control" placeholder="Confirm the password">
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address</label>
-          <input [(ngModel)]="registerRequest.email" name="email" type="email" id="email" class="form-control" placeholder="Enter your email address">
-        </div>
-        <button type="submit" class="btn btn-primary w-100" (click)="register()">Register</button>
-      </form>
-    </div>
-    <div class="card-footer text-center">
-      <p>Already have an account?</p>
-      <button type="button" class="btn btn-link" (click)="goToLoginPage()">Log in</button>
+
+      <div class="mb-3">
+        <label for="lastname" class="form-label text-white">Last name</label>
+        <input [(ngModel)]="registerRequest.lastName" type="text" id="lastname" name="lastname" class="form-control form-control-dark" placeholder="Enter your last name">
+      </div>
+
+      <div class="mb-3">
+        <label for="username" class="form-label text-white">Username</label>
+        <input [(ngModel)]="registerRequest.username" type="text" id="username" name="username" class="form-control form-control-dark" placeholder="Choose a username">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label text-white">Password</label>
+        <input [(ngModel)]="registerRequest.password" type="password" id="password" name="password" class="form-control form-control-dark" placeholder="Create a password">
+      </div>
+
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label text-white">Confirm Password</label>
+        <input [(ngModel)]="confirmPassword" type="password" id="confirmPassword" name="confirmPassword" class="form-control form-control-dark" placeholder="Repeat the password">
+      </div>
+
+      <div class="mb-4">
+        <label for="email" class="form-label text-white">Email</label>
+        <input [(ngModel)]="registerRequest.email" type="email" id="email" name="email" class="form-control form-control-dark" placeholder="Enter your email">
+      </div>
+
+      <button type="submit" class="btn btn-info w-100 fw-bold" (click)="register()">Register</button>
+    </form>
+
+    <div class="text-center text-white mt-4">
+      <small>Already have an account?</small><br>
+      <button type="button" class="btn btn-outline-light btn-sm mt-2" (click)="goToLoginPage()">Log in</button>
     </div>
   </div>
 </div>

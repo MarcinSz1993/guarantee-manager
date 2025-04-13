@@ -5,6 +5,8 @@ import {GuaranteeControllerService} from '../../services/services/guarantee-cont
 import {ToastrService} from 'ngx-toastr';
 import {NgForOf, NgIf} from '@angular/common';
 import {AddGuaranteeRequest} from '../../services/models/add-guarantee-request';
+import {GuaranteeModalService} from '../../own_services/guarantee-modal.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-add-guarantee',
@@ -18,13 +20,11 @@ import {AddGuaranteeRequest} from '../../services/models/add-guarantee-request';
   styleUrl: './add-guarantee.component.scss'
 })
 export class AddGuaranteeComponent {
-
   @Output()
   closeModal = new EventEmitter<void>();
   errorMsg = '';
   productTypes = ['ELECTRONICS', 'CARS', 'CLOTHES', 'SERVICES', 'OTHER'];
   guarantee: GuaranteeResponse = {};
-  isModalVisible: boolean = true;
   selectedFile:File | null = null;
   addGuaranteeRequest: AddGuaranteeRequest = {
     brand: '',
@@ -34,15 +34,21 @@ export class AddGuaranteeComponent {
     startDate: '',
     endDate: '',
   };
+  isSubmitting = false;
 
 
   constructor(
     private guaranteeService:GuaranteeControllerService,
     private toastrService: ToastrService,
+    private guaranteeModalService: GuaranteeModalService
   ) {
   }
 
   addGuarantee() {
+    if (this.isSubmitting){
+      return;
+    }
+    this.isSubmitting = true;
     if (!this.selectedFile) {
       alert("Please select a file before submitting!");
       return;
@@ -60,11 +66,14 @@ export class AddGuaranteeComponent {
         file: this.selectedFile,
         data: this.addGuaranteeRequest
       }
-    }).subscribe({
+    }).pipe(
+      finalize(()=> this.isSubmitting =false)
+    ).subscribe({
       next: () => {
         this.toastrService.success("Guarantee added successfully!", '', {
           positionClass: 'toast-center-center'
         });
+        this.guaranteeModalService.notifyGuaranteeAdded();
         this.onClose();
       },
       error: (err) => {
@@ -89,15 +98,6 @@ export class AddGuaranteeComponent {
     if (input?.files?.length) {
       this.selectedFile = input.files[0];
     }
-  }
-  // closeModal(){
-  //   this.isModalVisible = false;
-  //   document.body.classList.remove('modal-open');
-  //   document.querySelector('.modal-backdrop')?.remove();
-  // }
-
-  openModal(){
-    this.isModalVisible = true;
   }
 
   onClose() {

@@ -1,6 +1,7 @@
 package com.marcinsz.backend.guarantee;
 
 import com.marcinsz.backend.exception.GuaranteeNotFoundException;
+import com.marcinsz.backend.exception.InvalidInputException;
 import com.marcinsz.backend.image.ImageResponse;
 import com.marcinsz.backend.image.ImageService;
 import com.marcinsz.backend.mapper.GuaranteeMapper;
@@ -89,6 +90,9 @@ public class GuaranteeService {
                                           AddGuaranteeRequest addGuaranteeRequest,
                                           MultipartFile receiptImage) throws IOException {
 
+        if (addGuaranteeRequest.getStartDate().isAfter(addGuaranteeRequest.getEndDate())) {
+            throw new InvalidInputException("Start date cannot be after end date");
+        }
         User user = extractUserFromAuthentication(authentication);
         ImageResponse imageResponse = imageService.uploadReceiptImage(receiptImage);
         Guarantee guarantee = createGuaranteeFromMethodArguments(addGuaranteeRequest, imageResponse, user);

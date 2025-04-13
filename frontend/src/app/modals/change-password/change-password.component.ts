@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PasswordControllerService} from '../../services/services/password-controller.service';
 import {ApiResponse} from '../../services/models/api-response';
 import {ToastrService} from 'ngx-toastr';
+import {ChangePasswordRequest} from '../../services/models/change-password-request';
 
 @Component({
   selector: 'app-change-password',
@@ -23,7 +24,11 @@ export class ChangePasswordComponent {
   @Output()
   closeModal = new EventEmitter<void>();
 
-  changePasswordRequest: {} = {};
+  changePasswordRequest: ChangePasswordRequest = {
+    oldPassword:'',
+    newPassword: '',
+    confirmPassword: ''
+  };
   changePasswordResponse:ApiResponse = {};
   errorMsg:string = '';
 

@@ -3,7 +3,7 @@
   <p>If you want to see notifications here, please change your preference to DASHBOARD or ALL.</p>
 </div>
 
-<ng-container *ngIf="userPreference !== 'EMAIL'">
+<div *ngIf="userPreference !== 'EMAIL'">
   <div *ngIf="guaranteeResponse.length === 0" class="container-fluid vh-100-20 text-center mt-0">
     <h2>All your guarantees have long expire time.</h2>
   </div>
@@ -22,4 +22,4 @@
       </div>
     </div>
   </div>
-</ng-container>
+</div>

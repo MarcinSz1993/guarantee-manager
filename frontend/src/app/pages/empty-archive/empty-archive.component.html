@@ -1,0 +1,33 @@
+<div class="container-fluid py-4 text-light" style="min-height: calc(100vh - 50px); background: linear-gradient(to bottom, #1a1a2e, #16213e);">
+
+  <h2 class="text-center fw-bold d-flex align-items-center justify-content-center mb-4">
+    <i class="fas fa-archive me-2"></i> Archive - Guarantees History
+  </h2>
+  <div class="justify-content-center align-items-center text-center">
+    <button class="btn btn-sm btn-light rounded-circle ms-2" (click)="openAddGuaranteeHistoryModal()">
+      <i class="fas fa-plus"></i>
+    </button>
+  </div>
+
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+      <div class="text-center px-3">
+
+        <div class="mb-4">
+          <i class="fa-solid fa-clock-rotate-left fa-6x text-secondary"></i>
+        </div>
+
+        <h3 class="mb-3 fw-semibold">No history found yet.</h3>
+
+        <p class="lead text-white-50 mb-4">
+          This section will display the history of your warranties, such as information about renewals, expirations, or service requests.<br>
+          Currently, there are no entries here.
+        </p>
+
+      </div>
+    </div>
+</div>
+
+<app-add-history
+  *ngIf="isAddGuaranteeModalVisible"
+  (closeAddHistoryModal)="closeAddGuaranteeHistoryModal()">
+</app-add-history>

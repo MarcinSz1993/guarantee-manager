@@ -5,6 +5,7 @@ import {PageGuaranteeResponse} from '../../services/models/page-guarantee-respon
 import {NgForOf} from '@angular/common';
 import {ApiResponse} from '../../services/models/api-response';
 import {ToastrService} from 'ngx-toastr';
+import {GuaranteeModalService} from '../../own_services/guarantee-modal.service';
 
 @Component({
   selector: 'app-delete-guarantee',
@@ -27,7 +28,8 @@ export class DeleteGuaranteeComponent implements OnInit{
 
   constructor(
     private guaranteeService:GuaranteeControllerService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private deleteGuaranteeModalService: GuaranteeModalService
   ) {
   }
 
@@ -62,6 +64,7 @@ export class DeleteGuaranteeComponent implements OnInit{
         this.deleteGuaranteeResponse = result;
         console.log("Id "+ this.selectedGuaranteeIdToDelete);
         console.log("Response "+ this.deleteGuaranteeResponse.message);
+        this.deleteGuaranteeModalService.notifyGuaranteeDeleted();
         this.onClose();
         this.toastrService.success(result.message,'',{
           positionClass: 'toast-center-center'

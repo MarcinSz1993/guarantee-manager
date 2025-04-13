@@ -7,6 +7,7 @@ import {ActivateAccountComponent} from './pages/activate-account/activate-accoun
 import {NotificationComponent} from './pages/notification/notification.component';
 import {StatsComponent} from './pages/stats/stats.component';
 import {ArchiveComponent} from './pages/archive/archive.component';
+import {NoGuaranteesComponent} from './pages/no-guarantees/no-guarantees.component';
 
 export const routes: Routes = [
   {
@@ -40,5 +41,9 @@ export const routes: Routes = [
   {
     path: "archive",
     component: ArchiveComponent
+  },
+  {
+    path:"no-guarantees",
+    component: NoGuaranteesComponent
   }
 ];

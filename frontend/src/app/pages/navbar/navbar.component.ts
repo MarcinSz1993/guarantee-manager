@@ -88,12 +88,4 @@ export class NavbarComponent implements OnInit{
     this.isDeleteAccountModalOpen = true;
   }
 
-  // closeModal(modalName:string){
-  //   this[modalName] = false;
-  // }
-
-  confirmDeleteAccount(){
-    console.log("Account deleted");
-  }
-
 }

@@ -21,7 +21,7 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class AddHistoryComponent implements OnInit{
   @Output()
-  closeModalEvent = new EventEmitter<void>();
+  closeAddHistoryModal = new EventEmitter<void>();
   @Output()
   addedGuaranteeHistory = new EventEmitter<void>();
   errorMsg:string = '';
@@ -83,6 +83,6 @@ export class AddHistoryComponent implements OnInit{
     });
   }
   closeModal(){
-    this.closeModalEvent.emit();
+    this.closeAddHistoryModal.emit();
   }
 }

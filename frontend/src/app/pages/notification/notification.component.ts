@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {
@@ -8,9 +8,12 @@ import {GuaranteeResponse} from '../../services/models/guarantee-response';
 import {GuaranteeCardComponent} from '../guarantee-card/guarantee-card.component';
 import {RouterLink} from '@angular/router';
 import {UserStateService} from '../../own_services/user-state-service.service';
+import {Subscription} from 'rxjs';
+import {GuaranteeModalService} from '../../own_services/guarantee-modal.service';
 
 @Component({
   selector: 'app-notification',
+
   imports: [
     FormsModule,
     NgForOf,
@@ -23,23 +26,36 @@ import {UserStateService} from '../../own_services/user-state-service.service';
   standalone: true,
   styleUrl: './notification.component.scss'
 })
-export class NotificationComponent implements OnInit{
+export class NotificationComponent implements OnInit, OnDestroy{
+  private subscription: Subscription | undefined;
   totalPages:number = 0;
   guaranteeResponse: GuaranteeResponse[] = [];
   userPreference: string = '';
 
 
-
   constructor(
     private dashboardNotificationService: DashboardNotificationControllerService,
-    protected userStateService: UserStateService
+    protected userStateService: UserStateService,
+    private guaranteeModalService: GuaranteeModalService
   ) {
   }
+
+  ngOnDestroy(): void {
+        this.subscription?.unsubscribe();
+    }
 
   ngOnInit(): void {
     this.fetchNotifications();
     this.userPreference = this.userStateService.getUserPreference() as string;
     console.log('Preferencja: '+this.userPreference);
+    this.subscription = this.guaranteeModalService.guaranteeDeleted$
+      .subscribe(()=> {
+        this.fetchNotifications()
+      });
+    this.subscription = this.guaranteeModalService.guaranteeAdded$
+      .subscribe(()=>{
+        this.fetchNotifications()
+      });
   }
 
 
