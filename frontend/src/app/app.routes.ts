@@ -8,6 +8,8 @@ import {NotificationComponent} from './pages/notification/notification.component
 import {StatsComponent} from './pages/stats/stats.component';
 import {ArchiveComponent} from './pages/archive/archive.component';
 import {NoGuaranteesComponent} from './pages/no-guarantees/no-guarantees.component';
+import {authGuard} from './own_services/auth.guard';
+import {NavbarComponent} from './pages/navbar/navbar.component';
 
 export const routes: Routes = [
   {
@@ -24,7 +26,8 @@ export const routes: Routes = [
   },
   {
     path: "dashboard",
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [authGuard]
   },
   {
     path: "activate-account",
@@ -32,18 +35,27 @@ export const routes: Routes = [
   },
   {
     path: "notification",
-    component: NotificationComponent
+    component: NotificationComponent,
+    canActivate: [authGuard]
   },
   {
     path: "stats",
-    component: StatsComponent
+    component: StatsComponent,
+    canActivate: [authGuard]
   },
   {
     path: "archive",
-    component: ArchiveComponent
+    component: ArchiveComponent,
+    canActivate: [authGuard]
   },
   {
     path:"no-guarantees",
-    component: NoGuaranteesComponent
+    component: NoGuaranteesComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: "navbar",
+    component: NavbarComponent,
+    canActivate: [authGuard]
   }
 ];
