@@ -16,6 +16,7 @@ export { PageableObject } from './models/pageable-object';
 export { PageGuaranteeHistoryResponse } from './models/page-guarantee-history-response';
 export { PageGuaranteeResponse } from './models/page-guarantee-response';
 export { RegistrationResponse } from './models/registration-response';
+export { ResetPasswordRequest } from './models/reset-password-request';
 export { SortObject } from './models/sort-object';
 export { UserActivationResponse } from './models/user-activation-response';
 export { UserDto } from './models/user-dto';

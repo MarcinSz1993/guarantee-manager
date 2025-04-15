@@ -39,6 +39,9 @@ public class EmailNotificationService implements NotificationService {
         } else if (emailTemplate == EmailTemplateName.GUARANTEE_EXPIRES) {
             properties.put("brand", subject);
             properties.put("daysToExpire", message);
+        } else if (emailTemplate == EmailTemplateName.RESET_PASSWORD) {
+            properties.put("subject",subject);
+            properties.put("message", message);
         }
 
         Context context = new Context();

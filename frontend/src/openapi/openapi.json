@@ -277,6 +277,36 @@
         }
       }
     },
+    "/api/password/reset": {
+      "post": {
+        "tags": [
+          "password-controller"
+        ],
+        "operationId": "sendResetPasswordEmail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPasswordRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/notifications": {
       "post": {
         "tags": [
@@ -956,6 +986,17 @@
           }
         }
       },
+      "ResetPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email"
+        ]
+      },
       "ImageResponse": {
         "type": "object",
         "properties": {
@@ -997,7 +1038,10 @@
         },
         "required": [
           "brand",
-          "kindOfProduct"
+          "endDate",
+          "kindOfProduct",
+          "model",
+          "startDate"
         ]
       },
       "GuaranteeResponse": {

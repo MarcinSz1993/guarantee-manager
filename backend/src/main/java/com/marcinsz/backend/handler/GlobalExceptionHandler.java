@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -110,6 +111,12 @@ public class GlobalExceptionHandler {
                 buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
     }
 
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ExceptionResponse> missingServletRequestParameterExceptionHandler(Exception ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {
         List<String> errorMessages = ex.getConstraintViolations()
@@ -123,6 +130,7 @@ public class GlobalExceptionHandler {
                         errorMessage
         ));
     }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ValidationErrorsResponse> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException ex){

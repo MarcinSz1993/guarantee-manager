@@ -21,7 +21,7 @@ import {GuaranteeModalService} from '../../own_services/guarantee-modal.service'
 export class DeleteGuaranteeComponent implements OnInit{
   @Output()
   closeModal = new EventEmitter<void>();
-  selectedGuaranteeIdToDelete:number = 0;
+  selectedGuaranteeIdToDelete:number = null as unknown as number;
   allGuarantees:PageGuaranteeResponse = {};
   deleteGuaranteeResponse:ApiResponse = {};
   errorMsg:string = '';

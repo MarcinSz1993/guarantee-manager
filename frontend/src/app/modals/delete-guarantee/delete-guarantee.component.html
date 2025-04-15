@@ -7,13 +7,15 @@
       </div>
       <div class="modal-body bg-dark bg-gradient">
         <p>Choose the guarantee to delete:</p>
-        <select id="guaranteeSelect" class="form-select" [(ngModel)]="selectedGuaranteeIdToDelete">
+        <select id="guaranteeSelect" name="guaranteeSelect" class="form-select" [(ngModel)]="selectedGuaranteeIdToDelete"
+        [disabled]="allGuarantees.content?.length === 0" required>
+          <option [ngValue]="null" disabled> {{allGuarantees.content?.length === 0 ? "You dont have any guarantees." : "Select guarantee to delete" }} </option>
           <option *ngFor="let guarantee of allGuarantees.content" [value]="guarantee.id">{{ guarantee.brand }} {{guarantee.model}}</option>
         </select>
       </div>
       <div class="modal-footer bg-dark bg-gradient">
         <button class="btn btn-secondary" (click)="onClose()">Cancel</button>
-        <button class="btn btn-danger" (click)="deleteGuarantee()">Delete</button>
+        <button class="btn btn-danger" (click)="deleteGuarantee()" [disabled]="allGuarantees.content?.length===0">Delete</button>
       </div>
     </div>
   </div>

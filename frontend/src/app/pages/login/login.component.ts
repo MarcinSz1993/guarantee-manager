@@ -8,6 +8,7 @@ import {AuthenticationResponse} from '../../services/models/authentication-respo
 import {NgForOf, NgIf} from '@angular/common';
 import {UserDto} from '../../services/models/user-dto';
 import {UserStateService} from '../../own_services/user-state-service.service';
+import {ResetPasswordComponent} from '../../modals/reset-password/reset-password.component';
 
 
 
@@ -16,13 +17,15 @@ import {UserStateService} from '../../own_services/user-state-service.service';
   imports: [
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    ResetPasswordComponent
   ],
   templateUrl: './login.component.html',
   standalone: true,
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  isResetPasswordModalVisible = false;
 
   userDto: UserDto = {};
   loginRequest: LoginRequest = {
@@ -69,5 +72,12 @@ export class LoginComponent {
         this.errorMsg = err.error.message;
       }
     });
+  }
+
+  openResetPasswordModal() {
+    this.isResetPasswordModalVisible = true;
+  }
+  closeResetPasswordModal(){
+    this.isResetPasswordModalVisible = false;
   }
 }

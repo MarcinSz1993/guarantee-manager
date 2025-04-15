@@ -8,9 +8,25 @@
       <div class="modal-body bg-info">
         <form (ngSubmit)="addGuaranteeHistory()">
           <div class="mb-3">
-            <label for="guaranteeName" class="form-label">Guarantee</label>
-            <select class="form-select bg-info-subtle" id="guaranteeName" name="guaranteeName" [(ngModel)]="createGuaranteeHistoryRequest.guaranteeId" required>
-              <option *ngFor="let guarantee of allGuarantees.content" [ngValue]="guarantee.id">{{guarantee.brand}}{{guarantee.model}}</option>
+            <label for="guaranteeName" class="form-label text-white">Guarantee</label>
+            <select
+              class="form-select bg-info-subtle"
+              id="guaranteeName"
+              name="guaranteeName"
+              [(ngModel)]="createGuaranteeHistoryRequest.guaranteeId"
+              [disabled]="allGuarantees.content?.length === 0"
+              required
+            >
+              <option [ngValue]="null" disabled>
+                {{ allGuarantees.content?.length === 0 ? "You don't have any guarantees." : "Select guarantee" }}
+              </option>
+
+              <option
+                *ngFor="let guarantee of allGuarantees.content"
+                [ngValue]="guarantee.id"
+              >
+                {{ guarantee.brand }} {{ guarantee.model }}
+              </option>
             </select>
           </div>
           <div class="mb-3">

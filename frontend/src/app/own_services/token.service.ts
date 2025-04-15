@@ -32,6 +32,9 @@ export class TokenService {
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.username);
+    sessionStorage.removeItem('firstname')
+    sessionStorage.removeItem('lastname')
+    sessionStorage.removeItem('notificationPreference')
     this.router.navigate(['']).then();
   }
 

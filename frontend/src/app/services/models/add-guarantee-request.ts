@@ -4,9 +4,9 @@
 
 export interface AddGuaranteeRequest {
   brand: string;
-  endDate?: string;
+  endDate: string;
   kindOfProduct: 'ELECTRONICS' | 'CARS' | 'CLOTHES' | 'SERVICES' | 'OTHER';
-  model?: string;
+  model: string;
   notes?: string;
-  startDate?: string;
+  startDate: string;
 }

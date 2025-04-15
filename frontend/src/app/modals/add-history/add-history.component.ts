@@ -27,7 +27,7 @@ export class AddHistoryComponent implements OnInit{
   errorMsg:string = '';
   allGuarantees:PageGuaranteeResponse = {};
   createGuaranteeHistoryRequest: CreateGuaranteeHistoryRequest = {
-    guaranteeId: 0,
+    guaranteeId: null as unknown as number,
     guaranteeStatus: 'PENDING',
     notes: '',
     positiveFeedback: false

@@ -9,14 +9,14 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { ApiResponse } from '../../models/api-response';
-import { ChangePasswordRequest } from '../../models/change-password-request';
+import { ResetPasswordRequest } from '../../models/reset-password-request';
 
-export interface ChangePassword$Params {
-      body: ChangePasswordRequest
+export interface SendResetPasswordEmail$Params {
+      body: ResetPasswordRequest
 }
 
-export function changePassword(http: HttpClient, rootUrl: string, params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
-  const rb = new RequestBuilder(rootUrl, changePassword.PATH, 'post');
+export function sendResetPasswordEmail(http: HttpClient, rootUrl: string, params: SendResetPasswordEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<ApiResponse>> {
+  const rb = new RequestBuilder(rootUrl, sendResetPasswordEmail.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -31,4 +31,4 @@ export function changePassword(http: HttpClient, rootUrl: string, params: Change
   );
 }
 
-changePassword.PATH = '/api/password';
+sendResetPasswordEmail.PATH = '/api/password/reset';
