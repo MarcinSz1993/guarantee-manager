@@ -93,6 +93,8 @@ public class UserService {
         if (userRepository.findByEmail(createUserRequest.getEmail()).isPresent() ||
             userRepository.findByUsername(createUserRequest.getUsername()).isPresent()){
             throw new UserAlreadyExistsException(createUserRequest.getUsername(),createUserRequest.getEmail());
+        } else if (createUserRequest.getConfirmPassword() != null && !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+                throw new InvalidInputException("Password not confirmed correctly.");
         }
     }
 

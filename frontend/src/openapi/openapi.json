@@ -896,11 +896,15 @@
           "password": {
             "type": "string"
           },
+          "confirmPassword": {
+            "type": "string"
+          },
           "email": {
             "type": "string"
           }
         },
         "required": [
+          "confirmPassword",
           "email",
           "firstName",
           "lastName",
@@ -1180,16 +1184,16 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "paged": {
-            "type": "boolean"
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
           },
           "pageNumber": {
             "type": "integer",
             "format": "int32"
           },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
+          "paged": {
+            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"

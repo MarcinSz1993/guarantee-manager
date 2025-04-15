@@ -20,12 +20,12 @@ import {ToastrService} from 'ngx-toastr';
 export class RegisterComponent {
 
   errorMsg: Array<string> = [];
-  confirmPassword:string = '';
   registerRequest: CreateUserRequest = {
     firstName: '',
     lastName:  '',
     username: '',
     password: '',
+    confirmPassword:'',
     email: ''
   };
   constructor(
