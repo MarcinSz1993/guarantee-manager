@@ -1,0 +1,2 @@
+1. JWT token przechowywać w ciasteczku i tak przerobić backend na gałęzi -prod.
+2. Nie przechowywać danych w localStorage, tylko w sessionStorage lub w serwisach angularowych..

@@ -18,3 +18,4 @@ export interface PageGuaranteeHistoryResponse {
   totalElements?: number;
   totalPages?: number;
 }
+
