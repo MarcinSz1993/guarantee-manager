@@ -20,7 +20,8 @@ pipeline {
                     usernamePassword(credentialsId: 'mail-credentials', usernameVariable: 'MAIL_USERNAME', passwordVariable: 'MAIL_PASSWORD')
                 ]) {
                     echo "Buduję aplikację jako użytkownik: ${DB_USERNAME}"
-                    sh './mvnw clean package -DskipTests'
+                    dir('backend') {
+                        sh './mvnw clean package -DskipTests'
                 }
             }
         }
