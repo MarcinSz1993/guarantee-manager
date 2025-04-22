@@ -24,30 +24,22 @@ pipeline {
           string(credentialsId: 'postgres-password', variable: 'POSTGRES_PASSWORD')
         ]) {
       sh """
-        echo "📡 Przygotowanie pliku środowiskowego (credentials.env)"
-        echo "DB_USERNAME=${DB_USERNAME}" > credentials.env
-        echo "DB_PASSWORD=${DB_PASSWORD}" >> credentials.env
-        echo "CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}" >> credentials.env
-        echo "CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}" >> credentials.env
-        echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> credentials.env
-
         echo "📁 Tworzenie katalogu zdalnie"
         ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
 
-        echo "📤 Przesyłanie plików (wraz z credentials.env)"
+        echo "📤 Przesyłanie plików (bez credentials.env)"
         scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
-        echo "🔍 DEBUG: Sprawdzenie zawartości credentials.env na serwerze"
-        ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'cat $DEPLOY_DIR/credentials.env'
-
-        echo "🔍 DEBUG: Sprawdzenie listy plików w katalogu deploy na serwerze"
-        ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'ls -al $DEPLOY_DIR'
-
-        echo "🚀 Restart aplikacji"
+        echo "🚀 Restart aplikacji z przekazanymi zmiennymi"
         ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
           cd $DEPLOY_DIR &&
           docker-compose down -v &&
-          docker-compose up -d --build
+          docker-compose up -d --build \\
+          -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+          -e DB_USERNAME="${DB_USERNAME}" \\
+          -e DB_PASSWORD="${DB_PASSWORD}" \\
+          -e CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+          -e CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}"
         '
       """
         }
