@@ -24,7 +24,7 @@ pipeline {
           string(credentialsId: 'postgres-password', variable: 'POSTGRES_PASSWORD')
         ]) {
           sh """
-            echo "📡 Przygotowanie pliku środowiskowego"
+            echo "📡 Przygotowanie pliku środowiskowego (credentials.env)"
             echo "DB_USERNAME=${DB_USERNAME}" > credentials.env
             echo "DB_PASSWORD=${DB_PASSWORD}" >> credentials.env
             echo "CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}" >> credentials.env
@@ -34,7 +34,7 @@ pipeline {
             echo "📁 Tworzenie katalogu zdalnie"
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
 
-            echo "📤 Przesyłanie plików"
+            echo "📤 Przesyłanie plików (wraz z credentials.env)"
             scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
             echo "🚀 Restart aplikacji"
