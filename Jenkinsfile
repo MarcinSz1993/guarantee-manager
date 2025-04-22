@@ -5,10 +5,10 @@ pipeline {
     SSH_USER = 'root'
     SSH_HOST = '157.180.16.111'
     DEPLOY_DIR = '/root/guarantee-manager'
-    DB_USERNAME = "${env.DB_USERNAME}"
-    DB_PASSWORD = "${env.DB_PASSWORD}"
-    CLOUDINARY_API_KEY = "${env.CLOUDINARY_API_KEY}"
-    CLOUDINARY_API_SECRET = "${env.CLOUDINARY_API_SECRET}"
+    DB_USERNAME = credentials('db-credentials').username
+    DB_PASSWORD = credentials('db-credentials').password
+    CLOUDINARY_API_KEY = credentials('cloudinary-api-key')
+    CLOUDINARY_API_SECRET = credentials('cloudinary-api-secret')
   }
 
   stages {
@@ -33,6 +33,10 @@ pipeline {
             echo "🚀 Uruchamianie docker-compose"
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
               cd $DEPLOY_DIR &&
+              export DB_USERNAME=\$DB_USERNAME &&
+              export DB_PASSWORD=\$DB_PASSWORD &&
+              export CLOUDINARY_API_KEY=\$CLOUDINARY_API_KEY &&
+              export CLOUDINARY_API_SECRET=\$CLOUDINARY_API_SECRET &&
               docker-compose down &&
               docker-compose up -d --build
             '
