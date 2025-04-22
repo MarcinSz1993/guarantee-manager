@@ -16,12 +16,12 @@ pipeline {
 
     stage('Deploy to VPS') {
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key-id', keyFileVariable: 'KEY_PATH'),
-                         string(credentialsId: 'db-credentials', variable: 'DB_USERNAME'),
-                         string(credentialsId: 'db-credentials', variable: 'DB_PASSWORD'),
-                         string(credentialsId: 'cloudinary-api-key', variable: 'CLOUDINARY_API_KEY'),
-                         string(credentialsId: 'cloudinary-api-secret', variable: 'CLOUDINARY_API_SECRET')]) {
-
+        withCredentials([
+          sshUserPrivateKey(credentialsId: 'ssh-key-id', keyFileVariable: 'KEY_PATH'),
+          usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD'),
+          string(credentialsId: 'cloudinary-api-key', variable: 'CLOUDINARY_API_KEY'),
+          string(credentialsId: 'cloudinary-api-secret', variable: 'CLOUDINARY_API_SECRET')
+        ]) {
           sh """
             echo "📡 Przygotowanie zdalnego katalogu"
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
@@ -34,10 +34,10 @@ pipeline {
             echo "🚀 Uruchamianie docker-compose"
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
               cd $DEPLOY_DIR &&
-              export DB_USERNAME=\$DB_USERNAME &&
-              export DB_PASSWORD=\$DB_PASSWORD &&
-              export CLOUDINARY_API_KEY=\$CLOUDINARY_API_KEY &&
-              export CLOUDINARY_API_SECRET=\$CLOUDINARY_API_SECRET &&
+              export DB_USERNAME="\$DB_USERNAME" &&
+              export DB_PASSWORD="\$DB_PASSWORD" &&
+              export CLOUDINARY_API_KEY="\$CLOUDINARY_API_KEY" &&
+              export CLOUDINARY_API_SECRET="\$CLOUDINARY_API_SECRET" &&
               docker-compose down &&
               docker-compose up -d --build
             '
