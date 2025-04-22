@@ -31,13 +31,13 @@ pipeline {
             echo "📦 Przesyłanie plików"
             scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
-            echo "🚀 Uruchamianie docker-compose"
+            echo "🚀 Tworzenie pliku środowiskowego i uruchamianie docker-compose"
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
               cd $DEPLOY_DIR &&
-              export DB_USERNAME="\$DB_USERNAME" &&
-              export DB_PASSWORD="\$DB_PASSWORD" &&
-              export CLOUDINARY_API_KEY="\$CLOUDINARY_API_KEY" &&
-              export CLOUDINARY_API_SECRET="\$CLOUDINARY_API_SECRET" &&
+              echo "DB_USERNAME=\$DB_USERNAME" > credentials.env &&
+              echo "DB_PASSWORD=\$DB_PASSWORD" >> credentials.env &&
+              echo "CLOUDINARY_API_KEY=\$CLOUDINARY_API_KEY" >> credentials.env &&
+              echo "CLOUDINARY_API_SECRET=\$CLOUDINARY_API_SECRET" >> credentials.env &&
               docker-compose down &&
               docker-compose up -d --build
             '
