@@ -19,6 +19,7 @@ pipeline {
         withCredentials([
           sshUserPrivateKey(credentialsId: 'ssh-key-id', keyFileVariable: 'KEY_PATH'),
           usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD'),
+          usernamePassword(credentialsId: 'mail-credentials', usernameVariable: 'MAIL_USERNAME', passwordVariable: 'MAIL_PASSWORD'),
           string(credentialsId: 'cloudinary-api-key', variable: 'CLOUDINARY_API_KEY'),
           string(credentialsId: 'cloudinary-api-secret', variable: 'CLOUDINARY_API_SECRET'),
           string(credentialsId: 'postgres-password', variable: 'POSTGRES_PASSWORD')
