@@ -23,24 +23,24 @@ pipeline {
           string(credentialsId: 'cloudinary-api-secret', variable: 'CLOUDINARY_API_SECRET')
         ]) {
           sh """
-            echo "📡 Przygotowanie zdalnego katalogu"
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
-              mkdir -p $DEPLOY_DIR
-            '
+            echo "📡 Przygotowanie pliku środowiskowego"
+            echo "DB_USERNAME=${DB_USERNAME}" > credentials.env
+            echo "DB_PASSWORD=${DB_PASSWORD}" >> credentials.env
+            echo "CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}" >> credentials.env
+            echo "CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}" >> credentials.env
 
-            echo "📦 Przesyłanie plików"
+            echo "📁 Tworzenie katalogu zdalnie"
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
+
+            echo "📤 Przesyłanie plików"
             scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
-            echo "🚀 Tworzenie pliku środowiskowego i uruchamianie docker-compose"
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-              cd $DEPLOY_DIR
-              echo "DB_USERNAME=${DB_USERNAME}" > credentials.env
-              echo "DB_PASSWORD=${DB_PASSWORD}" >> credentials.env
-              echo "CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}" >> credentials.env
-              echo "CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}" >> credentials.env
-              docker-compose down -v
+            echo "🚀 Restart aplikacji"
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
+              cd $DEPLOY_DIR &&
+              docker-compose down -v &&
               docker-compose up -d --build
-            EOF
+            '
           """
         }
       }
