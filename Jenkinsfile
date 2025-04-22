@@ -32,15 +32,15 @@ pipeline {
             scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
             echo "🚀 Tworzenie pliku środowiskowego i uruchamianie docker-compose"
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
-              cd $DEPLOY_DIR &&
-              echo "DB_USERNAME=\$DB_USERNAME" > credentials.env &&
-              echo "DB_PASSWORD=\$DB_PASSWORD" >> credentials.env &&
-              echo "CLOUDINARY_API_KEY=\$CLOUDINARY_API_KEY" >> credentials.env &&
-              echo "CLOUDINARY_API_SECRET=\$CLOUDINARY_API_SECRET" >> credentials.env &&
-              docker-compose down &&
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+              cd $DEPLOY_DIR
+              echo "DB_USERNAME=${DB_USERNAME}" > credentials.env
+              echo "DB_PASSWORD=${DB_PASSWORD}" >> credentials.env
+              echo "CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}" >> credentials.env
+              echo "CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}" >> credentials.env
+              docker-compose down -v
               docker-compose up -d --build
-            '
+            EOF
           """
         }
       }
