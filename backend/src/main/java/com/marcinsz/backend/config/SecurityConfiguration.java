@@ -55,7 +55,7 @@ public class SecurityConfiguration {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("http://frontend"));
+        config.setAllowedOrigins(Collections.singletonList("http://157.180.16.111:4200"));
         config.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.ORIGIN,
                 HttpHeaders.CONTENT_TYPE,
