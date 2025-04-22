@@ -21,6 +21,7 @@ pipeline {
           usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD'),
           string(credentialsId: 'cloudinary-api-key', variable: 'CLOUDINARY_API_KEY'),
           string(credentialsId: 'cloudinary-api-secret', variable: 'CLOUDINARY_API_SECRET')
+          string(credentialsId: 'postgres-password', variable: 'POSTGRES_PASSWORD')
         ]) {
           sh """
             echo "📡 Przygotowanie pliku środowiskowego"
@@ -28,6 +29,7 @@ pipeline {
             echo "DB_PASSWORD=${DB_PASSWORD}" >> credentials.env
             echo "CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}" >> credentials.env
             echo "CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}" >> credentials.env
+            echo "POSTGRES_PASSWORD=${POSTGRES_PASSWORD}" >> credentials.env
 
             echo "📁 Tworzenie katalogu zdalnie"
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
