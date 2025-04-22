@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "PROD ENV",
-                        url = "https://prodenvironment.pl/gaurantee-manager"
+                        url = "http://157.180.16.111:8081"
                 )
         },
         security = {
