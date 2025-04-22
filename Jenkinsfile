@@ -14,20 +14,20 @@ pipeline {
       }
     }
 
-    stage('Deploy on VPS') {
+    stage('Deploy to VPS') {
       steps {
-        sshagent(credentials: ['ssh-key-id']) {
+        withCredentials([sshUserPrivateKey(credentialsId: 'ssh-key-id', keyFileVariable: 'KEY_PATH')]) {
           sh """
-            echo "📡 Łączenie z serwerem i przygotowanie folderu"
-            ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
+            echo "📡 Przygotowanie zdalnego katalogu"
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
               mkdir -p $DEPLOY_DIR
             '
 
-            echo "📦 Przesyłanie plików przez SCP"
-            scp -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+            echo "📦 Przesyłanie plików"
+            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
-            echo "🚀 Restart aplikacji przez docker-compose"
-            ssh $SSH_USER@$SSH_HOST '
+            echo "🚀 Uruchamianie docker-compose"
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
               cd $DEPLOY_DIR &&
               docker-compose down &&
               docker-compose up -d --build
@@ -43,7 +43,7 @@ pipeline {
       echo "✅ Deployment zakończony sukcesem!"
     }
     failure {
-      echo "❌ Deployment nie powiódł się!"
+      echo "❌ Deployment nie powiódł się."
     }
   }
 }
