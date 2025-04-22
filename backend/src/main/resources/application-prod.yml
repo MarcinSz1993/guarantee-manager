@@ -51,7 +51,8 @@ spring:
 
 logging:
   level:
-    org.springframework: warn
+    org.springframework: DEBUG
+    org.hibernate: DEBUG
     org.springframework.security: warn
     root: info
     org.hibernate.sql: OFF
