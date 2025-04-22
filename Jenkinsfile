@@ -27,20 +27,20 @@ pipeline {
         echo "📁 Tworzenie katalogu zdalnie"
         ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
 
-        echo "📤 Przesyłanie plików (bez credentials.env)"
+        echo "📤 Przesyłanie plików"
         scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
         echo "🚀 Restart aplikacji z przekazanymi zmiennymi"
-        ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST '
-          cd $DEPLOY_DIR &&
-          docker-compose down -v &&
-          docker-compose up -d --build \\
-          -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-          -e DB_USERNAME="${DB_USERNAME}" \\
-          -e DB_PASSWORD="${DB_PASSWORD}" \\
-          -e CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-          -e CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}"
-        '
+        ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+          cd $DEPLOY_DIR
+          export POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
+          export DB_USERNAME="${DB_USERNAME}"
+          export DB_PASSWORD="${DB_PASSWORD}"
+          export CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}"
+          export CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}"
+          docker-compose down -v
+          docker-compose up -d --build
+EOF
       """
         }
       }
