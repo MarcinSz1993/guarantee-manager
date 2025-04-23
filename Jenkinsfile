@@ -25,27 +25,36 @@ pipeline {
           string(credentialsId: 'smtp-username', variable: 'MAIL_USERNAME'),
           string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
         ]) {
-      sh """
-        echo
-        ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
+          sh """
+            echo "Tworzenie katalogu na serwerze..."
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
 
-        echo
-        scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+            echo "Kopiowanie plików na serwer..."
+            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
-        echo
-        ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-          cd $DEPLOY_DIR
-          export POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
-          export DB_USERNAME="${DB_USERNAME}"
-          export DB_PASSWORD="${DB_PASSWORD}"
-          export CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}"
-          export CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}"
-          export MAIL_USERNAME="${MAIL_USERNAME}"
-          export MAIL_PASSWORD="${MAIL_PASSWORD}"
-          docker-compose down -v
-          docker-compose up -d --build
+            echo "Uruchamianie docker-compose na VPS..."
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+              cd $DEPLOY_DIR
+
+              MAIL_USERNAME="${MAIL_USERNAME}" \\
+              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+              DB_USERNAME="${DB_USERNAME}" \\
+              DB_PASSWORD="${DB_PASSWORD}" \\
+              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+              docker-compose down -v
+
+              MAIL_USERNAME="${MAIL_USERNAME}" \\
+              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+              DB_USERNAME="${DB_USERNAME}" \\
+              DB_PASSWORD="${DB_PASSWORD}" \\
+              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+              docker-compose up -d --build
 EOF
-      """
+          """
         }
       }
     }
@@ -53,10 +62,10 @@ EOF
 
   post {
     success {
-      echo "Deployment zakończony sukcesem!"
+      echo "✅ Deployment zakończony sukcesem!"
     }
     failure {
-      echo "Deployment nie powiódł się."
+      echo "❌ Deployment nie powiódł się."
     }
   }
 }
