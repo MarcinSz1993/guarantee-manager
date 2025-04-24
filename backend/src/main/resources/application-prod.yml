@@ -32,7 +32,7 @@ spring:
     user-activation-token-length: 6
     mailing:
       frontend:
-        activation-url: http://guarantee-manager.duckdns.org/activate-account
+        activation-url: https://guarantee-manager.duckdns.org/activate-account
 
   mail:
     host: smtp.gmail.com
