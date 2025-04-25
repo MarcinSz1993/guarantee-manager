@@ -51,6 +51,8 @@ export class AddGuaranteeComponent {
     this.isSubmitting = true;
     if (!this.selectedFile) {
       alert("Please select a file before submitting!");
+      this.isSubmitting = false;
+      //todo zmieniamy isSubmitting na false po nie dodaniu załącznika.
       return;
     }
 
