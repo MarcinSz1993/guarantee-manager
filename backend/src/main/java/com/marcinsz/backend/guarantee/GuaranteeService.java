@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -89,7 +90,16 @@ public class GuaranteeService {
     public GuaranteeResponse addGuarantee(Authentication authentication,
                                           AddGuaranteeRequest addGuaranteeRequest,
                                           MultipartFile receiptImage) throws IOException {
-        if (!receiptImage.getOriginalFilename().endsWith(".jpeg") && !receiptImage.getOriginalFilename().endsWith(".png")
+        guaranteeValidation(addGuaranteeRequest, receiptImage);
+        User user = extractUserFromAuthentication(authentication);
+        ImageResponse imageResponse = imageService.uploadReceiptImage(receiptImage);
+        Guarantee guarantee = createGuaranteeFromMethodArguments(addGuaranteeRequest, imageResponse, user);
+        guaranteeRepository.save(guarantee);
+        return GuaranteeMapper.mapGuaranteeToGuaranteeResponse(guarantee);
+    }
+
+    private void guaranteeValidation(AddGuaranteeRequest addGuaranteeRequest, MultipartFile receiptImage) {
+        if (!Objects.requireNonNull(receiptImage.getOriginalFilename()).endsWith(".jpeg") && !receiptImage.getOriginalFilename().endsWith(".png")
         && !receiptImage.getOriginalFilename().endsWith(".jpg")){
             throw new InvalidInputException("The receipt image must be in JPEG, JPG or PNG format");
         }
@@ -100,11 +110,6 @@ public class GuaranteeService {
         if (addGuaranteeRequest.getStartDate().isAfter(addGuaranteeRequest.getEndDate())) {
             throw new InvalidInputException("Start date cannot be after end date");
         }
-        User user = extractUserFromAuthentication(authentication);
-        ImageResponse imageResponse = imageService.uploadReceiptImage(receiptImage);
-        Guarantee guarantee = createGuaranteeFromMethodArguments(addGuaranteeRequest, imageResponse, user);
-        guaranteeRepository.save(guarantee);
-        return GuaranteeMapper.mapGuaranteeToGuaranteeResponse(guarantee);
     }
 
     private Guarantee createGuaranteeFromMethodArguments(AddGuaranteeRequest addGuaranteeRequest, ImageResponse imageResponse, User user) {
