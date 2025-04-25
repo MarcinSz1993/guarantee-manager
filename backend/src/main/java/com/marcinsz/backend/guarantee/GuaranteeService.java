@@ -89,6 +89,13 @@ public class GuaranteeService {
     public GuaranteeResponse addGuarantee(Authentication authentication,
                                           AddGuaranteeRequest addGuaranteeRequest,
                                           MultipartFile receiptImage) throws IOException {
+        if (!receiptImage.getOriginalFilename().endsWith(".jpeg") && !receiptImage.getOriginalFilename().endsWith(".png")
+        && !receiptImage.getOriginalFilename().endsWith(".jpg")){
+            throw new InvalidInputException("The receipt image must be in JPEG, JPG or PNG format");
+        }
+        if (receiptImage.getSize() > 1048576){
+            throw new InvalidInputException("The receipt image size must be less than 1MB");
+        }
 
         if (addGuaranteeRequest.getStartDate().isAfter(addGuaranteeRequest.getEndDate())) {
             throw new InvalidInputException("Start date cannot be after end date");
