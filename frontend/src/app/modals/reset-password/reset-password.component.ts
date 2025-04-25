@@ -19,6 +19,8 @@ import {ToastrService} from 'ngx-toastr';
 export class ResetPasswordComponent {
   @Output()
   closeResetPasswordModal = new EventEmitter<void>();
+  isSubmitting = false;
+  //todo pododawałem isSubmitting przy wysyłanie błędnego request o zmianie hasła.
 
   resetPasswordRequest:ResetPasswordRequest = {
     email:''
@@ -38,11 +40,13 @@ export class ResetPasswordComponent {
   }
 
   resetPassword() {
+    this.isSubmitting = true;
       this.passwordService.sendResetPasswordEmail({
         body:this.resetPasswordRequest
       }).subscribe({
         next:(result)=>{
           this.resetPasswordResponse = result
+          this.onClose();
           this.toastrService.success(this.resetPasswordResponse.message,'',{
             positionClass: 'toast-center-center'
           })
@@ -53,13 +57,16 @@ export class ResetPasswordComponent {
             this.toastrService.error(this.errorMsg,'',{
               positionClass: 'toast-center-center'
             })
+            this.isSubmitting = false;
             return;
           }
           this.errorMsg = err.error.message;
           this.toastrService.error(this.errorMsg,'',{
             positionClass: 'toast-center-center'
           })
+          this.isSubmitting = false;
         }
       });
   }
 }
+//todo rozwiązanie to dodać metodę onClose() po poprawnej odpowiedzi na requesta o reset maila.

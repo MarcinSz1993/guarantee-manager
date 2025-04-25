@@ -42,7 +42,7 @@
           <th scope="col">Type</th>
           <th scope="col">Status</th>
           <th scope="col">Feedback</th>
-          <th scope="col" class="d-none d-md-table-cell">Note</th>
+          <th scope="col">Note</th>
           <th scope="col">
             <i class="fa fa-trash-can"></i>
           </th>
@@ -78,7 +78,7 @@
                 }"
             ></i>
           </td>
-          <td class="d-none d-md-table-cell">{{ history.notes || '–' }}</td>
+          <td>{{ history.notes}}</td>
           <td>
             <button class="btn p-0 border-0 bg-transparent" type="submit" (click)="deleteGuaranteeHistory(history.id!)">
               <i class="fas fa-minus-circle text-danger"></i>

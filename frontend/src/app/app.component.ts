@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {NavbarComponent} from './pages/navbar/navbar.component';
+import {TokenService} from './own_services/token.service';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +11,17 @@ import {NavbarComponent} from './pages/navbar/navbar.component';
   standalone: true,
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'frontend';
+export class AppComponent implements OnInit{
+  constructor(
+    private tokenService: TokenService,
+    private titleService: Title
+  ) {
+  }
+  ngOnInit(): void {
+    this.titleService.setTitle(this.title);
+      if (this.tokenService.isTokenNotValid()){
+        this.tokenService.logout();
+      }
+  }
+  title = 'Guarantee Manager';
 }
