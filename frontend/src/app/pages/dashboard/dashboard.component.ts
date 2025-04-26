@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   isAddGuaranteeModalVisible = false;
   subscription: Subscription | undefined;
 
-  userName: string = localStorage.getItem("username") as string;
+  userName: string = sessionStorage.getItem("username") as string;
   errorMsg: string = '';
   allUserGuarantees: GuaranteeResponse[] = [];
   currentPage: number = 1;

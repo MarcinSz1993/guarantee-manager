@@ -14,24 +14,24 @@ export class TokenService {
   ) { }
 
   setToken(token:string){
-    localStorage.setItem(this.tokenKey,token);
+    sessionStorage.setItem(this.tokenKey,token);
   }
 
   isUserLoggedIn(): boolean {
-    return localStorage.getItem(this.tokenKey) !== null;
+    return sessionStorage.getItem(this.tokenKey) !== null;
   }
 
   getToken():string | null {
-    return localStorage.getItem(this.tokenKey) as string;
+    return sessionStorage.getItem(this.tokenKey) as string;
   }
 
   getUsername():string | null {
-    return localStorage.getItem(this.username);
+    return sessionStorage.getItem(this.username);
   }
 
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.username);
+    sessionStorage.removeItem(this.tokenKey);
+    sessionStorage.removeItem(this.username);
     sessionStorage.removeItem('firstname')
     sessionStorage.removeItem('lastname')
     sessionStorage.removeItem('notificationPreference')
@@ -50,7 +50,7 @@ export class TokenService {
     const jwtHelper = new JwtHelperService();
     const isTokenExpired = jwtHelper.isTokenExpired(this.getToken());
     if (isTokenExpired){
-      localStorage.clear();
+      sessionStorage.clear();
       return false;
     }
     return true;
