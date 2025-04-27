@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Checkout code') {
       steps {
-        git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
+        git branch: 'pre-prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
       }
     }
 
