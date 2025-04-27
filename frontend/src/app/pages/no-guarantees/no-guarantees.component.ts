@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './no-guarantees.component.scss'
 })
 export class NoGuaranteesComponent {
-  userName: string = sessionStorage.getItem("username") as string;
+  userName: string = localStorage.getItem("username") as string;
 }

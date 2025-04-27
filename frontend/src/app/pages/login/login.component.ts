@@ -60,7 +60,7 @@ export class LoginComponent {
             next: (response) => {
               this.userDto = response;
               this.userStateService.setFirstnameAndLastname(this.userDto);
-              sessionStorage.setItem("username",this.userDto.userName as string);
+              localStorage.setItem("username",this.userDto.userName as string);
               this.router.navigate(['dashboard']).then();
             },
             error: (err) => {
