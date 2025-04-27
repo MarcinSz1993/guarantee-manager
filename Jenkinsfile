@@ -17,16 +17,18 @@ pipeline {
         stage('Checkout') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    deleteDir()
+                    deleteDir()  // Usuń poprzednią zawartość katalogu
+                    git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'  // Pobierz repozytorium
+                    sh 'ls -l'  // Wyświetl zawartość katalogu, aby upewnić się, że plik docker-compose.yml jest w repozytorium
                 }
-                git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
             }
         }
 
         stage('Build Docker Images') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'docker-compose build' // Budowanie obrazów Docker
+                    sh 'ls -l'  // Upewnij się, że plik docker-compose.yml jest widoczny
+                    sh 'docker-compose build'  // Budowanie obrazów Docker
                 }
             }
         }
@@ -34,7 +36,7 @@ pipeline {
         stage('Stop Old Containers') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'docker-compose down' // Zatrzymanie starych kontenerów
+                    sh 'docker-compose down'  // Zatrzymanie starych kontenerów
                 }
             }
         }
@@ -42,7 +44,7 @@ pipeline {
         stage('Start New Containers') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'docker-compose up -d' // Uruchomienie nowych kontenerów
+                    sh 'docker-compose up -d'  // Uruchomienie nowych kontenerów
                 }
             }
         }
