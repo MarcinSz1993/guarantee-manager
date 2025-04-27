@@ -62,14 +62,14 @@
 </head>
 <body>
 <div class="container">
-    <img src="http://localhost:8081/api/logo" width="75" height="75" alt="Guarantee Manager Logo" class="logo">
+    <img src="https://guaranee-manager.duckdns.org/api/logo" width="75" height="75" alt="Guarantee Manager Logo" class="logo">
     <h1>Activate Your Account</h1>
     <p class="greeting" th:text="'Hello ' + ${username} + ','"></p>
     <p>Thank you for signing up! Use the activation code below to activate your account:</p>
     <div class="activation-code"><span th:text="${activation_code}"></span></div>
     <p>Just click the button below:</p>
     <div class="activation-link">
-        <a th:href="${confirmationUrl}" target="_blank">Activate your account</a>
+        <a th:href="'https://guarantee-manager.duckdns.org/activate-account'" target="_blank">Activate your account</a>
     </div>
 </div>
 </body>
