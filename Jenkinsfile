@@ -4,7 +4,7 @@ pipeline {
   environment {
     SSH_USER = 'root'
     SSH_HOST = '157.180.16.111'
-    DEPLOY_DIR = '/root/guarantee-manager'
+    DEPLOY_DIR = '/var/www/guarantee-manager'
     FRONTEND_DIR = 'frontend'
   }
 
@@ -19,7 +19,6 @@ pipeline {
       steps {
         dir(FRONTEND_DIR) {
           script {
-
             sh 'npm install'
           }
         }
@@ -30,7 +29,6 @@ pipeline {
       steps {
         dir(FRONTEND_DIR) {
           script {
-
             sh 'npm run build -- --configuration production'
           }
         }
@@ -49,30 +47,25 @@ pipeline {
           string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
         ]) {
           script {
-
             sh """
               echo "Tworzenie katalogu na serwerze..."
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
             """
-
 
             sh """
               echo "Kopiowanie pliku Nginx na serwer..."
               scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
             """
 
-
             sh """
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
             """
 
-
             sh """
               echo "Kopiowanie plików frontend na serwer..."
               scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/frontend/browser/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
             """
-
 
             sh """
               echo "Uruchamianie docker-compose na VPS..."
