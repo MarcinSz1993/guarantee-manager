@@ -71,10 +71,10 @@ pipeline {
                     sh "mkdir -p /etc/nginx/conf.d/"
 
                     // Kopiujemy plik konfiguracji NGINX dla naszego projektu
-                    sh "cp ${DEPLOY_DIR}/nginx/guaranteemanager.conf /etc/nginx/conf.d/"
+                    sh "cp ${DEPLOY_DIR}/frontend/guaranteemanager.conf /etc/nginx/conf.d/"
 
                     // Kopiujemy główny plik nginx.conf
-                    sh "cp ${DEPLOY_DIR}/nginx/nginx.conf /etc/nginx/nginx.conf"
+                    sh "cp ${DEPLOY_DIR}/frontend/nginx.conf /etc/nginx/nginx.conf"
                 }
             }
         }
