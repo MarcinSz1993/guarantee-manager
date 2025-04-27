@@ -4,24 +4,13 @@ pipeline {
   environment {
     SSH_USER = 'root'
     SSH_HOST = '157.180.16.111'
-    DEPLOY_DIR_FRONTEND = '/var/www/guarantee-manager'
-    DEPLOY_DIR_BACKEND = '/root/guarantee-manager'
-    BUILD_DIR = 'frontend/dist/guarantee-manager'
+    DEPLOY_DIR = '/root/guarantee-manager'
   }
 
   stages {
     stage('Checkout code') {
       steps {
         git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
-      }
-    }
-
-    stage('Build Angular app') {
-      steps {
-        dir('frontend') {
-          sh 'npm install'
-          sh 'npm run build --configuration=production'
-        }
       }
     }
 
@@ -37,27 +26,21 @@ pipeline {
           string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
         ]) {
           sh """
-            echo "Czyszczenie starej aplikacji Frontend na serwerze..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'rm -rf $DEPLOY_DIR_FRONTEND/*'
+            echo "Tworzenie katalogu na serwerze..."
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
 
-            echo "Kopiowanie nowej wersji Frontendu..."
-            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r $BUILD_DIR/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR_FRONTEND
+            scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
 
-            echo "Aktualizacja Backend (docker-compose)..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-              mkdir -p $DEPLOY_DIR_BACKEND
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
 
-              echo "Czyszczenie starego backendu..."
-              rm -rf $DEPLOY_DIR_BACKEND/*
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
 
-              exit
-EOF
-
-            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r backend docker-compose.yml credentials.env Jenkinsfile $SSH_USER@$SSH_HOST:$DEPLOY_DIR_BACKEND/
+            echo "Kopiowanie plików na serwer..."
+            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
             echo "Uruchamianie docker-compose na VPS..."
             ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-              cd $DEPLOY_DIR_BACKEND
+              cd $DEPLOY_DIR
 
               MAIL_USERNAME="${MAIL_USERNAME}" \\
               MAIL_PASSWORD="${MAIL_PASSWORD}" \\
@@ -66,16 +49,17 @@ EOF
               POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
               CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
               CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
-
               docker-compose down -v
+
+              MAIL_USERNAME="${MAIL_USERNAME}" \\
+              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+              DB_USERNAME="${DB_USERNAME}" \\
+              DB_PASSWORD="${DB_PASSWORD}" \\
+              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
               docker-compose up -d --build
 EOF
-
-            echo "Sprawdzanie konfiguracji Nginx..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
-
-            echo "Reload Nginx..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
           """
         }
       }
