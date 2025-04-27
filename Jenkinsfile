@@ -1,77 +1,89 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    SSH_USER = 'root'
-    SSH_HOST = '157.180.16.111'
-    DEPLOY_DIR = '/root/guarantee-manager'
-  }
-
-  stages {
-    stage('Checkout code') {
-      steps {
-        git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
-      }
+    environment {
+        DEPLOY_DIR = "/opt/guarantee-manager"  // Katalog na serwerze
+        FRONTEND_TARGET_DIR = "/var/www/guarantee-manager" // Katalog frontendowy
+        DB_USERNAME = credentials('db-username')  // Użycie poświadczeń Jenkins
+        DB_PASSWORD = credentials('db-password')
+        CLOUDINARY_API_KEY = credentials('cloudinary-api-key')
+        CLOUDINARY_API_SECRET = credentials('cloudinary-api-secret')
+        POSTGRES_PASSWORD = credentials('postgres-password')
+        MAIL_USERNAME = credentials('smtp-username')
+        MAIL_PASSWORD = credentials('smtp-password')
     }
 
-    stage('Deploy to VPS') {
-      steps {
-        withCredentials([
-          sshUserPrivateKey(credentialsId: 'ssh-key-id', keyFileVariable: 'KEY_PATH'),
-          usernamePassword(credentialsId: 'db-credentials', usernameVariable: 'DB_USERNAME', passwordVariable: 'DB_PASSWORD'),
-          string(credentialsId: 'cloudinary-api-key', variable: 'CLOUDINARY_API_KEY'),
-          string(credentialsId: 'cloudinary-api-secret', variable: 'CLOUDINARY_API_SECRET'),
-          string(credentialsId: 'postgres-password', variable: 'POSTGRES_PASSWORD'),
-          string(credentialsId: 'smtp-username', variable: 'MAIL_USERNAME'),
-          string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
-        ]) {
-          sh """
-            echo "Tworzenie katalogu na serwerze..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
-
-            scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
-
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
-
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
-
-            echo "Kopiowanie plików na serwer..."
-            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
-
-            echo "Uruchamianie docker-compose na VPS..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-              cd $DEPLOY_DIR
-
-              MAIL_USERNAME="${MAIL_USERNAME}" \\
-              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
-              DB_USERNAME="${DB_USERNAME}" \\
-              DB_PASSWORD="${DB_PASSWORD}" \\
-              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
-              docker-compose down -v
-
-              MAIL_USERNAME="${MAIL_USERNAME}" \\
-              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
-              DB_USERNAME="${DB_USERNAME}" \\
-              DB_PASSWORD="${DB_PASSWORD}" \\
-              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
-              docker-compose up -d --build
-EOF
-          """
+    stages {
+        stage('Checkout') {
+            steps {
+                dir("${DEPLOY_DIR}") {
+                    deleteDir()
+                }
+                git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
+            }
         }
-      }
-    }
-  }
 
-  post {
-    success {
-      echo "✅ Deployment zakończony sukcesem!"
+        stage('Build Docker Images') {
+            steps {
+                dir("${DEPLOY_DIR}") {
+                    sh 'docker-compose build' // Budowanie obrazów Docker
+                }
+            }
+        }
+
+        stage('Stop Old Containers') {
+            steps {
+                dir("${DEPLOY_DIR}") {
+                    sh 'docker-compose down' // Zatrzymanie starych kontenerów
+                }
+            }
+        }
+
+        stage('Start New Containers') {
+            steps {
+                dir("${DEPLOY_DIR}") {
+                    sh 'docker-compose up -d' // Uruchomienie nowych kontenerów
+                }
+            }
+        }
+
+        stage('Prepare Frontend for NGINX') {
+            steps {
+                script {
+                    // Upewniamy się, że katalog na frontend istnieje
+                    sh "mkdir -p ${FRONTEND_TARGET_DIR}"
+
+                    // Czyścimy katalog przed nową wrzutką
+                    sh "rm -rf ${FRONTEND_TARGET_DIR}/*"
+
+                    // Kopiujemy pliki z kontenera frontendowego do katalogu NGINX
+                    sh "docker cp guarantee-frontend:/usr/share/nginx/html/. ${FRONTEND_TARGET_DIR}/"
+                }
+            }
+        }
+
+        stage('Deploy NGINX Config') {
+            steps {
+                script {
+                    // Tworzymy katalogi, jeśli nie istnieją
+                    sh "mkdir -p /etc/nginx/conf.d/"
+
+                    // Kopiujemy plik konfiguracji NGINX dla naszego projektu
+                    sh "cp ${DEPLOY_DIR}/nginx/guaranteemanager.conf /etc/nginx/conf.d/"
+
+                    // Kopiujemy główny plik nginx.conf
+                    sh "cp ${DEPLOY_DIR}/nginx/nginx.conf /etc/nginx/nginx.conf"
+                }
+            }
+        }
+
+        stage('Restart NGINX') {
+            steps {
+                script {
+                    // Zatrzymanie i ponowne uruchomienie NGINX
+                    sh 'systemctl restart nginx'
+                }
+            }
+        }
     }
-    failure {
-      echo "❌ Deployment nie powiódł się."
-    }
-  }
 }
