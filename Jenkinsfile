@@ -5,12 +5,35 @@ pipeline {
     SSH_USER = 'root'
     SSH_HOST = '157.180.16.111'
     DEPLOY_DIR = '/root/guarantee-manager'
+    FRONTEND_DIR = 'frontend'
   }
 
   stages {
     stage('Checkout code') {
       steps {
         git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
+      }
+    }
+
+    stage('Install Dependencies') {
+      steps {
+        dir(FRONTEND_DIR) {
+          script {
+
+            sh 'npm install'
+          }
+        }
+      }
+    }
+
+    stage('Build Angular App') {
+      steps {
+        dir(FRONTEND_DIR) {
+          script {
+
+            sh 'npm run build -- --configuration production'
+          }
+        }
       }
     }
 
@@ -25,42 +48,57 @@ pipeline {
           string(credentialsId: 'smtp-username', variable: 'MAIL_USERNAME'),
           string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
         ]) {
-          sh """
-            echo "Tworzenie katalogu na serwerze..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
+          script {
 
-            scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
+            sh """
+              echo "Tworzenie katalogu na serwerze..."
+              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
+            """
 
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
 
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
+            sh """
+              echo "Kopiowanie pliku Nginx na serwer..."
+              scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
+            """
 
-            echo "Kopiowanie plików na serwer..."
-            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
 
-            echo "Uruchamianie docker-compose na VPS..."
-            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-              cd $DEPLOY_DIR
+            sh """
+              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
+              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
+            """
 
-              MAIL_USERNAME="${MAIL_USERNAME}" \\
-              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
-              DB_USERNAME="${DB_USERNAME}" \\
-              DB_PASSWORD="${DB_PASSWORD}" \\
-              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
-              docker-compose down -v
 
-              MAIL_USERNAME="${MAIL_USERNAME}" \\
-              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
-              DB_USERNAME="${DB_USERNAME}" \\
-              DB_PASSWORD="${DB_PASSWORD}" \\
-              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
-              docker-compose up -d --build
+            sh """
+              echo "Kopiowanie plików frontend na serwer..."
+              scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/guarantee-manager/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+            """
+
+
+            sh """
+              echo "Uruchamianie docker-compose na VPS..."
+              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+                cd $DEPLOY_DIR
+
+                MAIL_USERNAME="${MAIL_USERNAME}" \\
+                MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+                DB_USERNAME="${DB_USERNAME}" \\
+                DB_PASSWORD="${DB_PASSWORD}" \\
+                POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+                CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+                CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+                docker-compose down -v
+
+                MAIL_USERNAME="${MAIL_USERNAME}" \\
+                MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+                DB_USERNAME="${DB_USERNAME}" \\
+                DB_PASSWORD="${DB_PASSWORD}" \\
+                POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+                CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+                CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+                docker-compose up -d --build
 EOF
-          """
+            """
+          }
         }
       }
     }
