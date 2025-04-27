@@ -4,39 +4,13 @@ pipeline {
   environment {
     SSH_USER = 'root'
     SSH_HOST = '157.180.16.111'
-    DEPLOY_DIR = '/var/www/guarantee-manager'
-    FRONTEND_DIR = 'frontend'
-    NGINX_CONF_NAME = 'guaranteemanager'
-    DOMAIN_NAME = 'guarantee-manager.duckdns.org'
+    DEPLOY_DIR = '/root/guarantee-manager'
   }
 
   stages {
     stage('Checkout code') {
       steps {
-        echo "Checkout code from Git repository"
         git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
-      }
-    }
-
-    stage('Install Dependencies') {
-      steps {
-        echo "Installing NPM dependencies for frontend"
-        dir(FRONTEND_DIR) {
-          script {
-            sh 'npm install --prefer-offline'
-          }
-        }
-      }
-    }
-
-    stage('Build Angular App') {
-      steps {
-        echo "Building Angular app for production"
-        dir(FRONTEND_DIR) {
-          script {
-            sh 'npm run build -- --configuration production --base-href /'
-          }
-        }
       }
     }
 
@@ -51,68 +25,42 @@ pipeline {
           string(credentialsId: 'smtp-username', variable: 'MAIL_USERNAME'),
           string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
         ]) {
-          script {
-            // Zmienna dla komend SSH
-            def sshCmd = "ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST"
+          sh """
+            echo "Tworzenie katalogu na serwerze..."
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
 
-            // Tworzenie katalogu na serwerze
-            sh """
-              echo "Tworzenie katalogu na serwerze..."
-              \$sshCmd 'mkdir -p $DEPLOY_DIR'
-            """
+            scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
 
-            // Kopiowanie pliku Nginx do sites-available
-            sh """
-              echo "Kopiowanie pliku Nginx do sites-available..."
-              scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/${NGINX_CONF_NAME}
-            """
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
 
-            // Kopiowanie pliku docker-compose.yml na serwer
-            sh """
-              echo "Kopiowanie pliku docker-compose.yml na serwer..."
-              scp -i \$KEY_PATH -o StrictHostKeyChecking=no docker-compose.yml $SSH_USER@$SSH_HOST:$DEPLOY_DIR/docker-compose.yml
-            """
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
 
-            // Tworzenie dowiązania symbolicznego i usuwanie domyślnej konfiguracji
-            sh """
-              echo "Tworzenie dowiązania symbolicznego w sites-enabled i usuwanie default (jeśli istnieje)..."
-              \$sshCmd << EOF
-                set -e
-                rm -f /etc/nginx/sites-enabled/default
-                ln -sf /etc/nginx/sites-available/${NGINX_CONF_NAME} /etc/nginx/sites-enabled/${NGINX_CONF_NAME}
+            echo "Kopiowanie plików na serwer..."
+            scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r . $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+
+            echo "Uruchamianie docker-compose na VPS..."
+            ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+              cd $DEPLOY_DIR
+
+              MAIL_USERNAME="${MAIL_USERNAME}" \\
+              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+              DB_USERNAME="${DB_USERNAME}" \\
+              DB_PASSWORD="${DB_PASSWORD}" \\
+              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+              docker-compose down -v
+
+              MAIL_USERNAME="${MAIL_USERNAME}" \\
+              MAIL_PASSWORD="${MAIL_PASSWORD}" \\
+              DB_USERNAME="${DB_USERNAME}" \\
+              DB_PASSWORD="${DB_PASSWORD}" \\
+              POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
+              CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
+              CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+              docker-compose up -d --build
 EOF
-            """
-
-            // Testowanie konfiguracji Nginx i przeładowanie
-            sh """
-              echo "Testowanie i przeładowanie konfiguracji Nginx..."
-              \$sshCmd 'nginx -t'
-              \$sshCmd 'systemctl reload nginx'
-            """
-
-            // Kopiowanie plików frontend na serwer
-            sh """
-              echo "Kopiowanie plików frontend na serwer..."
-              scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/frontend/browser/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR/
-            """
-
-            // Uruchamianie docker-compose na VPS
-            sh """
-              echo "Uruchamianie docker-compose na VPS..."
-              \$sshCmd << EOF
-                export MAIL_USERNAME="${MAIL_USERNAME}"
-                export MAIL_PASSWORD="${MAIL_PASSWORD}"
-                export DB_USERNAME="${DB_USERNAME}"
-                export DB_PASSWORD="${DB_PASSWORD}"
-                export POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
-                export CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}"
-                export CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}"
-
-                docker-compose down -v
-                docker-compose up -d --build
-EOF
-            """
-          }
+          """
         }
       }
     }
@@ -124,7 +72,6 @@ EOF
     }
     failure {
       echo "❌ Deployment nie powiódł się."
-      currentBuild.result = 'FAILURE'
     }
   }
 }
