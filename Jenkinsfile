@@ -70,7 +70,7 @@ pipeline {
 
             sh """
               echo "Kopiowanie plików frontend na serwer..."
-              scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/guarantee-manager/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+              scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/frontend/browser/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
             """
 
 
