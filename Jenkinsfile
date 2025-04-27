@@ -13,16 +13,17 @@ pipeline {
   stages {
     stage('Checkout code') {
       steps {
-
+        echo "Checkout code from Git repository"
         git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
       }
     }
 
     stage('Install Dependencies') {
       steps {
+        echo "Installing NPM dependencies for frontend"
         dir(FRONTEND_DIR) {
           script {
-            sh 'npm install'
+            sh 'npm install --prefer-offline'
           }
         }
       }
@@ -30,9 +31,9 @@ pipeline {
 
     stage('Build Angular App') {
       steps {
+        echo "Building Angular app for production"
         dir(FRONTEND_DIR) {
           script {
-
             sh 'npm run build -- --configuration production --base-href /'
           }
         }
@@ -51,48 +52,54 @@ pipeline {
           string(credentialsId: 'smtp-password', variable: 'MAIL_PASSWORD')
         ]) {
           script {
+            // Zmienna dla komend SSH
+            def sshCmd = "ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST"
+
+            // Tworzenie katalogu na serwerze
             sh """
               echo "Tworzenie katalogu na serwerze..."
-              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
+              \$sshCmd 'mkdir -p $DEPLOY_DIR'
             """
 
-
+            // Kopiowanie pliku Nginx do sites-available
             sh """
               echo "Kopiowanie pliku Nginx do sites-available..."
               scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/${NGINX_CONF_NAME}
             """
 
+            // Kopiowanie pliku docker-compose.yml na serwer
+            sh """
+              echo "Kopiowanie pliku docker-compose.yml na serwer..."
+              scp -i \$KEY_PATH -o StrictHostKeyChecking=no docker-compose.yml $SSH_USER@$SSH_HOST:$DEPLOY_DIR/docker-compose.yml
+            """
+
+            // Tworzenie dowiązania symbolicznego i usuwanie domyślnej konfiguracji
             sh """
               echo "Tworzenie dowiązania symbolicznego w sites-enabled i usuwanie default (jeśli istnieje)..."
-              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-                # Usuń domyślną konfigurację z enabled, aby uniknąć konfliktów
+              \$sshCmd << EOF
+                set -e
                 rm -f /etc/nginx/sites-enabled/default
-                # Utwórz lub zaktualizuj dowiązanie symboliczne
                 ln -sf /etc/nginx/sites-available/${NGINX_CONF_NAME} /etc/nginx/sites-enabled/${NGINX_CONF_NAME}
 EOF
             """
-            // === KONIEC ZMIAN W NGINX ===
 
+            // Testowanie konfiguracji Nginx i przeładowanie
             sh """
               echo "Testowanie i przeładowanie konfiguracji Nginx..."
-              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
-              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
+              \$sshCmd 'nginx -t'
+              \$sshCmd 'systemctl reload nginx'
             """
 
+            // Kopiowanie plików frontend na serwer
             sh """
               echo "Kopiowanie plików frontend na serwer..."
-              # Upewnij się, że kopiujesz do właściwego katalogu zdefiniowanego w Nginx (root)
               scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/frontend/browser/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR/
             """
 
+            // Uruchamianie docker-compose na VPS
             sh """
               echo "Uruchamianie docker-compose na VPS..."
-
-              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-
-
-
-
+              \$sshCmd << EOF
                 export MAIL_USERNAME="${MAIL_USERNAME}"
                 export MAIL_PASSWORD="${MAIL_PASSWORD}"
                 export DB_USERNAME="${DB_USERNAME}"
@@ -117,6 +124,7 @@ EOF
     }
     failure {
       echo "❌ Deployment nie powiódł się."
+      currentBuild.result = 'FAILURE'
     }
   }
 }
