@@ -6,11 +6,14 @@ pipeline {
     SSH_HOST = '157.180.16.111'
     DEPLOY_DIR = '/var/www/guarantee-manager'
     FRONTEND_DIR = 'frontend'
+    NGINX_CONF_NAME = 'guaranteemanager'
+    DOMAIN_NAME = 'guarantee-manager.duckdns.org'
   }
 
   stages {
     stage('Checkout code') {
       steps {
+
         git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
       }
     }
@@ -29,7 +32,8 @@ pipeline {
       steps {
         dir(FRONTEND_DIR) {
           script {
-            sh 'npm run build -- --configuration production'
+
+            sh 'npm run build -- --configuration production --base-href /'
           }
         }
       }
@@ -52,42 +56,52 @@ pipeline {
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'mkdir -p $DEPLOY_DIR'
             """
 
+
             sh """
-              echo "Kopiowanie pliku Nginx na serwer..."
-              scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/guaranteemanager
+              echo "Kopiowanie pliku Nginx do sites-available..."
+              scp -i \$KEY_PATH -o StrictHostKeyChecking=no frontend/guaranteemanager.conf $SSH_USER@$SSH_HOST:/etc/nginx/sites-available/${NGINX_CONF_NAME}
             """
 
             sh """
+              echo "Tworzenie dowiązania symbolicznego w sites-enabled i usuwanie default (jeśli istnieje)..."
+              ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+                # Usuń domyślną konfigurację z enabled, aby uniknąć konfliktów
+                rm -f /etc/nginx/sites-enabled/default
+                # Utwórz lub zaktualizuj dowiązanie symboliczne
+                ln -sf /etc/nginx/sites-available/${NGINX_CONF_NAME} /etc/nginx/sites-enabled/${NGINX_CONF_NAME}
+EOF
+            """
+            // === KONIEC ZMIAN W NGINX ===
+
+            sh """
+              echo "Testowanie i przeładowanie konfiguracji Nginx..."
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'nginx -t'
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'systemctl reload nginx'
             """
 
             sh """
               echo "Kopiowanie plików frontend na serwer..."
-              scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/frontend/browser/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR
+              # Upewnij się, że kopiujesz do właściwego katalogu zdefiniowanego w Nginx (root)
+              scp -i \$KEY_PATH -o StrictHostKeyChecking=no -r frontend/dist/frontend/browser/* $SSH_USER@$SSH_HOST:$DEPLOY_DIR/
             """
 
             sh """
               echo "Uruchamianie docker-compose na VPS..."
+
               ssh -i \$KEY_PATH -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
-                cd $DEPLOY_DIR
 
-                MAIL_USERNAME="${MAIL_USERNAME}" \\
-                MAIL_PASSWORD="${MAIL_PASSWORD}" \\
-                DB_USERNAME="${DB_USERNAME}" \\
-                DB_PASSWORD="${DB_PASSWORD}" \\
-                POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-                CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-                CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
+
+
+
+                export MAIL_USERNAME="${MAIL_USERNAME}"
+                export MAIL_PASSWORD="${MAIL_PASSWORD}"
+                export DB_USERNAME="${DB_USERNAME}"
+                export DB_PASSWORD="${DB_PASSWORD}"
+                export POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
+                export CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}"
+                export CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}"
+
                 docker-compose down -v
-
-                MAIL_USERNAME="${MAIL_USERNAME}" \\
-                MAIL_PASSWORD="${MAIL_PASSWORD}" \\
-                DB_USERNAME="${DB_USERNAME}" \\
-                DB_PASSWORD="${DB_PASSWORD}" \\
-                POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" \\
-                CLOUDINARY_API_KEY="${CLOUDINARY_API_KEY}" \\
-                CLOUDINARY_API_SECRET="${CLOUDINARY_API_SECRET}" \\
                 docker-compose up -d --build
 EOF
             """
