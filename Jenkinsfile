@@ -79,13 +79,13 @@ pipeline {
             }
         }
 
-        stage('Restart NGINX') {
-            steps {
-                script {
-                    // Zatrzymanie i ponowne uruchomienie NGINX
-                    sh 'systemctl restart nginx'
-                }
-            }
-        }
+//         stage('Restart NGINX') {
+//             steps {
+//                 script {
+//                     // Zatrzymanie i ponowne uruchomienie NGINX
+//                     sh 'systemctl restart nginx'
+//                 }
+//             }
+//         }
     }
 }
