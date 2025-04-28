@@ -6,4 +6,4 @@ RUN mvn clean package -DskipTests -Dmaven.test.skip=true
 FROM openjdk:21-jdk-slim
 COPY --from=build /target/*.jar /app/guarantee-manager.jar
 EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "app/guarantee-manager.jar"]
+ENTRYPOINT ["java", "-jar", "/app/guarantee-manager.jar"]
