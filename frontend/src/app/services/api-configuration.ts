@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = 'https://guarantee-manager.duckdns.org';
+  rootUrl: string = 'http://157.180.16.111:8081';
 }
 
 /**
