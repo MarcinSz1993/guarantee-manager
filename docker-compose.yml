@@ -38,10 +38,10 @@ services:
       context: ./frontend
     container_name: guarantee-frontend
     ports:
-      - "4200:80"
+       - "4200:80"
+
     depends_on:
       - backend
-
     restart: unless-stopped
 
 volumes:
