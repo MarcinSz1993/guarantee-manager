@@ -19,9 +19,9 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
-      if (this.tokenService.isTokenNotValid()){
-        this.tokenService.logout();
-      }
+      // if (this.tokenService.isTokenNotValid()){
+      //   this.tokenService.logout();
+      // }
   }
   title = 'Guarantee Manager';
 }
