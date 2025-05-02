@@ -32,7 +32,7 @@ spring:
     user-activation-token-length: 6
     mailing:
       frontend:
-        activation-url: http://157.180.16.111:4200/activate-account
+        activation-url: http://157.180.16.111/activate-account
 
   mail:
     host: smtp.gmail.com
