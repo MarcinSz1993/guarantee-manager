@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DEPLOY_DIR = "/opt/guarantee-manager"
+        DEPLOY_DIR = "${env.WORKSPACE}/guarantee-manager"
         DB_USERNAME = credentials('db-username')
         DB_PASSWORD = credentials('db-password')
         CLOUDINARY_API_KEY = credentials('cloudinary-api-key')
@@ -16,7 +16,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    deleteDir()
+                    deleteDir() //
                     git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
                 }
             }
@@ -25,7 +25,8 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'docker-compose down'
+
+                    sh 'docker-compose down || true'
                     sh 'docker-compose build'
                     sh 'docker-compose up -d'
                 }
