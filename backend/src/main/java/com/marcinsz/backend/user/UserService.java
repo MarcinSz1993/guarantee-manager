@@ -29,7 +29,10 @@ public class UserService {
 
 
     public void deleteAccount(Authentication connectedUser){
-        User user = (User) connectedUser.getPrincipal();
+        Object principal = connectedUser.getPrincipal();
+        if (!(principal instanceof User user)) {
+            throw new InvalidInputException("Invalid user");
+        }
         userRepository.delete(user);
     }
 
@@ -93,13 +96,13 @@ public class UserService {
         if (userRepository.findByEmail(createUserRequest.getEmail()).isPresent() ||
             userRepository.findByUsername(createUserRequest.getUsername()).isPresent()){
             throw new UserAlreadyExistsException(createUserRequest.getUsername(),createUserRequest.getEmail());
-        } else if (createUserRequest.getConfirmPassword() != null && !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+        } else if (createUserRequest.getConfirmPassword() == null || !createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
                 throw new InvalidInputException("Password not confirmed correctly.");
         }
     }
 
     public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> UserNotFoundException.byEmail(email));
         return UserDto.builder()
                 .userId(user.getId())
                 .firstName(user.getFirstName())
@@ -113,7 +116,7 @@ public class UserService {
     }
 
     public UserDto getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> UserNotFoundException.byUsername(username));
         return UserDto.builder()
                 .userId(user.getId())
                 .firstName(user.getFirstName())
@@ -128,7 +131,11 @@ public class UserService {
 
     public void chooseNotificationPreference(Authentication authentication,
                                             NotificationPreference notificationPreference) {
-        User user = (User) authentication.getPrincipal();
+        if (!(authentication.getPrincipal() instanceof User user)){
+            throw new InvalidInputException("Invalid user");
+        } else if (notificationPreference == null) {
+            throw new InvalidInputException("Notification preference cannot be null!");
+        }
         user.setNotificationPreference(notificationPreference);
         userRepository.save(user);
     }

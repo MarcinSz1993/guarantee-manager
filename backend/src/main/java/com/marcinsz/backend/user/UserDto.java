@@ -1,11 +1,9 @@
 package com.marcinsz.backend.user;
 
 import com.marcinsz.backend.notification.NotificationPreference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Data
 @Getter
 @Builder
 @AllArgsConstructor

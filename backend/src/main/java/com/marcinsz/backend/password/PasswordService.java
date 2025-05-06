@@ -21,7 +21,7 @@ public class PasswordService {
     
     public String resetPassword(ResetPasswordRequest resetPasswordRequest){
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
-                .orElseThrow(() -> new UserNotFoundException(resetPasswordRequest.getEmail()));
+                .orElseThrow(() -> UserNotFoundException.byEmail(resetPasswordRequest.getEmail()));
         String generatedNewPassword = generateNewPassword();
         user.setPassword(passwordEncoder.encode(generatedNewPassword));
         userRepository.save(user);
