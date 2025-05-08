@@ -38,6 +38,7 @@ spring:
     bootstrap-servers: localhost:9092
     topic:
       guarantee-history: guarantee-history
+      removed-guarantee-history: removed-guarantee-history
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer

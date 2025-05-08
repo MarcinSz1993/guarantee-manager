@@ -6,7 +6,7 @@ import com.marcinsz.backend.guarantee.GuaranteeRepository;
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
 import com.marcinsz.backend.kafka.KafkaEventProducer;
 import com.marcinsz.backend.user.User;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,14 +17,21 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-@RequiredArgsConstructor
 public class GuaranteeHistoryService {
     private final GuaranteeHistoryRepository guaranteeHistoryRepository;
     private final GuaranteeRepository guaranteeRepository;
     private final KafkaEventProducer<GuaranteeHistory> guaranteeHistoryKafkaProducer;
+    private final KafkaEventProducer<GuaranteeHistory> removedGuaranteeHistoryKafkaProducer;
 
-
-
+    public GuaranteeHistoryService(GuaranteeHistoryRepository guaranteeHistoryRepository,
+                                   GuaranteeRepository guaranteeRepository,
+                                   @Qualifier("guaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistory> guaranteeHistoryKafkaProducer,
+                                   @Qualifier("removedGuaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistory> removedGuaranteeHistoryKafkaProducer) {
+        this.guaranteeHistoryRepository = guaranteeHistoryRepository;
+        this.guaranteeRepository = guaranteeRepository;
+        this.guaranteeHistoryKafkaProducer = guaranteeHistoryKafkaProducer;
+        this.removedGuaranteeHistoryKafkaProducer = removedGuaranteeHistoryKafkaProducer;
+    }
 
     public void addGuaranteeChange(Authentication connectedUser, CreateGuaranteeHistoryRequest createGuaranteeHistoryRequest){
         if (createGuaranteeHistoryRequest.getGuaranteeId() == null ||
@@ -74,7 +81,9 @@ public class GuaranteeHistoryService {
     }
 
     public void deleteGuaranteeHistory(Long guaranteeHistoryId) {
+        GuaranteeHistory guaranteeHistory = guaranteeHistoryRepository.findById(guaranteeHistoryId).orElseThrow();
         guaranteeHistoryRepository.deleteById(guaranteeHistoryId);
+        removedGuaranteeHistoryKafkaProducer.sendMessage(guaranteeHistory);
         //todo zabezpieczyć metodę przez usunięciem nieswojej zmiany gwaracji.
     }
 }
