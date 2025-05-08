@@ -4,7 +4,7 @@ import com.marcinsz.backend.exception.GuaranteeNotFoundException;
 import com.marcinsz.backend.guarantee.Guarantee;
 import com.marcinsz.backend.guarantee.GuaranteeRepository;
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
-import com.marcinsz.backend.kafka.KafkaService;
+import com.marcinsz.backend.kafka.KafkaEventProducer;
 import com.marcinsz.backend.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,10 @@ import java.time.LocalDateTime;
 public class GuaranteeHistoryService {
     private final GuaranteeHistoryRepository guaranteeHistoryRepository;
     private final GuaranteeRepository guaranteeRepository;
-    private final KafkaService kafkaService;
+    private final KafkaEventProducer<GuaranteeHistory> guaranteeHistoryKafkaProducer;
+
+
+
 
     public void addGuaranteeChange(Authentication connectedUser, CreateGuaranteeHistoryRequest createGuaranteeHistoryRequest){
         if (createGuaranteeHistoryRequest.getGuaranteeId() == null ||
@@ -39,7 +42,7 @@ public class GuaranteeHistoryService {
                 .positiveFeedback(createGuaranteeHistoryRequest.getPositiveFeedback())
                 .build();
         guaranteeHistoryRepository.save(guaranteeHistory);
-        kafkaService.sendMessage("guarantee-history", createGuaranteeHistoryRequest.getNotes());
+        guaranteeHistoryKafkaProducer.sendMessage(guaranteeHistory);
     }
 
     public Integer getAllByGuaranteeStatus(GuaranteeStatus guaranteeStatus, Authentication connectedUser){
