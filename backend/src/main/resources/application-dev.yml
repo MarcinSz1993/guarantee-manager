@@ -34,6 +34,9 @@ spring:
       frontend:
         activation-url: http://localhost:4200/activate-account
 
+  kafka:
+    bootstrap-servers: localhost:9092
+
   mail:
     host: localhost
     port: 1025
