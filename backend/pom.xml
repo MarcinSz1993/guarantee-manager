@@ -168,6 +168,12 @@
             <version>2.17.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>3.4.5</version>
+        </dependency>
+
 
     </dependencies>
 

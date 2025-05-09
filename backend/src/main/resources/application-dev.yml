@@ -10,6 +10,7 @@ spring:
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
+
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/master-changelog.xml
@@ -67,6 +68,14 @@ spring:
 
   cloudinary:
     CLOUDINARY_URL: cloudinary://${CLOUDINARY_API_KEY}:${CLOUDINARY_API_SECRET}@dbgncy44q
+
+  data:
+    mongodb:
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
+      host: 27017
+      database: guarantee-manager
+      authentication-database: admin
 
 logging:
   level:
