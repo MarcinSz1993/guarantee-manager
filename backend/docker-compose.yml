@@ -41,8 +41,8 @@ services:
     volumes:
       - mongo:/data
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=MarcinSz1993
-      - MONGO_INITDB_ROOT_PASSWORD=supertajnehaslo
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
 
   mongo-express:
     image: mongo-express
@@ -50,8 +50,8 @@ services:
     ports:
       - "8083:8081"
     environment:
-      - ME_CONFIG_MONGODB_ADMINUSERNAME=MarcinSz1993
-      - ME_CONFIG_MONGODB_ADMINPASSWORD=supertajnehaslo
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGODB_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGODB_PASSWORD}
       - ME_CONFIG_MONGODB_SERVER=mongodb
 
 volumes:
