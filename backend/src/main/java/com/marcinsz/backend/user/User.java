@@ -53,7 +53,7 @@ public class User implements UserDetails{
     private List<Guarantee> guarantees;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("user-reference")
     private List<GuaranteeHistory> guaranteeHistories;
 
     @Override

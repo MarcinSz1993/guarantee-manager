@@ -9,6 +9,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@ToString
 @Entity
 @Table(name = "guarantee_history")
 @Builder
@@ -23,11 +24,11 @@ public class GuaranteeHistory {
     private Long id;
     @ManyToOne
     @JoinColumn(name = "guarantee_id")
-    @JsonBackReference
+    @JsonBackReference("guarantee-reference")
     private Guarantee guarantee;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonBackReference("user-reference")
     private User user;
     @Enumerated(EnumType.STRING)
     private GuaranteeStatus status;

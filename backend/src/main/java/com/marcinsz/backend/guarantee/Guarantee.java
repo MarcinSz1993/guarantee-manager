@@ -41,7 +41,7 @@ public class Guarantee {
     @JsonBackReference
     private User user;
     @OneToMany(mappedBy = "guarantee",cascade = CascadeType.ALL,orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference("guarantee-reference")
     private List<GuaranteeHistory> guaranteeHistory;
 
     @Override

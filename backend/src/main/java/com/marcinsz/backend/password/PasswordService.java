@@ -3,9 +3,12 @@ package com.marcinsz.backend.password;
 import com.marcinsz.backend.exception.InvalidPasswordException;
 import com.marcinsz.backend.exception.MissingFieldException;
 import com.marcinsz.backend.exception.UserNotFoundException;
+import com.marcinsz.backend.kafka.ResetPasswordKafkaProducer;
+import com.marcinsz.backend.response.ApiResponse;
 import com.marcinsz.backend.user.User;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import java.util.*;
 public class PasswordService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ResetPasswordKafkaProducer resetPasswordKafkaProducer;
     
     public String resetPassword(ResetPasswordRequest resetPasswordRequest){
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
@@ -25,6 +29,12 @@ public class PasswordService {
         String generatedNewPassword = generateNewPassword();
         user.setPassword(passwordEncoder.encode(generatedNewPassword));
         userRepository.save(user);
+        resetPasswordKafkaProducer.sendMessage(
+                ApiResponse.builder()
+                        .message("User " + user.getFirstName() + " "+ user.getLastName() + " has been reset the password.")
+                        .statusCode(HttpStatus.OK.value())
+                        .build()
+        );
         return generatedNewPassword;
     }
 

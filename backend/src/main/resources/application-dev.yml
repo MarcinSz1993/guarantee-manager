@@ -40,6 +40,7 @@ spring:
     topic:
       guarantee-history: guarantee-history
       removed-guarantee-history: removed-guarantee-history
+      reset-password: reset-password
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -71,9 +72,9 @@ spring:
 
   data:
     mongodb:
-      username: ${MONGODB_USERNAME}
-      password: ${MONGODB_PASSWORD}
-      host: 27017
+      username: MarcinSz1993
+      password: supertajnehaslo
+      host: localhost
       database: guarantee-manager
       authentication-database: admin
 
