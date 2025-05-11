@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public abstract class AbstractKafkaConsumer<T> {
     private final ObjectMapper objectMapper;
-    private final Class<T> typeParameterClass;
+    private final Class<T> classType;
 
-    public void consume(String message) throws JsonProcessingException {
+    public T consume(String message) throws JsonProcessingException {
         System.out.println("Nieprzetworzona wiadomość: " + message);
-
-        T processedMessage = objectMapper.readValue(message, typeParameterClass);
-        System.out.println("Przetworzona wiadomość " + processedMessage);
+        return objectMapper.readValue(message, classType);
     }
+
+    abstract void saveRecordToMongoDB(T message);
 }

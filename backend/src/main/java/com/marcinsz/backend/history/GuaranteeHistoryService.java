@@ -5,6 +5,7 @@ import com.marcinsz.backend.guarantee.Guarantee;
 import com.marcinsz.backend.guarantee.GuaranteeRepository;
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
 import com.marcinsz.backend.kafka.KafkaEventProducer;
+import com.marcinsz.backend.mongodb.GuaranteeHistoryDocument;
 import com.marcinsz.backend.user.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -20,12 +21,12 @@ import java.time.LocalDateTime;
 public class GuaranteeHistoryService {
     private final GuaranteeHistoryRepository guaranteeHistoryRepository;
     private final GuaranteeRepository guaranteeRepository;
-    private final KafkaEventProducer<GuaranteeHistory> guaranteeHistoryKafkaProducer;
+    private final KafkaEventProducer<GuaranteeHistoryDocument> guaranteeHistoryKafkaProducer;
     private final KafkaEventProducer<GuaranteeHistory> removedGuaranteeHistoryKafkaProducer;
 
     public GuaranteeHistoryService(GuaranteeHistoryRepository guaranteeHistoryRepository,
                                    GuaranteeRepository guaranteeRepository,
-                                   @Qualifier("guaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistory> guaranteeHistoryKafkaProducer,
+                                   @Qualifier("guaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistoryDocument> guaranteeHistoryKafkaProducer,
                                    @Qualifier("removedGuaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistory> removedGuaranteeHistoryKafkaProducer) {
         this.guaranteeHistoryRepository = guaranteeHistoryRepository;
         this.guaranteeRepository = guaranteeRepository;
@@ -49,7 +50,16 @@ public class GuaranteeHistoryService {
                 .positiveFeedback(createGuaranteeHistoryRequest.getPositiveFeedback())
                 .build();
         guaranteeHistoryRepository.save(guaranteeHistory);
-        guaranteeHistoryKafkaProducer.sendMessage(guaranteeHistory);
+        GuaranteeHistoryDocument guaranteeHistoryDocument = GuaranteeHistoryDocument.builder()
+                        .guaranteeId(guaranteeHistory.getId())
+                        .guaranteeOwnerName(user.getFirstName())
+                        .guaranteeOwnerLastName(user.getLastName())
+                        .guaranteeOwnerEmail(user.getEmail())
+                        .notes(guaranteeHistory.getNotes())
+                        .operationTime(guaranteeHistory.getChangeTime())
+                        .positiveFeedback(guaranteeHistory.isPositiveFeedback())
+                        .build();
+        guaranteeHistoryKafkaProducer.sendMessage(guaranteeHistoryDocument);
     }
 
     public Integer getAllByGuaranteeStatus(GuaranteeStatus guaranteeStatus, Authentication connectedUser){

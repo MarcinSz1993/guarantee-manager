@@ -16,4 +16,9 @@ public class ResetPasswordKafkaConsumer extends AbstractKafkaConsumer<ApiRespons
     public void consumeResetPasswordMessage(String message) throws JsonProcessingException {
         consume(message);
     }
+
+    @Override
+    void saveRecordToMongoDB(ApiResponse message) {
+
+    }
 }

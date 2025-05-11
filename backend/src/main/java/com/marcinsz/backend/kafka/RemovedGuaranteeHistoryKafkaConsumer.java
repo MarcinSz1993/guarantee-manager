@@ -16,4 +16,9 @@ public class RemovedGuaranteeHistoryKafkaConsumer extends AbstractKafkaConsumer<
     public void consumeRemovedGuaranteeHistoryMessage(String message) throws JsonProcessingException {
         consume(message);
     }
+
+    @Override
+    void saveRecordToMongoDB(GuaranteeHistory message) {
+
+    }
 }
