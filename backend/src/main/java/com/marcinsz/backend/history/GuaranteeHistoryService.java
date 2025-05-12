@@ -6,6 +6,7 @@ import com.marcinsz.backend.guarantee.GuaranteeRepository;
 import com.marcinsz.backend.guarantee.GuaranteeStatus;
 import com.marcinsz.backend.kafka.KafkaEventProducer;
 import com.marcinsz.backend.mongodb.GuaranteeHistoryDocument;
+import com.marcinsz.backend.mongodb.RemovedGuaranteeHistoryDocument;
 import com.marcinsz.backend.user.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -22,12 +23,12 @@ public class GuaranteeHistoryService {
     private final GuaranteeHistoryRepository guaranteeHistoryRepository;
     private final GuaranteeRepository guaranteeRepository;
     private final KafkaEventProducer<GuaranteeHistoryDocument> guaranteeHistoryKafkaProducer;
-    private final KafkaEventProducer<GuaranteeHistory> removedGuaranteeHistoryKafkaProducer;
+    private final KafkaEventProducer<RemovedGuaranteeHistoryDocument> removedGuaranteeHistoryKafkaProducer;
 
     public GuaranteeHistoryService(GuaranteeHistoryRepository guaranteeHistoryRepository,
                                    GuaranteeRepository guaranteeRepository,
                                    @Qualifier("guaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistoryDocument> guaranteeHistoryKafkaProducer,
-                                   @Qualifier("removedGuaranteeHistoryKafkaProducer") KafkaEventProducer<GuaranteeHistory> removedGuaranteeHistoryKafkaProducer) {
+                                   @Qualifier("removedGuaranteeHistoryKafkaProducer") KafkaEventProducer<RemovedGuaranteeHistoryDocument> removedGuaranteeHistoryKafkaProducer) {
         this.guaranteeHistoryRepository = guaranteeHistoryRepository;
         this.guaranteeRepository = guaranteeRepository;
         this.guaranteeHistoryKafkaProducer = guaranteeHistoryKafkaProducer;
@@ -93,7 +94,14 @@ public class GuaranteeHistoryService {
     public void deleteGuaranteeHistory(Long guaranteeHistoryId) {
         GuaranteeHistory guaranteeHistory = guaranteeHistoryRepository.findById(guaranteeHistoryId).orElseThrow();
         guaranteeHistoryRepository.deleteById(guaranteeHistoryId);
-        removedGuaranteeHistoryKafkaProducer.sendMessage(guaranteeHistory);
+        RemovedGuaranteeHistoryDocument removedGuaranteeHistoryDocument = RemovedGuaranteeHistoryDocument.builder()
+                .guaranteeId(guaranteeHistory.getId())
+                .guaranteeOwnerName(guaranteeHistory.getUser().getFirstName())
+                .guaranteeOwnerLastName(guaranteeHistory.getUser().getLastName())
+                .guaranteeOwnerEmail(guaranteeHistory.getUser().getEmail())
+                .operationTime(guaranteeHistory.getChangeTime())
+                .build();
+        removedGuaranteeHistoryKafkaProducer.sendMessage(removedGuaranteeHistoryDocument);
         //todo zabezpieczyć metodę przez usunięciem nieswojej zmiany gwaracji.
     }
 }
