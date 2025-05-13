@@ -4,17 +4,19 @@ import com.marcinsz.backend.exception.InvalidPasswordException;
 import com.marcinsz.backend.exception.MissingFieldException;
 import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.kafka.ResetPasswordKafkaProducer;
-import com.marcinsz.backend.response.ApiResponse;
+import com.marcinsz.backend.mongodb.ResetPasswordDocument;
 import com.marcinsz.backend.user.User;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +32,12 @@ public class PasswordService {
         user.setPassword(passwordEncoder.encode(generatedNewPassword));
         userRepository.save(user);
         resetPasswordKafkaProducer.sendMessage(
-                ApiResponse.builder()
-                        .message("User " + user.getFirstName() + " "+ user.getLastName() + " has been reset the password.")
-                        .statusCode(HttpStatus.OK.value())
+                ResetPasswordDocument.builder()
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .email(user.getEmail())
+                        .operationTime(LocalDateTime.now())
+                        .accountCreationDate(user.getCreatedDate().toLocalDate())
                         .build()
         );
         return generatedNewPassword;
