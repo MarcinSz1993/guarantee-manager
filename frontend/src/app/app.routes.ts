@@ -10,6 +10,7 @@ import {ArchiveComponent} from './pages/archive/archive.component';
 import {NoGuaranteesComponent} from './pages/no-guarantees/no-guarantees.component';
 import {authGuard} from './own_services/auth.guard';
 import {NavbarComponent} from './pages/navbar/navbar.component';
+import {AuditComponent} from './pages/audit/audit.component';
 
 export const routes: Routes = [
   {
@@ -57,5 +58,9 @@ export const routes: Routes = [
     path: "navbar",
     component: NavbarComponent,
     canActivate: [authGuard]
+  },
+  {
+    path: "audit",
+    component: AuditComponent
   }
 ];

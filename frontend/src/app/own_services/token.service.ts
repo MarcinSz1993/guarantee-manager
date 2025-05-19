@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {JwtHelperService} from '@auth0/angular-jwt';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,13 +9,25 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 export class TokenService {
   private tokenKey = 'authToken';
   private username = 'username';
+  private userRoleSubject = new BehaviorSubject(this.getUserRole());
+  userRole$ = this.userRoleSubject.asObservable();
 
   constructor(
     private router: Router
   ) { }
 
+  getUserRole():string{
+    let token = this.getToken() as string;
+    const jwtHelperService = new JwtHelperService()
+    const decodedToken = jwtHelperService.decodeToken(token);
+    let userRole = decodedToken.role.toString();
+    console.log(userRole);
+      return userRole;
+  }
+
   setToken(token:string){
     sessionStorage.setItem(this.tokenKey,token);
+    this.updateUserRole();
   }
 
   isUserLoggedIn(): boolean {
@@ -35,6 +48,7 @@ export class TokenService {
     sessionStorage.removeItem('firstname')
     sessionStorage.removeItem('lastname')
     sessionStorage.removeItem('notificationPreference')
+    this.userRoleSubject.next('');
     this.router.navigate(['']).then();
   }
 
@@ -43,7 +57,6 @@ export class TokenService {
   }
 
   private isTokenValid() {
-    const token = this.getToken()
     if (!this.getToken()){
       return false;
     }
@@ -54,5 +67,10 @@ export class TokenService {
       return false;
     }
     return true;
+  }
+
+  private updateUserRole() {
+    const role = this.getUserRole();
+    this.userRoleSubject.next(role);
   }
 }

@@ -41,6 +41,7 @@ export class NavbarComponent implements OnInit{
 
   firstName:string = '';
   lastName:string = '';
+  userRole: string = '';
 
   constructor(
     public authService:TokenService,
@@ -51,6 +52,9 @@ export class NavbarComponent implements OnInit{
   }
 
   ngOnInit(): void {
+     this.authService.userRole$.subscribe(role => {
+       this.userRole = role
+     });
     this.userStateService.currentUser$.subscribe(user => {
       if (user) {
         this.firstName = user.firstName as string;

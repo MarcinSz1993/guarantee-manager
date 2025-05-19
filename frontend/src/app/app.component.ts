@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterOutlet} from '@angular/router';
 import {NavbarComponent} from './pages/navbar/navbar.component';
-import {TokenService} from './own_services/token.service';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -13,15 +12,11 @@ import {Title} from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit{
   constructor(
-    private tokenService: TokenService,
     private titleService: Title
   ) {
   }
   ngOnInit(): void {
     this.titleService.setTitle(this.title);
-      if (this.tokenService.isTokenNotValid()){
-        this.tokenService.logout();
-      }
   }
   title = 'Guarantee Manager';
 }
