@@ -3,11 +3,16 @@ package com.marcinsz.backend.handler;
 import com.marcinsz.backend.exception.*;
 import com.marcinsz.backend.response.ExceptionResponse;
 import com.marcinsz.backend.response.ValidationErrorsResponse;
+import com.marcinsz.backend.user.User;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -111,6 +116,18 @@ public class GlobalExceptionHandler {
                 buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse> accessDeniedExceptionHandler(){
+        String customMsg = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails){
+            User user = (User) authentication.getPrincipal();
+            customMsg = "User " + user.getUserName() + " has not ADMIN role.";
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                buildBodyExceptionResponse(customMsg, HttpStatus.FORBIDDEN.value()));
+    }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ExceptionResponse> missingServletRequestParameterExceptionHandler(Exception ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -127,7 +144,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(buildBodyExceptionResponse(
-                        errorMessage
+                        errorMessage,HttpStatus.BAD_REQUEST.value()
         ));
     }
 
@@ -150,9 +167,9 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    private ExceptionResponse buildBodyExceptionResponse(String message) {
+    private ExceptionResponse buildBodyExceptionResponse(String message,int statusCode) {
         return ExceptionResponse.builder()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusCode(statusCode)
                 .message(message)
                 .build();
     }
