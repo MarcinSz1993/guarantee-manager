@@ -1,1 +1,42 @@
-<p>audit works!</p>
+<div class="min-vh-100 px-3 py-4" style="background: linear-gradient(to bottom, #1a1a2e, #16213e); color: #e0e0e0;">
+
+  <div class="container mb-4">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow p-4" style="background-color: #0f3460;">
+          <h5 class="text-center mb-3">Audit Log Checker</h5>
+          <form (ngSubmit)="getLogs()">
+            <div class="mb-3">
+              <label for="userEmail" class="form-label">User Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="userEmail"
+                placeholder="Enter email"
+                [(ngModel)]="userEmail"
+                name="userEmail"
+                required
+              />
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-outline-light">Show Logs</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="auditResponse.auditLogs?.length === 0">
+    <div class="alert alert-info text-center" role="alert">
+      No logs found for this user.
+    </div>
+  </div>
+
+  <div class="logs">
+    <ng-container *ngIf="auditResponse.auditLogs?.length">
+      <app-logs [logs]="auditResponse.auditLogs || []"></app-logs> else
+    </ng-container>
+
+  </div>
+</div>

@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit{
 
   firstName:string = '';
   lastName:string = '';
-  userRole: string = '';
+  userRole: string | null = '';
 
   constructor(
     public authService:TokenService,

@@ -4,6 +4,8 @@
 
 export { AddGuaranteeRequest } from './models/add-guarantee-request';
 export { ApiResponse } from './models/api-response';
+export { AuditLogsModel } from './models/audit-logs-model';
+export { AuditResponse } from './models/audit-response';
 export { AuthenticationResponse } from './models/authentication-response';
 export { ChangePasswordRequest } from './models/change-password-request';
 export { CreateGuaranteeHistoryRequest } from './models/create-guarantee-history-request';

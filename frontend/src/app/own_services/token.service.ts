@@ -9,15 +9,18 @@ import {BehaviorSubject} from 'rxjs';
 export class TokenService {
   private tokenKey = 'authToken';
   private username = 'username';
-  private userRoleSubject = new BehaviorSubject(this.getUserRole());
+  private userRoleSubject = new BehaviorSubject<string | null>(null);
   userRole$ = this.userRoleSubject.asObservable();
 
   constructor(
     private router: Router
-  ) { }
+  ) {
+    this.updateUserRole();
+  }
 
-  getUserRole():string{
+  getUserRole():string | null{
     let token = this.getToken() as string;
+    if (!token) return null;
     const jwtHelperService = new JwtHelperService()
     const decodedToken = jwtHelperService.decodeToken(token);
     let userRole = decodedToken.role.toString();
