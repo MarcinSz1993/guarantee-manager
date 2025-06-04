@@ -26,6 +26,7 @@ public class ResetPasswordKafkaConsumer extends AbstractKafkaConsumer<ResetPassw
 
     @Override
     void saveRecordToMongoDB(ResetPasswordDocument message) {
-        resetPasswordMongoRepository.insert(message);
+        log.info("Zapisana wiadomość w mongoDB{}", message.toString());
+        resetPasswordMongoRepository.save(message);
     }
 }

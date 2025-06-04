@@ -1,5 +1,6 @@
 package com.marcinsz.backend.password;
 
+import com.marcinsz.backend.exception.InvalidInputException;
 import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.kafka.ResetPasswordKafkaProducer;
 import com.marcinsz.backend.mongodb.ResetPasswordDocument;
@@ -33,6 +34,31 @@ public class PasswordServiceTest {
     void setUp(){
         MockitoAnnotations.initMocks(this);
     }
+
+    @Test
+    public void resetPasswordShouldChangeUserPasswordFromOldOneToTheNewHashedOne(){
+        User user = createUser();
+        String oldPassword = user.getPassword();
+        ResetPasswordRequest resetPasswordRequest = createResetPasswordRequest();
+        when(userRepository.findByEmail(resetPasswordRequest.getEmail())).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(mockArguments -> "hashed" + mockArguments.getArgument(0));
+        doNothing().when(resetPasswordKafkaProducer).sendMessage(Mockito.any(ResetPasswordDocument.class));
+
+        passwordService.resetPassword(resetPasswordRequest);
+        assertNotEquals(user.getPassword(), oldPassword);
+       assertTrue(user.getPassword().startsWith("hashed"));
+       verify(userRepository, times(1)).findByEmail(resetPasswordRequest.getEmail());
+       verify(passwordEncoder, times(1)).encode(Mockito.anyString());
+       verify(resetPasswordKafkaProducer, times(1)).sendMessage(Mockito.any(ResetPasswordDocument.class));
+       verify(userRepository,times(1)).save(Mockito.any(User.class));
+    }
+
+    @Test
+    public void resetPasswordShouldThrowInvalidInputExceptionWithSpecifiedCommunicateWhenInputIsNull(){
+        InvalidInputException invalidInputException = assertThrows(InvalidInputException.class, () -> passwordService.resetPassword(null));
+        assertEquals("Reset Password Request cannot be null!", invalidInputException.getMessage());
+    }
+
 
     @Test
     public void resetPasswordShouldThrowUserNotFoundWithSpecifiedCommunicateWhenUserDoesNotExist(){

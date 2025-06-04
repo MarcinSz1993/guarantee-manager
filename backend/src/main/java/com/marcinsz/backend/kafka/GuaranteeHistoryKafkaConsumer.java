@@ -28,6 +28,7 @@ public class GuaranteeHistoryKafkaConsumer extends AbstractKafkaConsumer<Guarant
 
     @Override
     void saveRecordToMongoDB(GuaranteeHistoryDocument message) {
-        guaranteeHistoryMongoRepository.insert(message);
+        guaranteeHistoryMongoRepository.save(message);
+        log.info("Dodano do MongoDB Guarantee history: {}", message);
     }
 }

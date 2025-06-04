@@ -57,7 +57,7 @@ public class GuaranteeHistoryService {
                         .guaranteeOwnerLastName(user.getLastName())
                         .guaranteeOwnerEmail(user.getEmail())
                         .notes(guaranteeHistory.getNotes())
-                        .operationTime(guaranteeHistory.getChangeTime())
+                        .operationTime(LocalDateTime.now())
                         .positiveFeedback(guaranteeHistory.isPositiveFeedback())
                         .build();
         guaranteeHistoryKafkaProducer.sendMessage(guaranteeHistoryDocument);
@@ -99,7 +99,7 @@ public class GuaranteeHistoryService {
                 .guaranteeOwnerName(guaranteeHistory.getUser().getFirstName())
                 .guaranteeOwnerLastName(guaranteeHistory.getUser().getLastName())
                 .guaranteeOwnerEmail(guaranteeHistory.getUser().getEmail())
-                .operationTime(guaranteeHistory.getChangeTime())
+                .operationTime(LocalDateTime.now())
                 .build();
         removedGuaranteeHistoryKafkaProducer.sendMessage(removedGuaranteeHistoryDocument);
         //todo zabezpieczyć metodę przez usunięciem nieswojej zmiany gwaracji.

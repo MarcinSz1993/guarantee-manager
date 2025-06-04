@@ -27,6 +27,7 @@ public class RemovedGuaranteeHistoryKafkaConsumer extends AbstractKafkaConsumer<
 
     @Override
     void saveRecordToMongoDB(RemovedGuaranteeHistoryDocument message) {
-        removedGuaranteeHistoryMongoRepository.insert(message);
+        removedGuaranteeHistoryMongoRepository.save(message);
+        log.info("Dodano do mongoDB {}", message);
     }
 }

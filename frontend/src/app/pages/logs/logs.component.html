@@ -14,10 +14,17 @@
       <td>{{ log.logsType }}</td>
       <td>{{ log.timestamp | date: 'short' }}</td>
       <td>
+        <pre class="text-light" *ngIf="log.logsType === 'RESET_PASSWORD'">
+  {{ "User " + log.logDetails?.['firstName'] + " " + log.logDetails?.['lastName'] + " has changed the password." }}
+</pre>
 
-        <pre class="text-light" *ngIf="log.logsType == 'RESET_PASSWORD'" >{{ "User " + log.logDetails?.firstName + " " + log.logDetails?.lastName + " has changed the password." }}</pre>
-        <pre class="text-light" *ngIf="log.logsType == 'ADDED_GUARANTEE_HISTORY'" >{{ "User " + log.logDetails?.guaranteeOwnerName + " " + log.logDetails?.guaranteeOwnerLastName + " has added a new guarantee history."}}</pre>
-        <pre class="text-light" *ngIf="log.logsType == 'REMOVED_GUARANTEE_HISTORY'" >{{ "User " + log.logDetails?.guaranteeOwnerName + " " + log.logDetails?.guaranteeOwnerLastName + " has removed guarantee history."}}</pre>
+        <pre class="text-light" *ngIf="log.logsType === 'ADDED_GUARANTEE_HISTORY'">
+  {{ "User " + log.logDetails?.['guaranteeOwnerName'] + " " + log.logDetails?.['guaranteeOwnerLastName'] + " has added a new guarantee history." }}
+</pre>
+
+        <pre class="text-light" *ngIf="log.logsType === 'REMOVED_GUARANTEE_HISTORY'">
+  {{ "User " + log.logDetails?.['guaranteeOwnerName'] + " " + log.logDetails?.['guaranteeOwnerLastName'] + " has removed guarantee history." }}
+</pre>
       </td>
     </tr>
     </tbody>

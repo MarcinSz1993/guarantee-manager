@@ -1,5 +1,6 @@
 package com.marcinsz.backend.password;
 
+import com.marcinsz.backend.exception.InvalidInputException;
 import com.marcinsz.backend.exception.InvalidPasswordException;
 import com.marcinsz.backend.exception.MissingFieldException;
 import com.marcinsz.backend.exception.UserNotFoundException;
@@ -26,6 +27,9 @@ public class PasswordService {
     private final ResetPasswordKafkaProducer resetPasswordKafkaProducer;
     
     public String resetPassword(ResetPasswordRequest resetPasswordRequest){
+        if (resetPasswordRequest == null){
+            throw new InvalidInputException("Reset Password Request cannot be null!");
+        }
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
                 .orElseThrow(() -> UserNotFoundException.byEmail(resetPasswordRequest.getEmail()));
         String generatedNewPassword = generateNewPassword();
@@ -51,7 +55,7 @@ public class PasswordService {
         userRepository.save(user);
     }
 
-    private String generateNewPassword(){
+    protected String generateNewPassword(){
         StringBuilder password = new StringBuilder();
         SecureRandom random = new SecureRandom();
         List<Character> passwordChars = new ArrayList<>();
