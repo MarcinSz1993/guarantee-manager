@@ -1,6 +1,7 @@
 package com.marcinsz.backend.password;
 
 import com.marcinsz.backend.exception.InvalidInputException;
+import com.marcinsz.backend.exception.UserNotActivatedException;
 import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.kafka.ResetPasswordKafkaProducer;
 import com.marcinsz.backend.mongodb.ResetPasswordDocument;
@@ -8,9 +9,13 @@ import com.marcinsz.backend.notification.NotificationPreference;
 import com.marcinsz.backend.user.Role;
 import com.marcinsz.backend.user.User;
 import com.marcinsz.backend.user.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -19,6 +24,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class PasswordServiceTest {
 
     @Mock
@@ -30,9 +36,20 @@ public class PasswordServiceTest {
     @InjectMocks
     private PasswordService passwordService;
 
-    @BeforeEach
-    void setUp(){
-        MockitoAnnotations.initMocks(this);
+
+    @Test
+    public void resetPasswordShouldThrowUserNotActivatedExceptionWithSpecifiedCommunicationWhenUserIsNotActivated(){
+        User user = createUser();
+        ResetPasswordRequest resetPasswordRequest = createResetPasswordRequest();
+        user.setUserEnabled(false);
+        when(userRepository.findByEmail(resetPasswordRequest.getEmail())).thenReturn(Optional.of(user));
+        UserNotActivatedException userNotActivatedException = assertThrows(UserNotActivatedException.class, () -> passwordService.resetPassword(resetPasswordRequest));
+
+        assertEquals(userNotActivatedException.getMessage(), "User is not activated");
+        verify(userRepository,times(1)).findByEmail(resetPasswordRequest.getEmail());
+        verify(resetPasswordKafkaProducer,never()).sendMessage(Mockito.any(ResetPasswordDocument.class));
+        verify(userRepository,never()).save(Mockito.any(User.class));
+        verify(passwordEncoder,never()).encode(Mockito.anyString());
     }
 
     @Test
@@ -64,7 +81,7 @@ public class PasswordServiceTest {
     public void resetPasswordShouldThrowUserNotFoundWithSpecifiedCommunicateWhenUserDoesNotExist(){
         ResetPasswordRequest resetPasswordRequest = createResetPasswordRequest();
         resetPasswordRequest.setEmail("notexist@gmail.com");
-        when(userRepository.findByEmail(createResetPasswordRequest().getEmail())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(resetPasswordRequest.getEmail())).thenReturn(Optional.empty());
         UserNotFoundException userNotFoundException = assertThrows(UserNotFoundException.class, () -> passwordService.resetPassword(resetPasswordRequest));
 
         assertEquals(userNotFoundException.getMessage(), "User with email " + resetPasswordRequest.getEmail() + " not found");
@@ -214,7 +231,7 @@ public class PasswordServiceTest {
                 .role(Role.USER)
                 .notificationPreference(NotificationPreference.ALL)
                 .createdDate(LocalDateTime.of(2025,5,1,12,15))
-                .userEnabled(false)
+                .userEnabled(true)
                 .build();
     }
 }

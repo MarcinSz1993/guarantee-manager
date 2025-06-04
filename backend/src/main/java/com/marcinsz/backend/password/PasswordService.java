@@ -1,9 +1,6 @@
 package com.marcinsz.backend.password;
 
-import com.marcinsz.backend.exception.InvalidInputException;
-import com.marcinsz.backend.exception.InvalidPasswordException;
-import com.marcinsz.backend.exception.MissingFieldException;
-import com.marcinsz.backend.exception.UserNotFoundException;
+import com.marcinsz.backend.exception.*;
 import com.marcinsz.backend.kafka.ResetPasswordKafkaProducer;
 import com.marcinsz.backend.mongodb.ResetPasswordDocument;
 import com.marcinsz.backend.user.User;
@@ -32,6 +29,9 @@ public class PasswordService {
         }
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
                 .orElseThrow(() -> UserNotFoundException.byEmail(resetPasswordRequest.getEmail()));
+        if (!user.isUserEnabled()){
+            throw new UserNotActivatedException();
+        }
         String generatedNewPassword = generateNewPassword();
         user.setPassword(passwordEncoder.encode(generatedNewPassword));
         userRepository.save(user);
