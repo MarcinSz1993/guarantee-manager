@@ -17,7 +17,7 @@ pipeline {
             steps {
                 dir("${DEPLOY_DIR}") {
                     deleteDir() //
-                    git branch: 'prod', url: 'https://github.com/MarcinSz1993/guarantee-manager'
+                    git branch: 'prod-kafka', url: 'https://github.com/MarcinSz1993/guarantee-manager'
                 }
             }
         }
