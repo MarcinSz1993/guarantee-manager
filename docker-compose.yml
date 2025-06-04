@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: guarantee-db
+    environment:
+      POSTGRES_DB: guarantee-manager
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    image: marcinsz1993/guarantee-manager-backend:latest
+    build:
+      context: ./backend
+    container_name: guarantee-backend
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/guarantee-manager
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+
+  frontend:
+    image: marcinsz1993/guarantee-manager-frontend:latest
+    build:
+      context: ./frontend
+    container_name: guarantee-frontend
+    ports:
+       - "80:80"
+
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
