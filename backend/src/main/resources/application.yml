@@ -3,3 +3,6 @@ spring:
     active: prod
 springdoc:
   default-produces-media-type: application/json
+
+server:
+  port: 8081

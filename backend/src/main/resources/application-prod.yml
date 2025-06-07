@@ -37,7 +37,7 @@ spring:
           non_contextual_creation: true
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka:9092
     topic:
       guarantee-history: guarantee-history
       removed-guarantee-history: removed-guarantee-history
