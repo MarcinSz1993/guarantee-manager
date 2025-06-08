@@ -10,8 +10,7 @@ pipeline {
         POSTGRES_PASSWORD = credentials('postgres-password')
         MAIL_USERNAME = credentials('smtp-username')
         MAIL_PASSWORD = credentials('smtp-password')
-        MONGODB_USERNAME = credentials('mongodb-username')
-        MONGODB_PASSWORD = credentials('mongodb-password')
+        // MONGODB credentials przeniesione do withCredentials
     }
 
     stages {
@@ -27,15 +26,25 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'docker-compose down || true'
-                    sh 'docker-compose build'
+                    script {
+                        // MongoDB credentials
+                        withCredentials([
+                            usernamePassword(
+                                credentialsId: 'mongodb-credentials',
+                                usernameVariable: 'MONGODB_USERNAME',
+                                passwordVariable: 'MONGODB_PASSWORD'
+                            )
+                        ]) {
+                            sh 'docker-compose down || true'
+                            sh 'docker-compose build'
 
-
-                    sh """
-                        MONGODB_USERNAME=${MONGODB_USERNAME} \\
-                        MONGODB_PASSWORD=${MONGODB_PASSWORD} \\
-                        docker-compose up -d
-                    """
+                            sh """
+                                export MONGODB_USERNAME=$MONGODB_USERNAME
+                                export MONGODB_PASSWORD=$MONGODB_PASSWORD
+                                docker-compose up -d
+                            """
+                        }
+                    }
                 }
             }
         }
