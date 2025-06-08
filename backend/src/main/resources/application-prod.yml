@@ -12,8 +12,8 @@ spring:
 
   data:
     mongodb:
-      username: ${MONGODB_USERNAME}
-      password: ${MONGODB_PASSWORD}
+      username: MarcinSz1993
+      password: qwerty
       host: mongodb
       database: guarantee-manager
       authentication-database: admin
