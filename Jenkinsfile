@@ -10,8 +10,8 @@ pipeline {
         POSTGRES_PASSWORD = credentials('postgres-password')
         MAIL_USERNAME = credentials('smtp-username')
         MAIL_PASSWORD = credentials('smtp-password')
-        MONGODB_USERNAME = credentials('MONGODB_USERNAME')
-        MONGODB_PASSWORD = credentials('MONGODB_PASSWORD')
+        MONGODB_USERNAME = credentials('mongodb-username')
+        MONGODB_PASSWORD = credentials('mongodb-password')
     }
 
     stages {
