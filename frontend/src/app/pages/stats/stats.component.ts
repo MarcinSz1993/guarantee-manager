@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { JsonPipe, NgClass, NgForOf, NgIf, NgStyle } from '@angular/common';
-import { GuaranteeControllerService } from '../../services/services/guarantee-controller.service';
-import { ApiResponse } from '../../services/models/api-response';
-import { GuaranteeHistoryControllerService } from '../../services/services/guarantee-history-controller.service';
-import { BaseChartDirective } from 'ng2-charts';
-import { Chart, registerables } from 'chart.js';
+import {Component, OnInit} from '@angular/core';
+import {JsonPipe, NgClass, NgForOf, NgIf, NgStyle} from '@angular/common';
+import {GuaranteeControllerService} from '../../services/services/guarantee-controller.service';
+import {ApiResponse} from '../../services/models/api-response';
+import {GuaranteeHistoryControllerService} from '../../services/services/guarantee-history-controller.service';
+import {Chart, registerables} from 'chart.js';
 
 Chart.register(...registerables);
 
@@ -14,7 +13,6 @@ Chart.register(...registerables);
     NgForOf,
     NgIf,
     JsonPipe,
-    BaseChartDirective,
     NgClass,
     NgStyle,
   ],

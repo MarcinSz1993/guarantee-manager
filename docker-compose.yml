@@ -13,7 +13,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    image: marcinsz1993/guarantee-manager-backend:latest
+    image: marcinsz1993/guarantee-manager-backend-kafka
     build:
       context: ./backend
     container_name: guarantee-backend
@@ -33,7 +33,7 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD}
 
   frontend:
-    image: marcinsz1993/guarantee-manager-frontend:latest
+    image: marcinsz1993/guarantee-manager-frontend-kafka:latest
     build:
       context: ./frontend
     container_name: guarantee-frontend
