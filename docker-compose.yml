@@ -79,8 +79,8 @@ services:
       volumes:
         - mongo:/data
       environment:
-        - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
-        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+        - MONGO_INITDB_ROOT_USERNAME=MarcinSz1993
+        - MONGO_INITDB_ROOT_PASSWORD=qwerty
 
   mongo-express:
       image: mongo-express
