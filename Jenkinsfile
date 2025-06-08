@@ -18,7 +18,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    deleteDir() //
+                    deleteDir()
                     git branch: 'prod-kafka', url: 'https://github.com/MarcinSz1993/guarantee-manager'
                 }
             }
@@ -27,10 +27,15 @@ pipeline {
         stage('Build and Deploy') {
             steps {
                 dir("${DEPLOY_DIR}") {
-
                     sh 'docker-compose down || true'
                     sh 'docker-compose build'
-                    sh 'docker-compose up -d'
+
+
+                    sh """
+                        MONGODB_USERNAME=${MONGODB_USERNAME} \\
+                        MONGODB_PASSWORD=${MONGODB_PASSWORD} \\
+                        docker-compose up -d
+                    """
                 }
             }
         }
