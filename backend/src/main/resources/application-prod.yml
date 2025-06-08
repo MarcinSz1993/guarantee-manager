@@ -14,7 +14,7 @@ spring:
     mongodb:
       username: ${MONGODB_USERNAME}
       password: ${MONGODB_PASSWORD}
-      host: mongo_db
+      host: mongodb
       database: guarantee-manager
       authentication-database: admin
       port: 27017
@@ -81,3 +81,4 @@ logging:
     root: info
     org.hibernate.sql: OFF
     org.hibernate.type.descriptor.sql.BasicBinder: OFF
+
