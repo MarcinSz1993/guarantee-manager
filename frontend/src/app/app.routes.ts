@@ -61,6 +61,7 @@ export const routes: Routes = [
   },
   {
     path: "audit",
-    component: AuditComponent
+    component: AuditComponent,
+    canActivate: [authGuard]
   }
 ];
