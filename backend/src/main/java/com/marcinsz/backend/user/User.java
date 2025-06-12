@@ -20,7 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
+@ToString(exclude = {"guarantees","guaranteeHistories"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")

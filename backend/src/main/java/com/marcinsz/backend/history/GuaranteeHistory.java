@@ -9,7 +9,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@ToString
+@ToString(exclude = {"guarantee","user"})
 @Entity
 @Table(name = "guarantee_history")
 @Builder

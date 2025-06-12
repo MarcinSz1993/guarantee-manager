@@ -24,7 +24,6 @@ public class ResetPasswordEmailService {
         User user = userRepository.findByEmail(resetPasswordRequest.getEmail())
                 .orElseThrow(() -> UserNotFoundException.byEmail(resetPasswordRequest.getEmail()));
         String resetPassword = passwordService.resetPassword(resetPasswordRequest);
-        log.info("Nowe haslo: {}", resetPassword);
         String message = "You asked for a new password. Your new password is " + resetPassword;
         emailNotificationService.sendNotification(user.getEmail(),user.getUserName(),EmailTemplateName.RESET_PASSWORD
         ,"Your new password",message);
