@@ -4,6 +4,7 @@ import { GuaranteeControllerService } from '../../services/services/guarantee-co
 import { ApiResponse } from '../../services/models/api-response';
 import { GuaranteeHistoryControllerService } from '../../services/services/guarantee-history-controller.service';
 import { BaseChartDirective } from 'ng2-charts';
+import {NgChartsModule} from 'ng2-charts';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
@@ -14,7 +15,7 @@ Chart.register(...registerables);
     NgForOf,
     NgIf,
     JsonPipe,
-    BaseChartDirective,
+    NgChartsModule,
     NgClass,
     NgStyle,
   ],

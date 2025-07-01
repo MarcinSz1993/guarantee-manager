@@ -83,9 +83,9 @@ public class AuditService {
                 .logsType(LogsType.RESET_PASSWORD)
                 .timestamp(resetPasswordDocument.getOperationTime())
                 .logDetails(Map.of(
-                        "firstName", resetPasswordDocument.getFirstName(),
-                        "lastName", resetPasswordDocument.getLastName(),
-                        "email", resetPasswordDocument.getEmail(),
+                        "guaranteeOwnerName", resetPasswordDocument.getFirstName(),
+                        "guaranteeOwnerLastName", resetPasswordDocument.getLastName(),
+                        "guaranteeOwnerEmail", resetPasswordDocument.getEmail(),
                         "operationTime", resetPasswordDocument.getOperationTime().toString(),
                         "accountCreationDate", resetPasswordDocument.getAccountCreationDate().toString()
                 ))
