@@ -22,95 +22,101 @@ public class PdfService {
 
     public byte[] createUserLogsPdfDocument(String userEmail) throws IOException {
         AuditResponse audit = auditService.getAudit(userEmail, 0, 100);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        PDDocument pdfDocument = new PDDocument();
-        PDPage page = new PDPage();
-        pdfDocument.addPage(page);
-        float pageWidth = pdfDocument.getPage(0).getMediaBox().getWidth();
-        float pageHeight = pdfDocument.getPage(0).getMediaBox().getHeight();
-        PDDocumentInformation documentInfo = new PDDocumentInformation();
-        documentInfo.setAuthor("Marcin Szabała");
-        documentInfo.setTitle("User Logs");
-        PDPageContentStream contentStream = new PDPageContentStream(pdfDocument, pdfDocument.getPage(0));
-        InputStream fontAsStream = getClass().getClassLoader().getResourceAsStream("fonts/Roboto.ttf");
-        PDType0Font font = PDType0Font.load(pdfDocument, fontAsStream);
-        contentStream.setLeading(14);
-        contentStream.beginText();
-        contentStream.setFont(font, 12);
-        String welcomeText = "Below you find logs of user with email " + userEmail;
-        float textWidth = font.getStringWidth(welcomeText) / 1000 * 12;
-        contentStream.newLineAtOffset((pageWidth - textWidth) / 2, pageHeight - 30);
-        contentStream.showText(welcomeText);
-        contentStream.endText();
-        contentStream.moveTo(0, pageHeight - 40);
-        contentStream.lineTo(pageWidth, pageHeight - 40);
-        contentStream.stroke();
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            PDDocument pdfDocument = new PDDocument();
+            InputStream fontAsStream = getClass().getClassLoader().getResourceAsStream("fonts/Roboto.ttf")){
+            PDPage page = new PDPage();
+            pdfDocument.addPage(page);
+            float pageWidth = pdfDocument.getPage(0).getMediaBox().getWidth();
+            float pageHeight = pdfDocument.getPage(0).getMediaBox().getHeight();
+            PDDocumentInformation documentInfo = new PDDocumentInformation();
+            documentInfo.setAuthor("Marcin Szabała");
+            documentInfo.setTitle("User Logs");
+            PDPageContentStream contentStream = new PDPageContentStream(pdfDocument, pdfDocument.getPage(0));
 
-        int counter = 1;
-        float startY = pageHeight - 70;
-        float marginX = 50;
-        float currentTextPosition = startY;
+            PDType0Font font = PDType0Font.load(pdfDocument, fontAsStream);
+            contentStream.setLeading(14);
+            contentStream.beginText();
+            contentStream.setFont(font, 12);
+            String welcomeText = "Below you find logs of user with email " + userEmail;
+            float textWidth = font.getStringWidth(welcomeText) / 1000 * 12;
+            contentStream.newLineAtOffset((pageWidth - textWidth) / 2, pageHeight - 30);
+            contentStream.showText(welcomeText);
+            contentStream.endText();
+            contentStream.moveTo(0, pageHeight - 40);
+            contentStream.lineTo(pageWidth, pageHeight - 40);
+            contentStream.stroke();
 
-        for (int i = 0; i < audit.getAuditLogs().size(); i++) {
-            if (currentTextPosition < 100) {
-                System.out.println("Counter " + counter);
-                page = new PDPage();
-                pdfDocument.addPage(page);
-                int count = pdfDocument.getPages().getCount();
-                System.out.println("Pages: " + count);
-                contentStream.close();
-                contentStream = new PDPageContentStream(pdfDocument, pdfDocument.getPage(count - 1));
-                currentTextPosition = pageHeight - 50;
+            int counter = 1;
+            float startY = pageHeight - 70;
+            float marginX = 50;
+            float currentTextPosition = startY;
+            for (int i = 0; i < audit.getAuditLogs().size(); i++) {
+                if (currentTextPosition < 100) {
+                    page = new PDPage();
+                    pdfDocument.addPage(page);
+                    int count = pdfDocument.getPages().getCount();
+                    contentStream.close();
+                    contentStream = new PDPageContentStream(pdfDocument, pdfDocument.getPage(count - 1));
+                    currentTextPosition = pageHeight - 50;
+                }
+
+
+                if (audit.getAuditLogs().get(i).getLogsType().equals(LogsType.RESET_PASSWORD)) {
+                    CommonLogsProperties commonLogsProperties = getCommonLogsProperties(audit, i);
+                    String accountCreationDate = "Account has been created on: " + audit.getAuditLogs().get(i).getLogDetails().get("accountCreationDate");
+                    showCommonLogsProperties(contentStream, font, counter, marginX, currentTextPosition, commonLogsProperties.logType(), commonLogsProperties.firstName(), commonLogsProperties.lastName(), commonLogsProperties.email(), commonLogsProperties.operationTime());
+                    contentStream.newLine();
+                    contentStream.showText(accountCreationDate);
+                    contentStream.endText();
+                    drawLineSeparator(contentStream, marginX, currentTextPosition, pageWidth, 1.0f, 1.0f);
+                    counter++;
+                    currentTextPosition = currentTextPosition - 90;
+
+                } else if (audit.getAuditLogs().get(i).getLogsType().equals(LogsType.ADDED_GUARANTEE_HISTORY)) {
+                    CommonLogsProperties commonLogsProperties = getCommonLogsProperties(audit, i);
+                    String notes = "Written note: " + audit.getAuditLogs().get(i).getLogDetails().get("notes");
+                    String feedback = "Feedback was positive: " + audit.getAuditLogs().get(i).getLogDetails().get("positiveFeedback");
+                    String guaranteeId = "Guarantee identification number: " + audit.getAuditLogs().get(i).getLogDetails().get("guaranteeId");
+                    showCommonLogsProperties(contentStream, font, counter, marginX, currentTextPosition, commonLogsProperties.logType(), commonLogsProperties.firstName(), commonLogsProperties.lastName(), commonLogsProperties.email(), commonLogsProperties.operationTime());
+                    contentStream.newLine();
+                    contentStream.showText(feedback);
+                    contentStream.newLine();
+                    contentStream.showText(notes);
+                    contentStream.newLine();
+                    contentStream.showText(guaranteeId);
+                    contentStream.endText();
+                    drawLineSeparator(contentStream, marginX, currentTextPosition, pageWidth, 0.0f, 1.0f);
+
+                    counter++;
+                    currentTextPosition = currentTextPosition - 120;
+                } else if (audit.getAuditLogs().get(i).getLogsType().equals(LogsType.REMOVED_GUARANTEE_HISTORY)) {
+                    String guaranteeId = "Guarantee identification number: " + audit.getAuditLogs().get(i).getLogDetails().get("guaranteeId");
+                    CommonLogsProperties commonLogsProperties = getCommonLogsProperties(audit, i);
+                    showCommonLogsProperties(contentStream, font, counter, marginX, currentTextPosition, commonLogsProperties.logType(), commonLogsProperties.firstName(), commonLogsProperties.lastName(), commonLogsProperties.email(), commonLogsProperties.operationTime());
+                    contentStream.newLine();
+                    contentStream.showText(guaranteeId);
+                    contentStream.endText();
+                    drawLineSeparator(contentStream, marginX, currentTextPosition, pageWidth, 1.0f, 0.0f);
+
+                    counter++;
+                    currentTextPosition = currentTextPosition - 90;
+                }
+
             }
-
-
-            if (audit.getAuditLogs().get(i).getLogsType().equals(LogsType.RESET_PASSWORD)) {
-                CommonLogsProperties commonLogsProperties = getCommonLogsProperties(audit, i);
-                String accountCreationDate = "Account has been created on: " + audit.getAuditLogs().get(i).getLogDetails().get("accountCreationDate");
-                showCommonLogsProperties(contentStream, font, counter, marginX, currentTextPosition, commonLogsProperties.logType(), commonLogsProperties.firstName(), commonLogsProperties.lastName(), commonLogsProperties.email(), commonLogsProperties.operationTime());
-                contentStream.newLine();
-                contentStream.showText(accountCreationDate);
-                contentStream.endText();
-                drawLineSeparator(contentStream, marginX, currentTextPosition, pageWidth, 1.0f, 1.0f);
-                counter++;
-                currentTextPosition = currentTextPosition - 90;
-
-            } else if (audit.getAuditLogs().get(i).getLogsType().equals(LogsType.ADDED_GUARANTEE_HISTORY)) {
-                CommonLogsProperties commonLogsProperties = getCommonLogsProperties(audit, i);
-                String notes = "Written note: " + audit.getAuditLogs().get(i).getLogDetails().get("notes");
-                String feedback = "Feedback was positive: " + audit.getAuditLogs().get(i).getLogDetails().get("positiveFeedback");
-                String guaranteeId = "Guarantee identification number: " + audit.getAuditLogs().get(i).getLogDetails().get("guaranteeId");
-                showCommonLogsProperties(contentStream, font, counter, marginX, currentTextPosition, commonLogsProperties.logType(), commonLogsProperties.firstName(), commonLogsProperties.lastName(), commonLogsProperties.email(), commonLogsProperties.operationTime());
-                contentStream.newLine();
-                contentStream.showText(feedback);
-                contentStream.newLine();
-                contentStream.showText(notes);
-                contentStream.newLine();
-                contentStream.showText(guaranteeId);
-                contentStream.endText();
-                drawLineSeparator(contentStream, marginX, currentTextPosition, pageWidth, 0.0f, 1.0f);
-
-                counter++;
-                currentTextPosition = currentTextPosition - 120;
-            } else if (audit.getAuditLogs().get(i).getLogsType().equals(LogsType.REMOVED_GUARANTEE_HISTORY)) {
-                String guaranteeId = "Guarantee identification number: " + audit.getAuditLogs().get(i).getLogDetails().get("guaranteeId");
-                CommonLogsProperties commonLogsProperties = getCommonLogsProperties(audit, i);
-                showCommonLogsProperties(contentStream, font, counter, marginX, currentTextPosition, commonLogsProperties.logType(), commonLogsProperties.firstName(), commonLogsProperties.lastName(), commonLogsProperties.email(), commonLogsProperties.operationTime());
-                contentStream.newLine();
-                contentStream.showText(guaranteeId);
-                contentStream.endText();
-                drawLineSeparator(contentStream, marginX, currentTextPosition, pageWidth, 1.0f, 0.0f);
-
-                counter++;
-                currentTextPosition = currentTextPosition - 90;
-            }
+            contentStream.close();
+            pdfDocument.save(outputStream);
+            return outputStream.toByteArray();
 
         }
-        contentStream.close();
-        pdfDocument.save(outputStream);
-        pdfDocument.close();
-        outputStream.close();
-        return outputStream.toByteArray();
+
+
+
+
+
+
+
+
     }
 
     private CommonLogsProperties getCommonLogsProperties(AuditResponse audit, int i) {
