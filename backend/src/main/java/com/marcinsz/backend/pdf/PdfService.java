@@ -109,14 +109,6 @@ public class PdfService {
             return outputStream.toByteArray();
 
         }
-
-
-
-
-
-
-
-
     }
 
     private CommonLogsProperties getCommonLogsProperties(AuditResponse audit, int i) {
@@ -153,5 +145,3 @@ public class PdfService {
         contentStream.showText(operationTime);
     }
 }
-//todo dopisać try with-reosurces
-//todo zastosować fabrykę
