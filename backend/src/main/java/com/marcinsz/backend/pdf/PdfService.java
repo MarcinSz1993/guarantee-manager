@@ -18,6 +18,7 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 public class PdfService {
     private final AuditService auditService;
+    private final PdfLogRendererFactory pdfLogRendererFactory;
 
     public byte[] createUserLogsPdfDocument(String userEmail) throws IOException {
         AuditResponse audit = auditService.getAudit(userEmail, 0, 100);
@@ -57,7 +58,7 @@ public class PdfService {
                 }
 
                 try {
-                    PdfLogRender renderer = PdfLogRendererFactory.getPdfLogRender(audit.getAuditLogs().get(i).getLogsType());
+                    PdfLogRender renderer = pdfLogRendererFactory.getPdfLogRender(audit.getAuditLogs().get(i).getLogsType());
                     float blockHeight = renderer.render(audit.getAuditLogs().get(i), contentStream, pdfDocument, font, counter, currentTextPosition);
                     currentTextPosition -= blockHeight;
                     counter++;

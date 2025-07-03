@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
+@FunctionalInterface
 public interface PdfLogRender {
     float render(AuditLogsModel log, PDPageContentStream contentStream, PDDocument document, PDType0Font font, int counter, float currentTextPosition) throws IOException;
 }
