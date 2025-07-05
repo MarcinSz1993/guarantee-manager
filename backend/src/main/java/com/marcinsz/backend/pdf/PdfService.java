@@ -2,6 +2,8 @@ package com.marcinsz.backend.pdf;
 
 import com.marcinsz.backend.audit.AuditResponse;
 import com.marcinsz.backend.audit.AuditService;
+import com.marcinsz.backend.exception.UserNotFoundException;
+import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentInformation;
@@ -19,8 +21,10 @@ import java.io.InputStream;
 public class PdfService {
     private final AuditService auditService;
     private final PdfLogRendererFactory pdfLogRendererFactory;
+    private final UserRepository userRepository;
 
     public byte[] createUserLogsPdfDocument(String userEmail) throws IOException {
+        userRepository.findByEmail(userEmail).orElseThrow(() -> UserNotFoundException.byEmail(userEmail));
         AuditResponse audit = auditService.getAudit(userEmail, 0, 100);
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); PDDocument pdfDocument = new PDDocument(); InputStream fontAsStream = getClass().getClassLoader().getResourceAsStream("fonts/Roboto.ttf")) {
             PDPage page = new PDPage();
@@ -58,23 +62,21 @@ public class PdfService {
                 }
 
                 try {
-                    PdfLogRender renderer = pdfLogRendererFactory.getPdfLogRender(audit.getAuditLogs().get(i).getLogsType());
-                    float blockHeight = renderer.render(audit.getAuditLogs().get(i), contentStream, pdfDocument, font, counter, currentTextPosition);
+                    PdfLogRender renderer = pdfLogRendererFactory.getPdfLogRender(
+                            audit.getAuditLogs().get(i).getLogsType());
+                    float blockHeight = renderer.render(audit.getAuditLogs().get(i), contentStream, pdfDocument, font, counter,
+                            currentTextPosition);
                     currentTextPosition -= blockHeight;
                     counter++;
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
-
-
             }
             contentStream.close();
             pdfDocument.save(outputStream);
             return outputStream.toByteArray();
-
         }
     }
-
 }
 
 
