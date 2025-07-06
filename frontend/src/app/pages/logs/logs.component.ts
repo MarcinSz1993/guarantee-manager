@@ -36,7 +36,7 @@ export class LogsComponent {
     this.pdfService.getUserLogsPdf({ userEmail: this.userEmail })
       .subscribe({
         next: (pdfData: Blob) => {
-          saveAs(pdfData,'test');
+          saveAs(pdfData,this.userEmail + ' logs.pdf');
         },
         error: err => {
           console.error('Error downloading PDF:', err);
