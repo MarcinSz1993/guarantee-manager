@@ -35,7 +35,9 @@
 
   <div class="logs">
     <ng-container *ngIf="auditResponse.auditLogs?.length">
-      <app-logs [logs]="auditResponse.auditLogs || []"></app-logs> else
+      <app-logs
+        [logs]="auditResponse.auditLogs || []"
+        [userEmail]="userEmail"></app-logs>
     </ng-container>
 
   </div>

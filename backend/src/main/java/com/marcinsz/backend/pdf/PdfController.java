@@ -20,7 +20,7 @@ public class PdfController {
 
     private final PdfService pdfService;
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_PDF_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<byte[]> getUserLogsPdf(@RequestParam String userEmail) throws IOException {
 
