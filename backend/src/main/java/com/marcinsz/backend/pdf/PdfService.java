@@ -2,6 +2,7 @@ package com.marcinsz.backend.pdf;
 
 import com.marcinsz.backend.audit.AuditResponse;
 import com.marcinsz.backend.audit.AuditService;
+import com.marcinsz.backend.exception.InvalidInputException;
 import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,12 @@ public class PdfService {
     public byte[] createUserLogsPdfDocument(String userEmail) throws IOException {
         userRepository.findByEmail(userEmail).orElseThrow(() -> UserNotFoundException.byEmail(userEmail));
         AuditResponse audit = auditService.getAudit(userEmail, 0, 100);
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); PDDocument pdfDocument = new PDDocument(); InputStream fontAsStream = getClass().getClassLoader().getResourceAsStream("fonts/Roboto.ttf")) {
+        if (audit.getAuditLogs() == null || audit.getAuditLogs().isEmpty()) {
+            throw new InvalidInputException("No audit logs found");
+        }
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             PDDocument pdfDocument = new PDDocument();
+             InputStream fontAsStream = getClass().getClassLoader().getResourceAsStream("fonts/Roboto.ttf")) {
             PDPage page = new PDPage();
             pdfDocument.addPage(page);
             float pageWidth = pdfDocument.getPage(0).getMediaBox().getWidth();
@@ -52,14 +58,10 @@ public class PdfService {
             int counter = 1;
             float currentTextPosition = pageHeight - 70;
             for (int i = 0; i < audit.getAuditLogs().size(); i++) {
-                if (currentTextPosition < 100) {
-                    page = new PDPage();
-                    pdfDocument.addPage(page);
-                    int count = pdfDocument.getPages().getCount();
-                    contentStream.close();
-                    contentStream = new PDPageContentStream(pdfDocument, pdfDocument.getPage(count - 1));
-                    currentTextPosition = pageHeight - 50;
-                }
+                PaginationResult result = ensureSpaceOrCreateNewPage(currentTextPosition, pageHeight, pdfDocument, contentStream);
+                currentTextPosition = result.currentTextPosition();
+                contentStream = result.contentStream();
+
 
                 try {
                     PdfLogRender renderer = pdfLogRendererFactory.getPdfLogRender(
@@ -76,6 +78,29 @@ public class PdfService {
             pdfDocument.save(outputStream);
             return outputStream.toByteArray();
         }
+    }
+
+    private PaginationResult ensureSpaceOrCreateNewPage(
+            float currentTextPosition,
+            float pageHeight,
+            PDDocument pdfDocument,
+            PDPageContentStream currentContentStream
+    ) throws IOException {
+        if (currentTextPosition >= 100) {
+            return new PaginationResult(currentTextPosition, currentContentStream);
+        }
+
+        PDPage newPage = new PDPage();
+        pdfDocument.addPage(newPage);
+        currentContentStream.close();
+
+        PDPageContentStream newContentStream = new PDPageContentStream(
+                pdfDocument,
+                newPage
+        );
+
+        float resetPosition = pageHeight - 50;
+        return new PaginationResult(resetPosition, newContentStream);
     }
 }
 
