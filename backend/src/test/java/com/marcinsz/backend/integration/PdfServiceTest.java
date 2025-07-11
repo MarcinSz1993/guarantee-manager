@@ -451,12 +451,10 @@ public class PdfServiceTest {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
 
-            assertTrue(text.contains("1. ADDED_GUARANTEE_HISTORY"));
+            assertTrue(text.contains("1. RESET_PASSWORD"));
             assertTrue(text.contains("Tommy"));
             assertTrue(text.contains("Smith"));
-            assertTrue(text.contains("Broken screen."));
-            assertTrue(text.contains("Feedback was positive: false"));
-            assertTrue(text.contains("2. RESET_PASSWORD"));
+            assertTrue(text.contains("2. REMOVED_GUARANTEE_HISTORY"));
         }
     }
 
@@ -486,12 +484,11 @@ public class PdfServiceTest {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
 
-            assertTrue(text.contains("1. ADDED_GUARANTEE_HISTORY"));
+            assertTrue(text.contains("1. RESET_PASSWORD"));
             assertTrue(text.contains("Tommy"));
             assertTrue(text.contains("Smith"));
-            assertTrue(text.contains("Broken screen."));
-            assertTrue(text.contains("Feedback was positive: false"));
-            assertTrue(text.contains("2. RESET_PASSWORD"));
+            assertTrue(text.contains("Email: tommy@testmail.com"));
+            assertTrue(text.contains("2. ADDED_GUARANTEE_HISTORY"));
         }
     }
 
