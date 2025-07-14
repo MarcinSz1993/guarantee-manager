@@ -108,9 +108,57 @@ public class PdfServiceTest {
         log.info("MongoDB connection: {}", mongoDBContainer.getConnectionString());
 
     }
+    @Test
+    void createUserLogsPdfDocumentShouldThrowInvalidInputExceptionAndReturnAllNullFieldsWhenMoreThanOneFieldIsNull_ADDED_GUARANTEE_HISTORY() {
+        User user = createTestUser();
+        User savedUser = userRepository.save(user);
+
+        Guarantee guarantee = createTestGuarantee1(savedUser);
+        Guarantee savedGuarantee = guaranteeRepository.save(guarantee);
+        GuaranteeHistory guaranteeHistory = createTestGuaranteeHistory(savedGuarantee, savedUser);
+        GuaranteeHistory savedGuaranteeHistory = guaranteeHistoryRepository.save(guaranteeHistory);
+        GuaranteeHistoryDocument guaranteeHistoryDocument = createTestGuaranteeHistoryDocument(savedGuaranteeHistory, savedUser);
+        guaranteeHistoryDocument.setOperationTime(null);
+        guaranteeHistoryDocument.setGuaranteeId(null);
+        guaranteeHistoryMongoRepository.save(guaranteeHistoryDocument);
+
+
+        InvalidInputException invalidInputException = assertThrows(InvalidInputException.class, () -> pdfService.createUserLogsPdfDocument(savedUser.getEmail()));
+        assertEquals("operationTime,guaranteeId cannot be null or empty!", invalidInputException.getMessage());
+
+    }
 
     @Test
-    void createUserLogsPdfDocumentShouldGeneratePdfDocumentWhereAllTypesOfLogsAreSortedFromNewestToOldestOne() throws IOException {
+    void createUserLogsPdfDocumentShouldThrowInvalidInputExceptionAndReturnAllNullFieldsWhenMoreThanOneFieldIsNull_RESET_PASSWORD() {
+        User user = createTestUser();
+        User savedUser = userRepository.save(user);
+
+        ResetPasswordDocument resetPasswordDocument = createTestResetPasswordDocument(savedUser);
+        resetPasswordDocument.setAccountCreationDate(null);
+        resetPasswordDocument.setOperationTime(null);
+        resetPasswordDocument.setId("");
+        resetPasswordMongoRepository.save(resetPasswordDocument);
+
+        InvalidInputException invalidInputException = assertThrows(InvalidInputException.class, () -> pdfService.createUserLogsPdfDocument(savedUser.getEmail()));
+        assertEquals("operationTime,accountCreationDate,id cannot be null or empty!", invalidInputException.getMessage());
+
+    }
+
+    @Test
+    void createUserLogsPdfDocumentShouldThrowInvalidInputExceptionAndReturnOneFiledWhichIsNullWhenOneFieldIsNull_RESET_PASSWORD() {
+        User user = createTestUser();
+        User savedUser = userRepository.save(user);
+
+        ResetPasswordDocument resetPasswordDocument = createTestResetPasswordDocument(savedUser);
+        resetPasswordDocument.setAccountCreationDate(null);
+        resetPasswordMongoRepository.save(resetPasswordDocument);
+
+        InvalidInputException invalidInputException = assertThrows(InvalidInputException.class, () -> pdfService.createUserLogsPdfDocument(savedUser.getEmail()));
+        assertEquals("accountCreationDate cannot be null or empty!", invalidInputException.getMessage());
+    }
+
+    @Test
+    void createUserLogsPdfDocumentShouldGeneratePdfDocumentWhereAllTypesOfLogsAreSortedFromNewestToOldestOne_RESET_PASSWORD() throws IOException {
         User user = createTestUser();
         User savedUser = userRepository.save(user);
         Guarantee guarantee = createTestGuarantee1(savedUser);
