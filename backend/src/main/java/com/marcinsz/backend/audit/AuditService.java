@@ -1,14 +1,13 @@
 package com.marcinsz.backend.audit;
 
+import com.marcinsz.backend.exception.InvalidInputException;
 import com.marcinsz.backend.exception.UserNotFoundException;
 import com.marcinsz.backend.mongodb.*;
 import com.marcinsz.backend.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -78,14 +77,37 @@ public class AuditService {
                 .build();
     }
 
+    private static void validateResetPasswordDocument(ResetPasswordDocument resetPasswordDocument) {
+        Set<String> nullFields = new LinkedHashSet<>();
+        if (resetPasswordDocument.getOperationTime() == null){
+            nullFields.add("operationTime");
+        }if (resetPasswordDocument.getFirstName() == null) {
+            nullFields.add("firstName");
+        }if (resetPasswordDocument.getLastName() == null) {
+            nullFields.add("lastName");
+        }if (resetPasswordDocument.getEmail() == null) {
+            nullFields.add("email");
+        }if (resetPasswordDocument.getAccountCreationDate() == null) {
+            nullFields.add("accountCreationDate");
+        }
+        if (resetPasswordDocument.getId().isEmpty() || resetPasswordDocument.getId().isBlank()){
+            nullFields.add("id");
+        }
+
+        if (!nullFields.isEmpty()) {
+            throw new InvalidInputException(String.join(",",nullFields) + " cannot be null or empty!");
+        }
+    }
+
     private static ResetPasswordLogs getResetPasswordLogs(ResetPasswordDocument resetPasswordDocument) {
+        validateResetPasswordDocument(resetPasswordDocument);
         return ResetPasswordLogs.builder()
                 .logsType(LogsType.RESET_PASSWORD)
                 .timestamp(resetPasswordDocument.getOperationTime())
                 .logDetails(Map.of(
-                        "firstName", resetPasswordDocument.getFirstName(),
-                        "lastName", resetPasswordDocument.getLastName(),
-                        "email", resetPasswordDocument.getEmail(),
+                        "guaranteeOwnerName", resetPasswordDocument.getFirstName(),
+                        "guaranteeOwnerLastName", resetPasswordDocument.getLastName(),
+                        "guaranteeOwnerEmail", resetPasswordDocument.getEmail(),
                         "operationTime", resetPasswordDocument.getOperationTime().toString(),
                         "accountCreationDate", resetPasswordDocument.getAccountCreationDate().toString()
                 ))
@@ -93,6 +115,7 @@ public class AuditService {
     }
 
     private static RemovedGuaranteeHistoryLogs getRemovedGuaranteeHistoryLogs(RemovedGuaranteeHistoryDocument removedGuaranteeHistoryDocument) {
+        validateRemovedGuaranteeHistoryDocument(removedGuaranteeHistoryDocument);
         return RemovedGuaranteeHistoryLogs.builder()
                 .logsType(LogsType.REMOVED_GUARANTEE_HISTORY)
                 .timestamp(removedGuaranteeHistoryDocument.getOperationTime())
@@ -106,7 +129,26 @@ public class AuditService {
                 .build();
     }
 
+    private static void validateRemovedGuaranteeHistoryDocument(RemovedGuaranteeHistoryDocument removedGuaranteeHistoryDocument) {
+        Set<String> nullFields = new LinkedHashSet<>();
+        if (removedGuaranteeHistoryDocument.getOperationTime() == null){
+            nullFields.add("operationTime");
+        }if (removedGuaranteeHistoryDocument.getGuaranteeOwnerName().isEmpty()) {
+            nullFields.add("firstName");
+        }if (removedGuaranteeHistoryDocument.getGuaranteeOwnerLastName().isEmpty()) {
+            nullFields.add("lastName");
+        }if (removedGuaranteeHistoryDocument.getGuaranteeOwnerEmail().isEmpty()) {
+            nullFields.add("email");
+        }if (removedGuaranteeHistoryDocument.getGuaranteeId() == null) {
+            nullFields.add("guaranteeId");
+        }
+        if (!nullFields.isEmpty()) {
+            throw new InvalidInputException(String.join(",",nullFields) + " cannot be null or empty!");
+        }
+    }
+
     private static AddedGuaranteeHistoryLogs getAddedGuaranteeHistoryLogs(GuaranteeHistoryDocument guaranteeHistoryDocument) {
+        validateAddedGuaranteeHistory(guaranteeHistoryDocument);
         return AddedGuaranteeHistoryLogs.builder()
                 .logsType(LogsType.ADDED_GUARANTEE_HISTORY)
                 .timestamp(guaranteeHistoryDocument.getOperationTime())
@@ -120,5 +162,23 @@ public class AuditService {
                         "positiveFeedback", String.valueOf(guaranteeHistoryDocument.isPositiveFeedback())
                 ))
                 .build();
+    }
+
+    private static void validateAddedGuaranteeHistory(GuaranteeHistoryDocument guaranteeHistoryDocument) {
+        Set<String> nullFields = new LinkedHashSet<>();
+        if (guaranteeHistoryDocument.getOperationTime() == null){
+            nullFields.add("operationTime");
+        }if (guaranteeHistoryDocument.getGuaranteeOwnerName().isEmpty()) {
+            nullFields.add("firstName");
+        }if (guaranteeHistoryDocument.getGuaranteeOwnerLastName().isEmpty()) {
+            nullFields.add("lastName");
+        }if (guaranteeHistoryDocument.getGuaranteeOwnerEmail().isEmpty()) {
+            nullFields.add("email");
+        }if (guaranteeHistoryDocument.getGuaranteeId() == null) {
+            nullFields.add("guaranteeId");
+        }
+        if (!nullFields.isEmpty()) {
+            throw new InvalidInputException(String.join(",",nullFields) + " cannot be null or empty!");
+        }
     }
 }
