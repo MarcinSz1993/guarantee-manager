@@ -8,7 +8,7 @@ import {Title} from '@angular/platform-browser';
   imports: [RouterOutlet,NavbarComponent],
   templateUrl: './app.component.html',
   standalone: true,
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit{
   constructor(

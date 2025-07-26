@@ -35,8 +35,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ExceptionResponse> userNotFoundExceptionHandler(Exception ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                buildBodyExceptionResponse(HttpStatus.NOT_FOUND, ex)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(buildBodyExceptionResponse(HttpStatus.NOT_FOUND, ex)
         );
     }
 
@@ -111,8 +112,10 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidInputException.class)
-    public ResponseEntity<ExceptionResponse> invalidInputExceptionHandler(Exception ex){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+    public ResponseEntity<ExceptionResponse> invalidInputExceptionHandler(InvalidInputException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(
                 buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
     }
 

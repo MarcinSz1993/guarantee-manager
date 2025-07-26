@@ -610,6 +610,48 @@
         }
       }
     },
+    "/dashboard": {
+      "get": {
+        "tags": [
+          "dashboard-notification-controller"
+        ],
+        "operationId": "fetchGuaranteesExpiresIn7Days",
+        "parameters": [
+          {
+            "name": "pageNumber",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 3
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageGuaranteeResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/users/by-username": {
       "get": {
         "tags": [
@@ -660,7 +702,7 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/pdf": {
+              "application/json": {
                 "schema": {
                   "type": "string",
                   "format": "byte"
@@ -936,48 +978,6 @@
           }
         }
       }
-    },
-    "/api/dashboard": {
-      "get": {
-        "tags": [
-          "dashboard-notification-controller"
-        ],
-        "operationId": "fetchGuaranteesExpiresIn7Days",
-        "parameters": [
-          {
-            "name": "pageNumber",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 3
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PageGuaranteeResponse"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -1229,102 +1229,6 @@
           "positiveFeedback"
         ]
       },
-      "UserDto": {
-        "type": "object",
-        "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "userName": {
-            "type": "string"
-          },
-          "userEmail": {
-            "type": "string"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "USER",
-              "ADMIN"
-            ]
-          },
-          "notificationPreference": {
-            "type": "string",
-            "enum": [
-              "EMAIL",
-              "DASHBOARD",
-              "ALL"
-            ]
-          },
-          "enabled": {
-            "type": "boolean"
-          }
-        }
-      },
-      "AuditLogsModel": {
-        "type": "object",
-        "properties": {
-          "logsType": {
-            "type": "string",
-            "enum": [
-              "ADDED_GUARANTEE_HISTORY",
-              "REMOVED_GUARANTEE_HISTORY",
-              "RESET_PASSWORD",
-              "UNKNOWN_TYPE_FOR_TESTS"
-            ]
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "logDetails": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "AuditResponse": {
-        "type": "object",
-        "properties": {
-          "auditLogs": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuditLogsModel"
-            }
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalElements": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "firstPage": {
-            "type": "boolean"
-          },
-          "lastPage": {
-            "type": "boolean"
-          }
-        }
-      },
       "PageGuaranteeResponse": {
         "type": "object",
         "properties": {
@@ -1381,9 +1285,6 @@
           "sort": {
             "$ref": "#/components/schemas/SortObject"
           },
-          "paged": {
-            "type": "boolean"
-          },
           "pageSize": {
             "type": "integer",
             "format": "int32"
@@ -1391,6 +1292,9 @@
           "pageNumber": {
             "type": "integer",
             "format": "int32"
+          },
+          "paged": {
+            "type": "boolean"
           },
           "unpaged": {
             "type": "boolean"
@@ -1407,6 +1311,101 @@
             "type": "boolean"
           },
           "unsorted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "userEmail": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "ADMIN"
+            ]
+          },
+          "notificationPreference": {
+            "type": "string",
+            "enum": [
+              "EMAIL",
+              "DASHBOARD",
+              "ALL"
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AuditLogsModel": {
+        "type": "object",
+        "properties": {
+          "logsType": {
+            "type": "string",
+            "enum": [
+              "ADDED_GUARANTEE_HISTORY",
+              "REMOVED_GUARANTEE_HISTORY",
+              "RESET_PASSWORD"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "logDetails": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AuditResponse": {
+        "type": "object",
+        "properties": {
+          "auditLogs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuditLogsModel"
+            }
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstPage": {
+            "type": "boolean"
+          },
+          "lastPage": {
             "type": "boolean"
           }
         }

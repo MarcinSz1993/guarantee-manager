@@ -9,8 +9,8 @@ export { NotificationControllerService } from './services/notification-controlle
 export { ImageControllerService } from './services/image-controller.service';
 export { GuaranteeHistoryControllerService } from './services/guarantee-history-controller.service';
 export { EmailControllerService } from './services/email-controller.service';
+export { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';
 export { PdfControllerService } from './services/pdf-controller.service';
 export { AuditControllerService } from './services/audit-controller.service';
 export { LogoControllerService } from './services/logo-controller.service';
 export { DemoControllerService } from './services/demo-controller.service';
-export { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';

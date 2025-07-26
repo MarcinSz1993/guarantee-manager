@@ -29,7 +29,7 @@ export class PdfControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getUserLogsPdf$Response(params: GetUserLogsPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  getUserLogsPdf$Response(params: GetUserLogsPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
     return getUserLogsPdf(this.http, this.rootUrl, params, context);
   }
 
@@ -39,9 +39,9 @@ export class PdfControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getUserLogsPdf(params: GetUserLogsPdf$Params, context?: HttpContext): Observable<string> {
+  getUserLogsPdf(params: GetUserLogsPdf$Params, context?: HttpContext): Observable<Blob> {
     return this.getUserLogsPdf$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<Blob>): Blob => r.body)
     );
   }
 

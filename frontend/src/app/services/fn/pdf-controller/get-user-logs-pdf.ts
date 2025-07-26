@@ -13,18 +13,18 @@ export interface GetUserLogsPdf$Params {
   userEmail: string;
 }
 
-export function getUserLogsPdf(http: HttpClient, rootUrl: string, params: GetUserLogsPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function getUserLogsPdf(http: HttpClient, rootUrl: string, params: GetUserLogsPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, getUserLogsPdf.PATH, 'get');
   if (params) {
     rb.query('userEmail', params.userEmail, {});
   }
 
   return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/pdf', context })
+    rb.build({ responseType: 'blob' as 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return r as StrictHttpResponse<Blob>;
     })
   );
 }
