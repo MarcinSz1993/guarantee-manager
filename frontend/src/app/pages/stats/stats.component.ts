@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { JsonPipe, NgClass, NgForOf, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgForOf } from '@angular/common';
 import { GuaranteeControllerService } from '../../services/services/guarantee-controller.service';
 import { ApiResponse } from '../../services/models/api-response';
 import { GuaranteeHistoryControllerService } from '../../services/services/guarantee-history-controller.service';
-import { BaseChartDirective } from 'ng2-charts';
 import {NgChartsModule} from 'ng2-charts';
 import { Chart, registerables } from 'chart.js';
 
@@ -13,11 +12,8 @@ Chart.register(...registerables);
   selector: 'app-stats',
   imports: [
     NgForOf,
-    NgIf,
-    JsonPipe,
     NgChartsModule,
     NgClass,
-    NgStyle,
   ],
   templateUrl: './stats.component.html',
   standalone: true,

@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {CommonModule, DatePipe, JsonPipe, NgForOf, NgIf} from '@angular/common';
+import {CommonModule, DatePipe,NgForOf, NgIf} from '@angular/common';
 import {AuditLogsModel} from '../../services/models/audit-logs-model';
 import {PdfControllerService} from '../../services/services/pdf-controller.service';
 import {saveAs} from 'file-saver';
@@ -11,7 +11,6 @@ import {saveAs} from 'file-saver';
     CommonModule,
     NgForOf,
     DatePipe,
-    JsonPipe,
     NgIf
   ],
   templateUrl: './logs.component.html',

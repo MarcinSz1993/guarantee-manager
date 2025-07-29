@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {GuaranteeControllerService} from '../../services/services/guarantee-controller.service';
 import {PageGuaranteeResponse} from '../../services/models/page-guarantee-response';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgForOf} from '@angular/common';
 import {CreateGuaranteeHistoryRequest} from '../../services/models/create-guarantee-history-request';
 import {GuaranteeHistoryControllerService} from '../../services/services/guarantee-history-controller.service';
 import {ApiResponse} from '../../services/models/api-response';
@@ -12,8 +12,7 @@ import {ToastrService} from 'ngx-toastr';
   selector: 'app-add-history',
   imports: [
     FormsModule,
-    NgForOf,
-    NgIf
+    NgForOf
   ],
   templateUrl: './add-history.component.html',
   standalone: true,

@@ -1,12 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
 import {
   DashboardNotificationControllerService
 } from '../../services/services/dashboard-notification-controller.service';
 import {GuaranteeResponse} from '../../services/models/guarantee-response';
-import {GuaranteeCardComponent} from '../guarantee-card/guarantee-card.component';
-import {RouterLink} from '@angular/router';
 import {UserStateService} from '../../own_services/user-state-service.service';
 import {Subscription} from 'rxjs';
 import {GuaranteeModalService} from '../../own_services/guarantee-modal.service';
@@ -17,10 +15,7 @@ import {GuaranteeModalService} from '../../own_services/guarantee-modal.service'
   imports: [
     FormsModule,
     NgForOf,
-    GuaranteeCardComponent,
-    NgIf,
-    RouterLink,
-    AsyncPipe
+    NgIf
   ],
   templateUrl: './notification.component.html',
   standalone: true,

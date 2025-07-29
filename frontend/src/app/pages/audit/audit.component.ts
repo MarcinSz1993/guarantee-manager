@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {AuditControllerService} from '../../services/services/audit-controller.service';
 import {AuditResponse} from '../../services/models/audit-response';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {LogsComponent} from '../logs/logs.component';
 import {ToastrService} from 'ngx-toastr';
 
@@ -11,7 +11,6 @@ import {ToastrService} from 'ngx-toastr';
   imports: [
     FormsModule,
     NgIf,
-    NgForOf,
     LogsComponent
   ],
   templateUrl: './audit.component.html',

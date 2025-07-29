@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {GuaranteeResponse} from '../../services/models/guarantee-response';
 import {GuaranteeControllerService} from '../../services/services/guarantee-controller.service';
 import {ToastrService} from 'ngx-toastr';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgForOf} from '@angular/common';
 import {AddGuaranteeRequest} from '../../services/models/add-guarantee-request';
 import {GuaranteeModalService} from '../../own_services/guarantee-modal.service';
 import {finalize} from 'rxjs';
@@ -12,7 +12,6 @@ import {finalize} from 'rxjs';
   selector: 'app-add-guarantee',
   imports: [
     FormsModule,
-    NgIf,
     NgForOf
   ],
   templateUrl: './add-guarantee.component.html',

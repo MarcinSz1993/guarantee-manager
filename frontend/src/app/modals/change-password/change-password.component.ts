@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {NgForOf, NgIf} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PasswordControllerService} from '../../services/services/password-controller.service';
 import {ApiResponse} from '../../services/models/api-response';
@@ -9,10 +8,8 @@ import {ChangePasswordRequest} from '../../services/models/change-password-reque
 @Component({
   selector: 'app-change-password',
   imports: [
-    NgForOf,
     ReactiveFormsModule,
-    FormsModule,
-    NgIf
+    FormsModule
   ],
   templateUrl: './change-password.component.html',
   standalone: true,

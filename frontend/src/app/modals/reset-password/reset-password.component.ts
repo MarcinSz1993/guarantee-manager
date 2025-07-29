@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgForOf} from '@angular/common';
 import {ResetPasswordRequest} from '../../services/models/reset-password-request';
 import {PasswordControllerService} from '../../services/services/password-controller.service';
 import {ApiResponse} from '../../services/models/api-response';
@@ -9,8 +8,7 @@ import {ToastrService} from 'ngx-toastr';
 @Component({
   selector: 'app-reset-password',
   imports: [
-    FormsModule,
-    NgForOf
+    FormsModule
   ],
   templateUrl: './reset-password.component.html',
   standalone: true,

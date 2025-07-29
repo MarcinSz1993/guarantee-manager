@@ -5,7 +5,6 @@ import {PageGuaranteeHistoryResponse} from '../../services/models/page-guarantee
 import {AddHistoryComponent} from '../../modals/add-history/add-history.component';
 import {ApiResponse} from '../../services/models/api-response';
 import {ToastrService} from 'ngx-toastr';
-import {EmptyArchiveComponent} from '../empty-archive/empty-archive.component';
 
 @Component({
   selector: 'app-archive',
@@ -14,8 +13,7 @@ import {EmptyArchiveComponent} from '../empty-archive/empty-archive.component';
     NgClass,
     NgForOf,
     AddHistoryComponent,
-    NgIf,
-    EmptyArchiveComponent
+    NgIf
   ],
   templateUrl: './archive.component.html',
   standalone: true,

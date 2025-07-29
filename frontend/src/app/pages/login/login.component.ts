@@ -5,7 +5,7 @@ import {UserControllerService} from '../../services/services/user-controller.ser
 import {TokenService} from '../../own_services/token.service';
 import {LoginRequest} from '../../services/models/login-request';
 import {AuthenticationResponse} from '../../services/models/authentication-response';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgIf} from '@angular/common';
 import {UserDto} from '../../services/models/user-dto';
 import {UserStateService} from '../../own_services/user-state-service.service';
 import {ResetPasswordComponent} from '../../modals/reset-password/reset-password.component';
@@ -16,7 +16,6 @@ import {ResetPasswordComponent} from '../../modals/reset-password/reset-password
   selector: 'app-login',
   imports: [
     FormsModule,
-    NgForOf,
     NgIf,
     ResetPasswordComponent
   ],
