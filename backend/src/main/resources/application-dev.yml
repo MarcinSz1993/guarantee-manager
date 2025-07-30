@@ -85,4 +85,8 @@ logging:
     org.hibernate.sql: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
+news-generator:
+  base-url: https://newsdata.io/api/1/latest
+  api-key: pub_4d6a3321c97d4e679416f5d2352b7e77
+
 
