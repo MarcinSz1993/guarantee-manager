@@ -1,5 +1,7 @@
 package com.marcinsz.backend.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcinsz.backend.exception.*;
 import com.marcinsz.backend.response.ExceptionResponse;
 import com.marcinsz.backend.response.ValidationErrorsResponse;
@@ -136,6 +138,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 buildBodyExceptionResponse(HttpStatus.BAD_REQUEST, ex));
     }
+
+    @ExceptionHandler(NewsArticleApiException.class)
+    public ResponseEntity<ExceptionResponse> newsArticleApiExceptionHandler(NewsArticleApiException ex) throws JsonProcessingException {
+        String rawMessageException = ex.getMessage();
+        String json = rawMessageException.substring(rawMessageException.indexOf('{'));
+        ObjectMapper mapper = new ObjectMapper();
+        String parsedMessage = mapper
+                .readTree(json)
+                .at("/results/message")
+                .asText("Unknown messageException");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+                buildBodyExceptionResponse(parsedMessage, HttpStatus.FORBIDDEN.value()));
+    }
+
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponse> handleConstraintViolationException(ConstraintViolationException ex) {

@@ -39,6 +39,7 @@ public class SecurityConfiguration {
                     registry.requestMatchers("/api/logo").permitAll();
                     registry.requestMatchers("/api/users").permitAll();
                     registry.requestMatchers("/api/users/activate-user").permitAll();
+                    registry.requestMatchers("/api/article-generator**").permitAll();
                     registry.requestMatchers("/swagger-ui/**").permitAll();
                     registry.requestMatchers("/v3/api-docs/**").permitAll();
                     registry.anyRequest().authenticated();

@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 public class NewsArticle {
 
     @JsonProperty("article_id")
-    public String article_id;
+    public String articleId;
     public String title;
     public String link;
     public String description;
     public String pubDate;
-    public String image_url;
+    @JsonProperty("image_url")
+    public String imageUrl;
 
 }
