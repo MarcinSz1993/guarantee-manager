@@ -6,6 +6,6 @@ export interface AuditLogsModel {
   logDetails?: {
 [key: string]: string;
 };
-  logsType?: 'ADDED_GUARANTEE_HISTORY' | 'REMOVED_GUARANTEE_HISTORY' | 'RESET_PASSWORD';
+  logsType?: 'ADDED_GUARANTEE_HISTORY' | 'REMOVED_GUARANTEE_HISTORY' | 'RESET_PASSWORD' | 'UNKNOWN_TYPE_FOR_TESTS';
   timestamp?: string;
 }

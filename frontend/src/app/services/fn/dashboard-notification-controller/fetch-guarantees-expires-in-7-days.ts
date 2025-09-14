@@ -32,4 +32,4 @@ export function fetchGuaranteesExpiresIn7Days(http: HttpClient, rootUrl: string,
   );
 }
 
-fetchGuaranteesExpiresIn7Days.PATH = '/dashboard';
+fetchGuaranteesExpiresIn7Days.PATH = '/api/dashboard';

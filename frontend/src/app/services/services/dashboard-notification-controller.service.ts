@@ -22,7 +22,7 @@ export class DashboardNotificationControllerService extends BaseService {
   }
 
   /** Path part for operation `fetchGuaranteesExpiresIn7Days()` */
-  static readonly FetchGuaranteesExpiresIn7DaysPath = '/dashboard';
+  static readonly FetchGuaranteesExpiresIn7DaysPath = '/api/dashboard';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

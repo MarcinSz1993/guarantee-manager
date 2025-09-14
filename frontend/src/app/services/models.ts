@@ -14,6 +14,8 @@ export { GuaranteeHistoryResponse } from './models/guarantee-history-response';
 export { GuaranteeResponse } from './models/guarantee-response';
 export { ImageResponse } from './models/image-response';
 export { LoginRequest } from './models/login-request';
+export { NewsArticle } from './models/news-article';
+export { NewsArticleRawApi } from './models/news-article-raw-api';
 export { PageableObject } from './models/pageable-object';
 export { PageGuaranteeHistoryResponse } from './models/page-guarantee-history-response';
 export { PageGuaranteeResponse } from './models/page-guarantee-response';

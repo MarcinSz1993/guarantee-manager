@@ -60,6 +60,8 @@ public class NewsArticleService {
                 .queryParam("q", articleParam)
                 .queryParam("country", "pl")
                 .queryParam("language", "pl")
+                .queryParam("category","technology")
                 .build();
     }
 }
+//0da9ae4f542a

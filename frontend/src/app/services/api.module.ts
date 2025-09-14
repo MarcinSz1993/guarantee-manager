@@ -13,11 +13,12 @@ import { NotificationControllerService } from './services/notification-controlle
 import { ImageControllerService } from './services/image-controller.service';
 import { GuaranteeHistoryControllerService } from './services/guarantee-history-controller.service';
 import { EmailControllerService } from './services/email-controller.service';
-import { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';
 import { PdfControllerService } from './services/pdf-controller.service';
 import { AuditControllerService } from './services/audit-controller.service';
 import { LogoControllerService } from './services/logo-controller.service';
 import { DemoControllerService } from './services/demo-controller.service';
+import { DashboardNotificationControllerService } from './services/dashboard-notification-controller.service';
+import { NewsArticleControllerService } from './services/news-article-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -34,11 +35,12 @@ import { DemoControllerService } from './services/demo-controller.service';
     ImageControllerService,
     GuaranteeHistoryControllerService,
     EmailControllerService,
-    DashboardNotificationControllerService,
     PdfControllerService,
     AuditControllerService,
     LogoControllerService,
     DemoControllerService,
+    DashboardNotificationControllerService,
+    NewsArticleControllerService,
     ApiConfiguration
   ],
 })

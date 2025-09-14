@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf, NgOptimizedImage, SlicePipe} from '@angular/common';
 import {
   DashboardNotificationControllerService
 } from '../../services/services/dashboard-notification-controller.service';
@@ -8,6 +8,8 @@ import {GuaranteeResponse} from '../../services/models/guarantee-response';
 import {UserStateService} from '../../own_services/user-state-service.service';
 import {Subscription} from 'rxjs';
 import {GuaranteeModalService} from '../../own_services/guarantee-modal.service';
+import {NewsArticleControllerService} from '../../services/services/news-article-controller.service';
+import {NewsArticleRawApi} from '../../services/models/news-article-raw-api';
 
 @Component({
   selector: 'app-notification',
@@ -15,7 +17,9 @@ import {GuaranteeModalService} from '../../own_services/guarantee-modal.service'
   imports: [
     FormsModule,
     NgForOf,
-    NgIf
+    NgIf,
+    NgOptimizedImage,
+    SlicePipe
   ],
   templateUrl: './notification.component.html',
   standalone: true,
@@ -26,12 +30,14 @@ export class NotificationComponent implements OnInit, OnDestroy{
   totalPages:number = 0;
   guaranteeResponse: GuaranteeResponse[] = [];
   userPreference: string = '';
+  newsArticles: NewsArticleRawApi = {};
 
 
   constructor(
     private dashboardNotificationService: DashboardNotificationControllerService,
     protected userStateService: UserStateService,
-    private guaranteeModalService: GuaranteeModalService
+    private guaranteeModalService: GuaranteeModalService,
+    private articleGeneratorService: NewsArticleControllerService
   ) {
   }
 
@@ -40,6 +46,7 @@ export class NotificationComponent implements OnInit, OnDestroy{
     }
 
   ngOnInit(): void {
+    this.fetchGeneratedArticles();
     this.fetchNotifications();
     this.userPreference = this.userStateService.getUserPreference() as string;
     console.log('Preferencja: '+this.userPreference);
@@ -51,6 +58,15 @@ export class NotificationComponent implements OnInit, OnDestroy{
       .subscribe(()=>{
         this.fetchNotifications()
       });
+  }
+
+  fetchGeneratedArticles(){
+    this.articleGeneratorService.getNewsArticles({articleParam:'Marcin'})
+      .subscribe({next: result=> {
+        this.newsArticles = result;
+          console.log(this.newsArticles.results)
+        }})
+
   }
 
 
