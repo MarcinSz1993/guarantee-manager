@@ -9,5 +9,20 @@
 </head>
 <body>
   <app-root></app-root>
+  <script>
+    (function(d,t) {
+      var BASE_URL="https://chatwoot.dev10.pro";
+      var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=BASE_URL+"/packs/js/sdk.js";
+      g.async = true;
+      s.parentNode.insertBefore(g,s);
+      g.onload=function(){
+        window.chatwootSDK.run({
+          websiteToken: 'gChB4NvTeV9bHLD7ddCnZt6F',
+          baseUrl: BASE_URL
+        })
+      }
+    })(document,"script");
+  </script>
 </body>
 </html>
